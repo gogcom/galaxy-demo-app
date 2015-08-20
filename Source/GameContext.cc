@@ -49,10 +49,23 @@ namespace game
 		return gameplayData;
 	}
 
+	const std::set<galaxy::api::GalaxyID>& GameContext::GetLobbies() const
+	{
+		return lobbies;
+	}
+
+	void GameContext::SetLobbies(const std::set<galaxy::api::GalaxyID>& _lobbies)
+	{
+		lobbies = _lobbies;
+	}
+
 	void GameContext::PrintGameControls() const
 	{
 		fprintf(stdout, "Press 'h' to print available options\n");
 		fprintf(stdout, "Press 'q' to quit\n");
+		fprintf(stdout, "Press 'b' to request lobby list\n");
+		fprintf(stdout, "Press 'y' to create lobby\n");
+		fprintf(stdout, "Press 'j' to join to lobby\n");
 		fprintf(stdout, "Press 's' to send a lobby message (only while in lobby)\n");
 		fprintf(stdout, "Press 'k' to send a packet to lobby user (only while in lobby)\n");
 		fprintf(stdout, "Press 'p' to send a packet to lobby owner (only while in lobby)\n");

@@ -17,7 +17,6 @@ namespace game
 			fprintf(stdout, "Lobby %llu entered\n", lobbyID.ToUint64());
 			gameContext.SetGameState(GameContext::IN_LOBBY);
 			gameContext.SetLobbyID(lobbyID);
-			gameContext.PrintGameControls();
 			break;
 
 		case galaxy::api::LOBBY_ENTER_RESULT_LOBBY_IS_FULL:
@@ -70,32 +69,33 @@ namespace game
 	{
 		if (ioFailure)
 		{
-			fprintf(stdout, "Failed to retrieve lobby list\n");
+			fprintf(stderr, "Failed to retrieve lobby list\n");
 			gameContext.SetGameState(GameContext::QUIT);
 			return;
 		}
 
-		try
+		if (!lobbyCount)
 		{
-			if (!lobbyCount)
+			fprintf(stdout, "There are no available lobbies\n");
+			return;
+		}
+
+		std::set<galaxy::api::GalaxyID> lobbies;
+		fprintf(stdout, "Retrieved lobby list:\n");
+		for (uint32_t i = 0; i < lobbyCount; ++i)
+		{
+			try
 			{
-				// there are no lobbies available so we create a new one
-				fprintf(stdout, "No lobbies available, creating a new one...\n");
-				const uint32_t maxLobbyMemberCount = 4;
-				galaxy::api::Matchmaking()->CreateLobby(galaxy::api::LOBBY_TYPE_PUBLIC, maxLobbyMemberCount);
+				const galaxy::api::GalaxyID lobbyID = galaxy::api::Matchmaking()->GetLobbyByIndex(i);
+				lobbies.insert(lobbyID);
 			}
-			else
+			catch (const galaxy::api::IError& error)
 			{
-				// there is a lobby so we join it
-				galaxy::api::GalaxyID lobbyID = galaxy::api::Matchmaking()->GetLobbyByIndex(0);
-				fprintf(stdout, "Joining lobby %llu...\n", lobbyID.ToUint64());
-				galaxy::api::Matchmaking()->JoinLobby(lobbyID);
+				fprintf(stderr, "Error occurred during OnLobbyList execution, error=%s\n", error.GetMsg());
 			}
 		}
-		catch (const galaxy::api::IError& error)
-		{
-			fprintf(stderr, "Error occurred during OnLobbyList execution, error=%s\n", error.GetMsg());
-		}
+
+		gameContext.SetLobbies(lobbies);
 	}
 
 	NetworkingListener::NetworkingListener(GameContext& _gameContext)
@@ -171,24 +171,20 @@ namespace game
 	{
 		try
 		{
-			if (!galaxy::api::User()->IsLoggedOn())
+			if (galaxy::api::User()->IsLoggedOn())
 			{
-				fprintf(stdout, "Successfully signed in, but in the offline mode\n");
-				// the game should support it and continue working with some Galaxy features unavailable.
-				gameContext.SetGameState(GameContext::QUIT);
-				return;
+				fprintf(stdout, "Successfully signed in as %s\n", galaxy::api::Friends()->GetPersonaName());
 			}
-
-			fprintf(stdout, "Successfully signed in as %s\n", galaxy::api::Friends()->GetPersonaName());
-
-			// after successfully signing in request a lobby list to check if there are any lobbies
-			fprintf(stdout, "Requesting lobby list...\n");
-			galaxy::api::Matchmaking()->RequestLobbyList();
+			else
+			{
+				fprintf(stdout, "Successfully signed in as %s, but in the offline mode\n", galaxy::api::Friends()->GetPersonaName());
+			}
 
 			gameContext.SetUserID(galaxy::api::User()->GetGalaxyID());
 			gameContext.GetGameplayData().SetUserAchievements(gameContext.GetUserID(), AchievementsFactory::CreateDefaultAchievements());
 			gameContext.GetGameplayData().SetUserStatistics(gameContext.GetUserID(), StatisticsFactory::CreateDefaultStatistics());
 			gameContext.GetGameplayData().SetLeaderboards(LeaderboardFactory::CreateDefaultLeaderboards());
+			gameContext.PrintGameControls();
 		}
 		catch (const galaxy::api::IError& error)
 		{
@@ -478,6 +474,8 @@ namespace game
 			{
 				Leaderboard::Entry entry;
 				galaxy::api::Stats()->GetRequestedLeaderboardEntry(i, entry.rank, entry.score, entry.userID);
+				const char* userName = galaxy::api::Friends()->GetFriendPersonaName(entry.userID);
+				fprintf(stdout, "[%u] user name=%s, userID=%llu, rank=%u, score=%d\n", i, userName, entry.userID.ToUint64(), entry.rank, entry.rank);
 				entires.push_back(entry);
 			}
 

@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <cstdio>
+#include <cstdlib>
+#include <ctime>
 #if defined (_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -62,6 +64,8 @@ namespace game
 		}
 
 		// the authorization process will continue and the auth listener will be called.
+
+		std::srand(static_cast<unsigned int>(std::time(0)));
 	}
 
 	void Game::Clean()

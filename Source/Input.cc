@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <cstdlib>
+#include <algorithm>
 #include <galaxy/GalaxyApi.h>
 
 namespace game
@@ -16,12 +18,81 @@ namespace game
 		gameContext.PrintGameControls();
 	}
 
+	void IOnlineCommand::Execute(GameContext& gameContext)
+	{
+		try
+		{
+			if (!galaxy::api::User()->IsLoggedOn())
+			{
+				fprintf(stdout, "Command works in online mode only\n");
+				return;
+			}
+		}
+		catch (const galaxy::api::IError& error)
+		{
+			fprintf(stderr, "Failed to call IsLoggerOn method, error=%s\n", error.GetMsg());
+			return;
+		}
+
+		ExecuteCommand(gameContext);
+	}
+
 	void QuitCommand::Execute(GameContext& gameContext)
 	{
 		gameContext.SetGameState(GameContext::QUIT);
 	}
 
-	void SendLobbyMessageCommand::Execute(GameContext& gameContext)
+	void RequestLobbyListCommand::ExecuteCommand(GameContext& gameContext)
+	{
+		try
+		{
+			fprintf(stdout, "Requesting lobby list...\n");
+			galaxy::api::Matchmaking()->RequestLobbyList();
+		}
+		catch (const galaxy::api::IError& error)
+		{
+			fprintf(stderr, "Failed to call RequestLobbyList, error=%s\n", error.GetMsg());
+		}
+	}
+
+	void CreateLobbyCommand::ExecuteCommand(GameContext& gameContext)
+	{
+		try
+		{
+			fprintf(stdout, "Creating a new lobby...\n");
+			const uint32_t maxLobbyMemberCount = 4;
+			galaxy::api::Matchmaking()->CreateLobby(galaxy::api::LOBBY_TYPE_PUBLIC, maxLobbyMemberCount);
+		}
+		catch (const galaxy::api::IError& error)
+		{
+			fprintf(stderr, "Failed to call CreateLobby, error=%s\n", error.GetMsg());
+		}
+	}
+
+	void JoinLobbyCommand::ExecuteCommand(GameContext& gameContext)
+	{
+		try
+		{
+			const std::set<galaxy::api::GalaxyID>& lobbies = gameContext.GetLobbies();
+			if (lobbies.empty())
+			{
+				fprintf(stdout, "There are no available lobbies to join\n");
+				return;
+			}
+
+			std::set<galaxy::api::GalaxyID>::const_iterator lobby = lobbies.begin();
+			std::advance(lobby, std::rand() % lobbies.size());
+			galaxy::api::GalaxyID lobbyID = *lobby;
+			fprintf(stdout, "Joining lobby %llu...\n", lobbyID.ToUint64());
+			galaxy::api::Matchmaking()->JoinLobby(lobbyID);
+		}
+		catch (const galaxy::api::IError& error)
+		{
+			fprintf(stderr, "Failed to call CreateLobby, error=%s\n", error.GetMsg());
+		}
+	}
+
+	void SendLobbyMessageCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		try
 		{
@@ -35,7 +106,7 @@ namespace game
 		}
 	}
 
-	void SendPacketToLobbyUserCommand::Execute(GameContext& gameContext)
+	void SendPacketToLobbyUserCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		try
 		{
@@ -49,7 +120,7 @@ namespace game
 		}
 	}
 
-	void SendPacketToLobbyOwnerCommand::Execute(GameContext& gameContext)
+	void SendPacketToLobbyOwnerCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		try
 		{
@@ -63,7 +134,7 @@ namespace game
 		}
 	}
 
-	void SetLobbyMemberDataCommand::Execute(GameContext& gameContext)
+	void SetLobbyMemberDataCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		try
 		{
@@ -78,7 +149,7 @@ namespace game
 		}
 	}
 
-	void SetLobbyDataCommand::Execute(GameContext& gameContext)
+	void SetLobbyDataCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		try
 		{
@@ -277,7 +348,7 @@ namespace game
 		}
 	}
 
-	void RequestLeaderboardsCommand::Execute(GameContext& gameContext)
+	void RequestLeaderboardsCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		try
 		{
@@ -290,7 +361,7 @@ namespace game
 		}
 	}
 
-	void RequestLeaderboardEntriesGlobalCommnad::Execute(GameContext& gameContext)
+	void RequestLeaderboardEntriesGlobalCommnad::ExecuteCommand(GameContext& gameContext)
 	{
 		if (!gameContext.GetGameplayData().GetLeaderboardsStatus())
 		{
@@ -314,7 +385,7 @@ namespace game
 		}
 	}
 
-	void RequestLeaderboardEntriesAroundUserCommand::Execute(GameContext& gameContext)
+	void RequestLeaderboardEntriesAroundUserCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		if (!gameContext.GetGameplayData().GetLeaderboardsStatus())
 		{
@@ -338,7 +409,7 @@ namespace game
 		}
 	}
 
-	void RequestLeaderboardEntriesForUsersCommand::Execute(GameContext& gameContext)
+	void RequestLeaderboardEntriesForUsersCommand::ExecuteCommand(GameContext& gameContext)
 	{
 		if (!gameContext.GetGameplayData().GetLeaderboardsStatus())
 		{
@@ -365,10 +436,13 @@ namespace game
 
 	void SetLeaderboardScoreCommand::Execute(GameContext& gameContext)
 	{
-		if (!gameContext.GetGameplayData().GetLeaderboardsStatus())
+		if (galaxy::api::User()->IsLoggedOn())
 		{
-			fprintf(stdout, "Unable to call SetLeaderboardScore; call RequestLeaderboards first\n");
-			return;
+			if (!gameContext.GetGameplayData().GetLeaderboardsStatus())
+			{
+				fprintf(stdout, "Unable to call SetLeaderboardScore; call RequestLeaderboards first\n");
+				return;
+			}
 		}
 
 		const Leaderboards& leaderboards = gameContext.GetGameplayData().GetLeaderboards();
@@ -403,6 +477,9 @@ namespace game
 	{
 		registry['h'] = new HelpCommand;
 		registry['q'] = new QuitCommand;
+		registry['b'] = new RequestLobbyListCommand;
+		registry['y'] = new CreateLobbyCommand;
+		registry['j'] = new JoinLobbyCommand;
 		registry['s'] = new SendLobbyMessageCommand;
 		registry['k'] = new SendPacketToLobbyUserCommand;
 		registry['p'] = new SendPacketToLobbyOwnerCommand;

@@ -18,6 +18,17 @@ namespace game
 		virtual void Execute(GameContext& gameContext) = 0;
 	};
 
+	class IOnlineCommand : public ICommand
+	{
+	public:
+
+		virtual void Execute(GameContext& gameContext);
+
+	protected:
+
+		virtual void ExecuteCommand(GameContext& gameContext) = 0;
+	};
+
 	class HelpCommand : public ICommand
 	{
 	public:
@@ -32,39 +43,60 @@ namespace game
 		virtual void Execute(GameContext& gameContext);
 	};
 
-	class SendLobbyMessageCommand : public ICommand
+	class RequestLobbyListCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class SendPacketToLobbyUserCommand : public ICommand
+	class CreateLobbyCommand : public IOnlineCommand
 	{
 	public:
 
-		void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class SendPacketToLobbyOwnerCommand : public ICommand
+	class JoinLobbyCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class SetLobbyMemberDataCommand : public ICommand
+	class SendLobbyMessageCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class SetLobbyDataCommand : public ICommand
+	class SendPacketToLobbyUserCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
+	};
+
+	class SendPacketToLobbyOwnerCommand : public IOnlineCommand
+	{
+	public:
+
+		virtual void ExecuteCommand(GameContext& gameContext);
+	};
+
+	class SetLobbyMemberDataCommand : public IOnlineCommand
+	{
+	public:
+
+		virtual void ExecuteCommand(GameContext& gameContext);
+	};
+
+	class SetLobbyDataCommand : public IOnlineCommand
+	{
+	public:
+
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
 	class RequestUserStatsAndAchievementsCommand : public ICommand
@@ -116,32 +148,32 @@ namespace game
 		virtual void Execute(GameContext& gameContext);
 	};
 
-	class RequestLeaderboardsCommand : public ICommand
+	class RequestLeaderboardsCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class RequestLeaderboardEntriesGlobalCommnad : public ICommand
+	class RequestLeaderboardEntriesGlobalCommnad : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class RequestLeaderboardEntriesAroundUserCommand : public ICommand
+	class RequestLeaderboardEntriesAroundUserCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
-	class RequestLeaderboardEntriesForUsersCommand : public ICommand
+	class RequestLeaderboardEntriesForUsersCommand : public IOnlineCommand
 	{
 	public:
 
-		virtual void Execute(GameContext& gameContext);
+		virtual void ExecuteCommand(GameContext& gameContext);
 	};
 
 	class SetLeaderboardScoreCommand : public ICommand

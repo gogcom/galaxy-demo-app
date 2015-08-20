@@ -3,6 +3,7 @@
 
 #include "GameplayData.h"
 #include <galaxy/GalaxyID.h>
+#include <set>
 
 namespace game
 {
@@ -32,6 +33,9 @@ namespace game
 		const GameplayData& GetGameplayData() const;
 		GameplayData& GetGameplayData();
 
+		const std::set<galaxy::api::GalaxyID>& GetLobbies() const;
+		void SetLobbies(const std::set<galaxy::api::GalaxyID>& lobbies);
+
 		void PrintGameControls() const;
 
 	private:
@@ -40,6 +44,7 @@ namespace game
 		galaxy::api::GalaxyID userID;
 		galaxy::api::GalaxyID lobbyID;
 		GameplayData gameplayData;
+		std::set<galaxy::api::GalaxyID> lobbies;
 	};
 
 }
