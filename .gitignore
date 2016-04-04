@@ -1,0 +1,33 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# CMake
+cmake
+CMakeFiles
+*.cmake
+Makefile
+install_manifest.txt
+CMakeCache.txt
+
+# VS
+.vs
+*.vcxproj
+*.vcxproj.filters
+Win32
+*.opensdf
+*.sdf
+*.sln
+*.*.suo
+*.user
+Debug
+Release
+
+# YCM
+.ycm_extra_conf.pyc
