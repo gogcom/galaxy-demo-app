@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+		<LocalDebuggerEnvironment>PATH=$(PATH);@SDL2DIR@/lib/x86;@SDL2IMAGEDIR@/lib/x86;@SDL2TTFDIR@/lib/x86;@GLEW_DIR@/bin/Release/Win32;@GALAXY_ROOT@/Libraries;
+            $(LocalDebuggerEnvironment)
+        </LocalDebuggerEnvironment>
+        <LocalDebuggerWorkingDirectory>@CMAKE_SOURCE_DIR@</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    </PropertyGroup>
+</Project>
