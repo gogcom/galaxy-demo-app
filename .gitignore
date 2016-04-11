@@ -1,19 +1,33 @@
-*.*.user
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# CMake
+cmake
+CMakeFiles
 *.cmake
-*.filters
+Makefile
+install_manifest.txt
+CMakeCache.txt
+
+# VS
+.vs
+*.vcxproj
+*.vcxproj.filters
+Win32
 *.opensdf
 *.sdf
 *.sln
-*.suo
-*.vcxproj
-CMakeCache.txt
-CMakeFiles
+*.*.suo
+*.user
 Debug
-DevelopmentKit
-Makefile
-Win32
-debug.log
-x64
-Demo
-libGalaxy.dylib
-libGalaxyPeer64.dylib
+Release
+
+# YCM
+.ycm_extra_conf.pyc
