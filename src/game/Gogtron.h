@@ -146,6 +146,21 @@ namespace gogtron
 			std::shared_ptr<GogTron> game;
 		};
 
+		class StorageSynchronizeListener : public galaxy::api::GlobalStorageSynchronizationListener
+		{
+		public:
+
+			StorageSynchronizeListener(const std::shared_ptr<GogTron>& game);
+
+			virtual void OnStorageSynchronizationSuccess() override;
+
+			virtual void OnStorageSynchronizationFailure(FailureReason failureReason) override;
+
+		private:
+
+			std::shared_ptr<GogTron> game;
+		};
+
 		bool InitGalaxy();
 		bool ReleaseGalaxy();
 

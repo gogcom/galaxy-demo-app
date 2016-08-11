@@ -4,6 +4,7 @@
 #include <game/scene/StartMenu.h>
 #include <game/scene/StatsView.h>
 #include <game/scene/LeaderboardsView.h>
+#include <game/scene/RemoteStorageView.h>
 #include <game/scene/LobbyMenu.h>
 #include <game/scene/JoinLobbyMenu.h>
 #include <game/scene/InsideLobbyMenu.h>
@@ -101,6 +102,10 @@ bool GogTron::Update()
 
 		case GameState::State::LEADERBOARDS_VIEW:
 			gameState = std::make_shared<LeaderboardsView>(shared_from_this());
+			break;
+
+		case GameState::State::REMOTE_STORAGE_VIEW:
+			gameState = std::make_shared<RemoteStorageView>(shared_from_this());
 			break;
 
 		case GameState::State::LOBBY_MENU:
@@ -248,6 +253,7 @@ bool GogTron::InitGalaxy()
 		listeners.emplace_back(std::make_unique<LeaderboardsRetrieveListener>(shared_from_this()));
 		listeners.emplace_back(std::make_unique<LeaderboardEntriesRetrieveListener>(shared_from_this()));
 		listeners.emplace_back(std::make_unique<LeaderboardScoreUpdateListener>(shared_from_this()));
+		listeners.emplace_back(std::make_unique<StorageSynchronizeListener>(shared_from_this()));
 
 		galaxy::api::User()->SignIn();
 	}
@@ -539,4 +545,22 @@ void GogTron::LeaderboardScoreUpdateListener::OnLeaderboardScoreUpdateSuccess(co
 
 void GogTron::LeaderboardScoreUpdateListener::OnLeaderboardScoreUpdateFailure(const char* name, int32_t score, FailureReason failureReason)
 {
+}
+
+gogtron::GogTron::StorageSynchronizeListener::StorageSynchronizeListener(const std::shared_ptr<GogTron>& _game)
+	: game(_game)
+{
+}
+
+void gogtron::GogTron::StorageSynchronizeListener::OnStorageSynchronizationSuccess()
+{
+	game->SetStorageSynchronizationStatus(IGame::SYNCHRONIZED);
+}
+
+void gogtron::GogTron::StorageSynchronizeListener::OnStorageSynchronizationFailure(FailureReason failureReason)
+{
+	if (failureReason == galaxy::api::IStorageSynchronizationListener::FAILURE_REASON_CONNECTION_FAILURE)
+		game->SetStorageSynchronizationStatus(IGame::NO_CONNECTION);
+	else
+		game->SetStorageSynchronizationStatus(IGame::SYNCHRONIZATION_ERROR);
 }
