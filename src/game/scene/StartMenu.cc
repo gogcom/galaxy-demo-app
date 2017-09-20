@@ -63,12 +63,12 @@ bool StartMenu::Init()
 		[&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }));
 	guiElements.push_back(leaderboardsButton);
 
-	GUIElementPtr remoteStorageButton(std::make_shared<Button>(
+	GUIElementPtr cloudStorageButton(std::make_shared<Button>(
 		"button",
 		"selectedbutton",
 		renderer::Sprite(1280 / 2 - 150, 425, 300, 100),
-		[&]() { game->SetGameState(GameState::State::REMOTE_STORAGE_VIEW); }));
-	guiElements.push_back(remoteStorageButton);
+		[&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }));
+	guiElements.push_back(cloudStorageButton);
 
 	GUIElementPtr quitButton(std::make_shared<Button>(
 		"button",
@@ -158,7 +158,7 @@ bool StartMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 	renderEngine->DisplayText("PLAY", renderer::Sprite(1280 / 2 - 50, 50, 100, 100), "FreeSans_Play", SDL_Color{ 255, 0, 0, 255 });
 	renderEngine->DisplayText("STATS", renderer::Sprite(1280 / 2 - 50, 175, 100, 100), "FreeSans_Stats", SDL_Color{ 255, 0, 0, 255 });
 	renderEngine->DisplayText("LEADERBOARDS", renderer::Sprite(1280 / 2 - 100, 300, 200, 100), "FreeSans_Leaderboards", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("REMOTE STORAGE", renderer::Sprite(1280 / 2 - 100, 425, 200, 100), "FreeSans_RemoteStorage", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("CLOUD STORAGE", renderer::Sprite(1280 / 2 - 100, 425, 200, 100), "FreeSans_CloudStorage", SDL_Color{ 255, 0, 0, 255 });
 	renderEngine->DisplayText("QUIT", renderer::Sprite(1280 / 2 - 50, 550, 100, 100), "FreeSans_Quit", SDL_Color{ 255, 0, 0, 255 });
 	renderEngine->EndScene();
 	return true;

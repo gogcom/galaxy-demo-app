@@ -51,7 +51,7 @@ bool JoinLobbyMenu::Init()
 	{
 		galaxy::api::Matchmaking()->RequestLobbyList();
 	}
-	catch (const galaxy::api::IError& error)
+	catch (const galaxy::api::IError& /*error*/)
 	{
 
 	}
@@ -162,7 +162,7 @@ void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
 			{
 				galaxy::api::Matchmaking()->JoinLobby(lobbyID);
 			}
-			catch (const galaxy::api::IError& error)
+			catch (const galaxy::api::IError& /*error*/)
 			{
 				return;
 			}
@@ -172,7 +172,7 @@ void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
 
 		guiElements.push_back(std::make_pair(joinButton, std::to_string(lobbyID.ToUint64())));
 	}
-	catch (const galaxy::api::IError& error)
+	catch (const galaxy::api::IError& /*error*/)
 	{
 		return;
 	}

@@ -4,7 +4,7 @@
 #include <game/scene/StartMenu.h>
 #include <game/scene/StatsView.h>
 #include <game/scene/LeaderboardsView.h>
-#include <game/scene/RemoteStorageView.h>
+#include <game/scene/CloudStorageView.h>
 #include <game/scene/LobbyMenu.h>
 #include <game/scene/JoinLobbyMenu.h>
 #include <game/scene/InsideLobbyMenu.h>
@@ -104,8 +104,8 @@ bool GogTron::Update()
 			gameState = std::make_shared<LeaderboardsView>(shared_from_this());
 			break;
 
-		case GameState::State::REMOTE_STORAGE_VIEW:
-			gameState = std::make_shared<RemoteStorageView>(shared_from_this());
+		case GameState::State::CLOUD_STORAGE_VIEW:
+			gameState = std::make_shared<CloudStorageView>(shared_from_this());
 			break;
 
 		case GameState::State::LOBBY_MENU:
@@ -253,11 +253,12 @@ bool GogTron::InitGalaxy()
 		listeners.emplace_back(std::make_unique<LeaderboardsRetrieveListener>(shared_from_this()));
 		listeners.emplace_back(std::make_unique<LeaderboardEntriesRetrieveListener>(shared_from_this()));
 		listeners.emplace_back(std::make_unique<LeaderboardScoreUpdateListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<StorageSynchronizeListener>(shared_from_this()));
+		listeners.emplace_back(std::make_unique<FileShareListener>(shared_from_this()));
+		listeners.emplace_back(std::make_unique<SharedFileDownloadListener>(shared_from_this()));
 
 		galaxy::api::User()->SignIn();
 	}
-	catch (const galaxy::api::IError& error)
+	catch (const galaxy::api::IError& /*error*/)
 	{
 		return false;
 	}
@@ -547,20 +548,36 @@ void GogTron::LeaderboardScoreUpdateListener::OnLeaderboardScoreUpdateFailure(co
 {
 }
 
-gogtron::GogTron::StorageSynchronizeListener::StorageSynchronizeListener(const std::shared_ptr<GogTron>& _game)
+gogtron::GogTron::FileShareListener::FileShareListener(const std::shared_ptr<GogTron>& _game)
 	: game(_game)
 {
 }
 
-void gogtron::GogTron::StorageSynchronizeListener::OnStorageSynchronizationSuccess()
+void gogtron::GogTron::FileShareListener::OnFileShareSuccess(const char* fileName, galaxy::api::SharedFileID sharedFileID)
 {
-	game->SetStorageSynchronizationStatus(IGame::SYNCHRONIZED);
+	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::SHARED);
+	//TODO: implement file sharing
+	throw std::logic_error("File sharing not fully implemented");
 }
 
-void gogtron::GogTron::StorageSynchronizeListener::OnStorageSynchronizationFailure(FailureReason failureReason)
+void gogtron::GogTron::FileShareListener::OnFileShareFailure(const char* fileName, FailureReason failureReason)
 {
-	if (failureReason == galaxy::api::IStorageSynchronizationListener::FAILURE_REASON_CONNECTION_FAILURE)
-		game->SetStorageSynchronizationStatus(IGame::NO_CONNECTION);
-	else
-		game->SetStorageSynchronizationStatus(IGame::SYNCHRONIZATION_ERROR);
+	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::FAILED);
+	//TODO: implement file sharing
+	throw std::logic_error("File sharing not fully implemented");
+}
+
+gogtron::GogTron::SharedFileDownloadListener::SharedFileDownloadListener(const std::shared_ptr<GogTron>& _game)
+	: game(_game) { }
+
+void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadSuccess(galaxy::api::SharedFileID sharedFileID, const char* fileName) {
+	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::DOWNLOADED);
+	//TODO: implement file sharing
+	throw std::logic_error("File sharing not fully implemented");
+}
+
+void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadFailure(galaxy::api::SharedFileID sharedFileID, FailureReason failureReason) {
+	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::FAILED);
+	//TODO: implement file sharing
+	throw std::logic_error("File sharing not fully implemented");
 }

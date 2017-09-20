@@ -21,7 +21,7 @@ namespace gogtron
 
 		IGame()
 			: closeRequested(false)
-			, storageSynchronizationStatus(NOT_SYNCHRONIZED)
+			, fileSharingStatus(FileSharingStatus::FAILED)
 		{
 		}
 
@@ -51,16 +51,16 @@ namespace gogtron
 
 		GameplayData& GetGameplayData() { return gameplayData; }
 
-		enum SynchronizationStatus {
-			NOT_SYNCHRONIZED,
-			SYNCHRONIZED,
-			NO_CONNECTION,
-			SYNCHRONIZATION_ERROR
+		enum class FileSharingStatus {
+			FAILED,
+			SHARED,
+			DOWNLOADED
 		};
-		SynchronizationStatus GetStorageSynchronizationStatus() const { return storageSynchronizationStatus; }
-		void SetStorageSynchronizationStatus(SynchronizationStatus _storageSynchronizationStatus)
+
+		FileSharingStatus GetStorageSynchronizationStatus() const { return fileSharingStatus; }
+		void SetStorageSynchronizationStatus(FileSharingStatus _storageSynchronizationStatus)
 		{
-			storageSynchronizationStatus = _storageSynchronizationStatus;
+			fileSharingStatus = _storageSynchronizationStatus;
 		}
 
 		void Close() { closeRequested = true; }
@@ -77,7 +77,7 @@ namespace gogtron
 		networking::IClientPtr client;
 		GameManager gameManager;
 		GameplayData gameplayData;
-		SynchronizationStatus storageSynchronizationStatus;
+		FileSharingStatus fileSharingStatus;
 	};
 
 	using IGamePtr = std::shared_ptr<IGame>;

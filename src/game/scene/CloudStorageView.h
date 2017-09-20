@@ -1,5 +1,5 @@
-#ifndef GOGTRON_SCENE_REMOTE_STORAGE_VIEW_H
-#define GOGTRON_SCENE_REMOTE_STORAGE_VIEW_H
+#ifndef GOGTRON_SCENE_CLOUD_STORAGE_VIEW_H
+#define GOGTRON_SCENE_CLOUD_STORAGE_VIEW_H
 
 #include "GameState.h"
 #include <engine/system/GUIElement.h>
@@ -10,11 +10,11 @@ namespace gogtron
 	namespace scene
 	{
 
-		class RemoteStorageView : public GameState
+		class CloudStorageView : public GameState
 		{
 		public:
 
-			RemoteStorageView(const IGamePtr& _game);
+			CloudStorageView(const IGamePtr& _game);
 
 			virtual bool Init();
 			virtual bool Release();
@@ -31,8 +31,6 @@ namespace gogtron
 
 			void Reset();
 
-			bool synchronizationRequested;
-			bool fileLoaded;
 			std::string errorMessage;
 			std::string currentFileContent;
 			std::string newFileContent;

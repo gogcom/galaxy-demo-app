@@ -59,7 +59,7 @@ bool LobbyMenu::Init()
 		{
 			galaxy::api::Matchmaking()->CreateLobby(galaxy::api::LOBBY_TYPE_PUBLIC, 4, true, galaxy::api::LOBBY_TOPOLOGY_TYPE_FCM_OWNERSHIP_TRANSITION);
 		}
-		catch (const galaxy::api::IError& error)
+		catch (const galaxy::api::IError& /*error*/)
 		{
 			return;
 		}
