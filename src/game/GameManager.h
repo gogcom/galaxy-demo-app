@@ -35,8 +35,8 @@ namespace gogtron
         std::vector<PlayerPtr>& GetPlayers();
         void AddPlayer(const PlayerPtr& player);
 
-        void SetGameTime(int gameTime);
-        int GetGameTime() const;
+        void SetGameTime(uint64_t gameTime);
+		uint64_t GetGameTime() const;
 
         void SetServerState(const ServerState& state);
         const ServerState& GetServerState() const;
@@ -47,7 +47,7 @@ namespace gogtron
     private:
 
         std::vector<PlayerPtr> players;
-        int gameTime;
+		uint64_t gameTime;
         ServerState serverState;
         ClientState clientState;
     };

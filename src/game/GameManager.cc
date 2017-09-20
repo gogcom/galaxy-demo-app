@@ -40,12 +40,12 @@ void GameManager::AddPlayer(const PlayerPtr& player)
     players.push_back(player);
 }
 
-void GameManager::SetGameTime(int _gameTime)
+void GameManager::SetGameTime(uint64_t _gameTime)
 {
     gameTime = _gameTime;
 }
 
-int GameManager::GetGameTime() const
+uint64_t GameManager::GetGameTime() const
 {
     return gameTime;
 }

@@ -9,7 +9,7 @@ namespace gogtron
         {
         }
 
-        GameResults::GameResults(const std::vector<PlayerPtr>& _players, int _gameTimeSeconds)
+        GameResults::GameResults(const std::vector<PlayerPtr>& _players, uint64_t _gameTimeSeconds)
             : players(_players)
             , gameTimeSeconds(_gameTimeSeconds)
         {
@@ -78,7 +78,7 @@ namespace gogtron
             return players;
         }
 
-        int GameResults::GetGameTime() const
+		uint64_t GameResults::GetGameTime() const
         {
             return gameTimeSeconds;
         }

@@ -224,7 +224,7 @@ void GogTron::CalculateFrameRate(float& globalDeltaTime)
 		fpsTime = 0.0f;
 
 		// Copy the frames per second into a string to display in the window title bar
-		sprintf(strFrameRate, "Current Frames Per Second: %d", framesPerSecond);
+		sprintf_s(strFrameRate, "Current Frames Per Second: %d", framesPerSecond);
 
 		//std::cout << strFrameRate << std::endl;
 

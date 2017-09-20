@@ -14,18 +14,18 @@ namespace gogtron
         public:
 
             GameResults();
-            GameResults(const std::vector<PlayerPtr>& players, int gameTimeSeconds);
+            GameResults(const std::vector<PlayerPtr>& players, uint64_t gameTimeSeconds);
 
             virtual bool Serialize(Json::Value& root);
             virtual bool Deserialize(Json::Value& root);
 
             const std::vector<PlayerPtr>& GetPlayers() const;
-            int GetGameTime() const;
+			uint64_t GetGameTime() const;
 
         private:
 
             std::vector<PlayerPtr> players;
-            int gameTimeSeconds;
+			uint64_t gameTimeSeconds;
         };
 
     }

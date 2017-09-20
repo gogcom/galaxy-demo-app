@@ -67,7 +67,7 @@ bool Server::SendGameTick(const std::vector<PlayerPtr>& _players)
 	return true;
 	}
 
-bool Server::SendGameResults(const std::vector<PlayerPtr>& _players, int gameTime)
+bool Server::SendGameResults(const std::vector<PlayerPtr>& _players, uint64_t gameTime)
 {
 	std::string message;
 	message::GameResults gameResults(_players, gameTime);

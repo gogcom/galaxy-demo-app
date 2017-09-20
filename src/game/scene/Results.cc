@@ -190,11 +190,11 @@ bool Results::Update()
 				{
 					const auto& entries = leaderboard->second.entries;
 					const auto entry = std::find_if(std::begin(entries), std::end(entries), [](const Leaderboard::Entry& entry) { return entry.userID == galaxy::api::User()->GetGalaxyID(); });
-					int gameTime = game->GetGameManager().GetGameTime();
+					uint64_t gameTime = game->GetGameManager().GetGameTime();
 					if (entry == std::end(entries))
-						galaxy::api::Stats()->SetLeaderboardScore("quickest_winners", gameTime, true);
+						galaxy::api::Stats()->SetLeaderboardScore("quickest_winners", static_cast<uint32_t>(gameTime), true);
 					else if (gameTime < entry->score || entry->score == 0)
-						galaxy::api::Stats()->SetLeaderboardScore("quickest_winners", gameTime, true);
+						galaxy::api::Stats()->SetLeaderboardScore("quickest_winners", static_cast<uint32_t>(gameTime), true);
 				}
 				catch (const galaxy::api::IError& er)
 				{

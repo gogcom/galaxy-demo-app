@@ -34,7 +34,7 @@ namespace gogtron
 
 			GameManager gameManager;
 			renderer::Camera camera;
-			int startGameTime;
+			uint64_t startGameTime;
 		};
 
 	}
