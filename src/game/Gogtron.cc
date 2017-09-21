@@ -1,6 +1,7 @@
 #include "Gogtron.h"
 #include <game/networking/Lobby.h>
 #include <game/scene/InitFailedView.h>
+#include <game/scene/SinglePlayerView.h>
 #include <game/scene/StartMenu.h>
 #include <game/scene/StatsView.h>
 #include <game/scene/LeaderboardsView.h>
@@ -94,6 +95,10 @@ bool GogTron::Update()
 
 			case GameState::State::START_MENU:
 				gameState = std::make_shared<StartMenu>(shared_from_this());
+				break;
+
+			case GameState::State::SINGLE_PLAYER_VIEW:
+				gameState = std::make_shared<SinglePlayerView>(shared_from_this());
 				break;
 
 			case GameState::State::STATS_VIEW:
