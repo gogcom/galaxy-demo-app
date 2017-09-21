@@ -175,6 +175,8 @@ namespace gogtron
 			std::shared_ptr<GogTron> game;
 		};
 
+		bool InitFontTextures();
+
 		bool InitGalaxy();
 		bool ReleaseGalaxy();
 

@@ -1,7 +1,6 @@
 #include "CloudStorageView.h"
 #include <game/IGame.h>
 #include <engine/system/Button.h>
-#include <engine/core/SDLResourceManager.h>
 
 namespace gogtron
 {
@@ -36,15 +35,6 @@ namespace gogtron
 			glEnable(GL_BLEND);
 			glEnable(GL_TEXTURE_2D);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-			if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//button.png", "button"))
-				return false;
-
-			if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//selectedbutton.png", "selectedbutton"))
-				return false;
-
-			if (!core::SDLResourceManager::GetInstance().LoadFont("res//fonts//FreeSans.ttf", "FreeSans"))
-				return false;
 
 			system::GUIElementPtr saveButton(std::make_shared<system::Button>(
 				"button",

@@ -51,7 +51,7 @@ bool GogTron::Init(int argc, char** argv)
 {
 	ParseCmdLineArgs(argc, argv);
 
-	return InitGalaxy();
+	return InitFontTextures() && InitGalaxy();
 }
 
 bool GogTron::Release()
@@ -88,45 +88,45 @@ bool GogTron::Update()
 	{
 		switch (currentGameState)
 		{
-		case GameState::State::INIT_FAILED_VIEW:
-			gameState = std::make_shared<InitFailedView>(shared_from_this());
-			break;
+			case GameState::State::INIT_FAILED_VIEW:
+				gameState = std::make_shared<InitFailedView>(shared_from_this());
+				break;
 
-		case GameState::State::START_MENU:
-			gameState = std::make_shared<StartMenu>(shared_from_this());
-			break;
+			case GameState::State::START_MENU:
+				gameState = std::make_shared<StartMenu>(shared_from_this());
+				break;
 
-		case GameState::State::STATS_VIEW:
-			gameState = std::make_shared<StatsView>(shared_from_this());
-			break;
+			case GameState::State::STATS_VIEW:
+				gameState = std::make_shared<StatsView>(shared_from_this());
+				break;
 
-		case GameState::State::LEADERBOARDS_VIEW:
-			gameState = std::make_shared<LeaderboardsView>(shared_from_this());
-			break;
+			case GameState::State::LEADERBOARDS_VIEW:
+				gameState = std::make_shared<LeaderboardsView>(shared_from_this());
+				break;
 
-		case GameState::State::CLOUD_STORAGE_VIEW:
-			gameState = std::make_shared<CloudStorageView>(shared_from_this());
-			break;
+			case GameState::State::CLOUD_STORAGE_VIEW:
+				gameState = std::make_shared<CloudStorageView>(shared_from_this());
+				break;
 
-		case GameState::State::LOBBY_MENU:
-			gameState = std::make_shared<LobbyMenu>(shared_from_this());
-			break;
+			case GameState::State::LOBBY_MENU:
+				gameState = std::make_shared<LobbyMenu>(shared_from_this());
+				break;
 
-		case GameState::State::JOIN_LOBBY_MENU:
-			gameState = std::make_shared<JoinLobbyMenu>(shared_from_this());
-			break;
+			case GameState::State::JOIN_LOBBY_MENU:
+				gameState = std::make_shared<JoinLobbyMenu>(shared_from_this());
+				break;
 
-		case GameState::State::IN_LOBBY_MENU:
-			gameState = std::make_shared<InsideLobbyMenu>(shared_from_this());
-			break;
+			case GameState::State::IN_LOBBY_MENU:
+				gameState = std::make_shared<InsideLobbyMenu>(shared_from_this());
+				break;
 
-		case GameState::State::IN_GAME:
-			gameState = std::make_shared<Game>(shared_from_this());
-			break;
+			case GameState::State::IN_GAME:
+				gameState = std::make_shared<Game>(shared_from_this());
+				break;
 
-		case GameState::State::GAME_RESULT:
-			gameState = std::make_shared<Results>(shared_from_this());
-			break;
+			case GameState::State::GAME_RESULT:
+				gameState = std::make_shared<Results>(shared_from_this());
+				break;
 		}
 
 		if (!gameState->Init())
@@ -210,7 +210,7 @@ void GogTron::CalculateFrameRate(float& globalDeltaTime)
 {
 	static int framesPerSecond = 0;				// This will store our fps
 	static float fpsTime = 0.0f;				// Amount of elapsed time until we update the FPS count
-	char strFrameRate[50] = { 0 };				// We will store the string here for the window title
+	char strFrameRate[50] = {0};				// We will store the string here for the window title
 
 	// Increase the fps elapsed time
 	// g_DT is the delta time, that is, the time between the last frame and the current frame
@@ -236,6 +236,22 @@ void GogTron::CalculateFrameRate(float& globalDeltaTime)
 		// Increase the frame counter
 		++framesPerSecond;
 	}
+}
+
+bool GogTron::InitFontTextures()
+{
+	core::SDLResourceManager& sdlResourceManager = core::SDLResourceManager::GetInstance();
+
+	if (!sdlResourceManager.LoadTexture("res//images//button.png", "button"))
+		return false;
+
+	if (!sdlResourceManager.LoadTexture("res//images//selectedbutton.png", "selectedbutton"))
+		return false;
+
+	if (!sdlResourceManager.LoadFont("res//fonts//FreeSans.ttf", "FreeSans"))
+		return false;
+
+	return true;
 }
 
 bool GogTron::InitGalaxy()
@@ -346,29 +362,29 @@ void GogTron::UserStatsAndAchievementsRetrieveListener::OnUserStatsAndAchievemen
 		{
 			switch (userStatisticsIter->second.GetType())
 			{
-			case Statistic::INT:
-			{
-				int32_t value = galaxy::api::Stats()->GetStatInt(userStatisticsIter->second.GetName().c_str(), userID);
-				userStatisticsIter->second.SetInt(value);
-				break;
-			}
+				case Statistic::INT:
+				{
+					int32_t value = galaxy::api::Stats()->GetStatInt(userStatisticsIter->second.GetName().c_str(), userID);
+					userStatisticsIter->second.SetInt(value);
+					break;
+				}
 
-			case Statistic::FLOAT:
-			{
-				float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
-				userStatisticsIter->second.SetFloat(value);
-				break;
-			}
+				case Statistic::FLOAT:
+				{
+					float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
+					userStatisticsIter->second.SetFloat(value);
+					break;
+				}
 
-			case Statistic::AVG:
-			{
-				float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
-				userStatisticsIter->second.SetAvg(value);
-				break;
-			}
+				case Statistic::AVG:
+				{
+					float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
+					userStatisticsIter->second.SetAvg(value);
+					break;
+				}
 
-			default:
-				assert(0 && "Unknown statistic type");
+				default:
+					assert(0 && "Unknown statistic type");
 			}
 		}
 
@@ -420,29 +436,29 @@ void GogTron::StatsAndAchievementsStoreListener::OnUserStatsAndAchievementsStore
 		{
 			switch (userStatisticsIter->second.GetType())
 			{
-			case Statistic::INT:
-			{
-				int32_t value = galaxy::api::Stats()->GetStatInt(userStatisticsIter->second.GetName().c_str(), userID);
-				userStatisticsIter->second.SetInt(value);
-				break;
-			}
+				case Statistic::INT:
+				{
+					int32_t value = galaxy::api::Stats()->GetStatInt(userStatisticsIter->second.GetName().c_str(), userID);
+					userStatisticsIter->second.SetInt(value);
+					break;
+				}
 
-			case Statistic::FLOAT:
-			{
-				float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
-				userStatisticsIter->second.SetFloat(value);
-				break;
-			}
+				case Statistic::FLOAT:
+				{
+					float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
+					userStatisticsIter->second.SetFloat(value);
+					break;
+				}
 
-			case Statistic::AVG:
-			{
-				float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
-				userStatisticsIter->second.SetAvg(value);
-				break;
-			}
+				case Statistic::AVG:
+				{
+					float value = galaxy::api::Stats()->GetStatFloat(userStatisticsIter->second.GetName().c_str(), userID);
+					userStatisticsIter->second.SetAvg(value);
+					break;
+				}
 
-			default:
-				assert(0 && "Unknown statistic type");
+				default:
+					assert(0 && "Unknown statistic type");
 			}
 		}
 
@@ -568,15 +584,19 @@ void gogtron::GogTron::FileShareListener::OnFileShareFailure(const char* fileNam
 }
 
 gogtron::GogTron::SharedFileDownloadListener::SharedFileDownloadListener(const std::shared_ptr<GogTron>& _game)
-	: game(_game) { }
+	: game(_game)
+{
+}
 
-void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadSuccess(galaxy::api::SharedFileID sharedFileID, const char* fileName) {
+void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadSuccess(galaxy::api::SharedFileID sharedFileID, const char* fileName)
+{
 	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::DOWNLOADED);
 	//TODO: implement file sharing
 	throw std::logic_error("File sharing not fully implemented");
 }
 
-void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadFailure(galaxy::api::SharedFileID sharedFileID, FailureReason failureReason) {
+void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadFailure(galaxy::api::SharedFileID sharedFileID, FailureReason failureReason)
+{
 	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::FAILED);
 	//TODO: implement file sharing
 	throw std::logic_error("File sharing not fully implemented");

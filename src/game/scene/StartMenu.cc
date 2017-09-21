@@ -1,7 +1,6 @@
 #include "StartMenu.h"
 #include <game/IGame.h>
 #include <engine/system/Button.h>
-#include <engine/core/SDLResourceManager.h>
 #include <SDL_opengl.h>
 
 using namespace gogtron;
@@ -29,16 +28,6 @@ bool StartMenu::Init()
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//button.png", "button"))
-		return false;
-
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//selectedbutton.png", "selectedbutton"))
-		return false;
-
-	if (!core::SDLResourceManager::GetInstance().LoadFont("res//fonts//FreeSans.ttf", "FreeSans"))
-		return false;
 
 	GUIElementPtr playButton(std::make_shared<Button>(
 		"button",
