@@ -178,7 +178,7 @@ bool Game::Update()
 			break;
 		}
 	}
-   
+
 	const auto& client = game->GetClient();
 	if (client)
 	{

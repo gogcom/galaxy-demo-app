@@ -32,9 +32,7 @@ bool JoinLobbyMenu::Init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	backButton = std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
+		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&](){ game->SetGameState(GameState::State::LOBBY_MENU); });
 
 	try
@@ -60,7 +58,7 @@ void JoinLobbyMenu::OnMouseDown(std::uint32_t x, std::uint32_t y)
 
 	for (const auto& element : guiElements)
 	{
-		element.first->OnMouseDown(x, y);
+		element->OnMouseDown(x, y);
 	}
 }
 
@@ -70,7 +68,7 @@ void JoinLobbyMenu::OnMouseMotion(std::uint32_t x, std::uint32_t y)
 
 	for (const auto& element : guiElements)
 	{
-		element.first->OnMouseMotion(x, y);
+		element->OnMouseMotion(x, y);
 	}
 }
 
@@ -106,7 +104,6 @@ bool JoinLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 	renderEngine->StartScene();
 
 	backButton->Display(renderEngine);
-	renderEngine->DisplayText("BACK", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Back", SDL_Color{ 255, 0, 0, 255 });
 
 	if (!anyLobbies)
 	{
@@ -116,8 +113,7 @@ bool JoinLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 	{
 		for (const auto& element : guiElements)
 		{
-			element.first->Display(renderEngine);
-			renderEngine->DisplayText(element.second, renderer::Sprite(1280 / 2 - 150, element.first->GetSprite().GetHeight(), 300, 100), element.second, SDL_Color{ 255, 0, 0, 255 });
+			element->Display(renderEngine);
 		}
 	}
 
@@ -139,10 +135,8 @@ void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
 
 		std::uint32_t posY = 100;
 
-		GUIElementPtr joinButton(std::make_shared<Button>(
-			"button",
-			"selectedbutton",
-			renderer::Sprite(1280 / 2 - 200, posY, 400, 100),
+		guiElements.emplace_back(std::make_shared<Button>(
+			std::to_string(lobbyID.ToUint64()), 1280 / 2 - 200, posY, 400, 100,
 			[&, lobbyID]()
 		{
 			ILobbyPtr lobby = std::make_shared<Lobby>(game);
@@ -159,8 +153,6 @@ void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
 
 			game->SetGameState(GameState::State::IN_LOBBY_MENU);
 		}));
-
-		guiElements.push_back(std::make_pair(joinButton, std::to_string(lobbyID.ToUint64())));
 	}
 	catch (const galaxy::api::IError& /*error*/)
 	{

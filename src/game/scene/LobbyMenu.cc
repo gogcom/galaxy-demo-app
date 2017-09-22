@@ -31,19 +31,8 @@ bool LobbyMenu::Init()
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//button.png", "button"))
-		return false;
-
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//selectedbutton.png", "selectedbutton"))
-		return false;
-
-	if (!core::SDLResourceManager::GetInstance().LoadFont("res//fonts//FreeSans.ttf", "FreeSans"))
-		return false;
-
-	GUIElementPtr createLobbyButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 100, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"CREATE LOBBY", 1280 / 2 - 150, 100, 300, 100,
 		[&]()
 	{
 		if (!galaxy::api::User()->IsLoggedOn())
@@ -67,12 +56,8 @@ bool LobbyMenu::Init()
 		game->SetGameState(GameState::State::IN_LOBBY_MENU);
 	}));
 
-	guiElements.push_back(createLobbyButton);
-
-	GUIElementPtr joinLobbyButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 300, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"JOIN LOBBY", 1280 / 2 - 150, 300, 300, 100,
 		[&]()
 	{
 		if (!galaxy::api::User()->IsLoggedOn())
@@ -84,15 +69,9 @@ bool LobbyMenu::Init()
 		game->SetGameState(GameState::State::JOIN_LOBBY_MENU);
 	}));
 
-	guiElements.push_back(joinLobbyButton);
-
-	GUIElementPtr backButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
-		[&](){ game->SetGameState(GameState::State::START_MENU); }));
-
-	guiElements.push_back(backButton);
+	guiElements.emplace_back(std::make_shared<Button>(
+		"BACK", 1280 / 2 - 150, 500, 300, 100,
+		[&]() { game->SetGameState(GameState::State::START_MENU); }));
 
 	game->SetClient(nullptr);
 	game->SetServer(nullptr);
@@ -158,13 +137,9 @@ bool LobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 		element->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("CREATE LOBBY", renderer::Sprite(1280 / 2 - 100, 100, 200, 100), "FreeSans_CreateLobby", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("JOIN LOBBY", renderer::Sprite(1280 / 2 - 100, 300, 200, 100), "FreeSans_JoinLobby", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("BACK", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Back", SDL_Color{ 255, 0, 0, 255 });
-
 	if (!errorMessage.empty())
 	{
-		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{255, 0, 0, 255});
 	}
 
 	renderEngine->EndScene();

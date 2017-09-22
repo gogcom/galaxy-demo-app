@@ -36,28 +36,22 @@ namespace gogtron
 			glEnable(GL_TEXTURE_2D);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			system::GUIElementPtr saveButton(std::make_shared<system::Button>(
-				"button",
-				"selectedbutton",
-				renderer::Sprite(1280 / 2 - 150, 450, 300, 100),
+			guiElements.emplace_back(std::make_shared<system::Button>(
+				"SAVE", 1280 / 2 - 150, 450, 300, 100,
 				[&]()
 			{
 				galaxy::api::Storage()->FileWrite(SAMPLE_FILE_NAME, newFileContent.c_str(), newFileContent.size());
 				game->SetGameState(GameState::State::START_MENU);
 				Reset();
 			}));
-			guiElements.push_back(saveButton);
 
-			system::GUIElementPtr cancelButton(std::make_shared<system::Button>(
-				"button",
-				"selectedbutton",
-				renderer::Sprite(1280 / 2 - 150, 575, 300, 100),
+			guiElements.emplace_back(std::make_shared<system::Button>(
+				"CANCEL", 1280 / 2 - 150, 575, 300, 100,
 				[&]()
 			{
 				game->SetGameState(GameState::State::START_MENU);
 				Reset();
 			}));
-			guiElements.push_back(cancelButton);
 
 			Reset();
 
@@ -192,10 +186,6 @@ namespace gogtron
 					"FreeSans_MessageCaption" + newFileContent,
 					SDL_Color{ 255, 0, 0, 255 });
 			}
-
-			renderEngine->DisplayText("SAVE", renderer::Sprite(1280 / 2 - 50, 450, 100, 100), "FreeSans_Save", SDL_Color{ 255, 0, 0, 255 });
-
-			renderEngine->DisplayText("CANCEL", renderer::Sprite(1280 / 2 - 50, 575, 100, 100), "FreeSans_Cancel", SDL_Color{ 255, 0, 0, 255 });
 
 			renderEngine->EndScene();
 			return true;

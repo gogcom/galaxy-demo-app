@@ -32,13 +32,9 @@ bool Results::Init()
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	GUIElementPtr backButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
+	guiElements.push_back(std::make_shared<Button>(
+		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->SetGameState(GameState::State::IN_LOBBY_MENU); }));
-
-	guiElements.push_back(backButton);
 
 	resultsStored = false;
 	return true;
@@ -229,8 +225,6 @@ bool Results::Display(const renderer::OGLRendererPtr& renderEngine)
 	{
 		element->Display(renderEngine);
 	}
-
-	renderEngine->DisplayText("BACK", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Back", SDL_Color{ 255, 0, 0, 255 });
 
 	renderEngine->DisplayText("Results:", renderer::Sprite(1280 / 2 - 50, 50, 100, 100), "FreeSans_Results", SDL_Color{ 255, 0, 0, 255 });
 	const int offsetY = 100;

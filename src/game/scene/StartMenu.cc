@@ -29,51 +29,31 @@ bool StartMenu::Init()
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	GUIElementPtr singlePlayerButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 25, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"PLAY", 1280 / 2 - 150, 25, 300, 100,
 		[&]() { game->SetGameState(GameState::State::SINGLE_PLAYER_VIEW); }));
-	guiElements.push_back(singlePlayerButton);
 
-	GUIElementPtr playButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 125, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"LOBBY", 1280 / 2 - 150, 125, 300, 100,
 		/*Sprite(400, 100, 400, 224),*/
-		[&](){ game->SetGameState(GameState::State::LOBBY_MENU); }));
+		[&]() { game->SetGameState(GameState::State::LOBBY_MENU); }));
 
-	guiElements.push_back(playButton);
-
-	GUIElementPtr statsButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 225, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"STATS", 1280 / 2 - 150, 225, 300, 100,
 		[&]() { game->SetGameState(GameState::State::STATS_VIEW); }));
-	guiElements.push_back(statsButton);
 
-	GUIElementPtr leaderboardsButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 325, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"LEADERBOARDS", 1280 / 2 - 150, 325, 300, 100,
 		[&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }));
-	guiElements.push_back(leaderboardsButton);
 
-	GUIElementPtr cloudStorageButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 425, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"CLOUD STORAGE", 1280 / 2 - 150, 425, 300, 100,
 		[&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }));
-	guiElements.push_back(cloudStorageButton);
 
-	GUIElementPtr quitButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 550, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"QUIT", 1280 / 2 - 150, 550, 300, 100,
 		/*Sprite(400, 400, 400, 224),*/
-		[&](){ game->Close(); }));
-
-	guiElements.push_back(quitButton);
+		[&]() { game->Close(); }));
 
 	return true;
 }
@@ -151,12 +131,6 @@ bool StartMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 		element->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("PLAY", renderer::Sprite(1280 / 2 - 50, 25, 100, 100), "FreeSans_Play", SDL_Color{255, 0, 0, 255});
-	renderEngine->DisplayText("LOBBY", renderer::Sprite(1280 / 2 - 50, 125, 100, 100), "FreeSans_Lobby", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("STATS", renderer::Sprite(1280 / 2 - 50, 225, 100, 100), "FreeSans_Stats", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("LEADERBOARDS", renderer::Sprite(1280 / 2 - 100, 325, 200, 100), "FreeSans_Leaderboards", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("CLOUD STORAGE", renderer::Sprite(1280 / 2 - 100, 425, 200, 100), "FreeSans_CloudStorage", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("QUIT", renderer::Sprite(1280 / 2 - 50, 550, 100, 100), "FreeSans_Quit", SDL_Color{ 255, 0, 0, 255 });
 	renderEngine->EndScene();
 	return true;
 }

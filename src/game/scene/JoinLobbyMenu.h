@@ -35,7 +35,7 @@ namespace gogtron
 			virtual void OnLobbyList(uint32_t lobbyCount, bool ioFailure) override;
 
 			system::GUIElementPtr backButton;
-			std::vector<std::pair<system::GUIElementPtr, std::string>> guiElements;
+			std::vector<system::GUIElementPtr> guiElements;
 			bool anyLobbies;
 		};
 

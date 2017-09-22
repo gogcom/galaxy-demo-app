@@ -31,9 +31,7 @@ bool SinglePlayerView::Init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	backButton = std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
+		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->SetGameState(GameState::State::START_MENU); });
 
 	// TODO: add single player logic here
@@ -98,7 +96,6 @@ bool SinglePlayerView::Display(const renderer::OGLRendererPtr& renderEngine)
 	renderEngine->StartScene();
 
 	backButton->Display(renderEngine);
-	renderEngine->DisplayText("BACK", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Back", SDL_Color{255, 0, 0, 255});
 
 	renderEngine->EndScene();
 	return true;

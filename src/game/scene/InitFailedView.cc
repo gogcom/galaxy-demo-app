@@ -29,13 +29,9 @@ bool InitFailedView::Init()
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	GUIElementPtr exitButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"EXIT", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->Close(); }));
-
-	guiElements.push_back(exitButton);
 	return true;
 }
 
@@ -113,7 +109,6 @@ bool InitFailedView::Display(const renderer::OGLRendererPtr& renderEngine)
 	}
 
 	renderEngine->DisplayText("FAILED TO INITIALIZE", renderer::Sprite(1280 / 2 - 200, 100, 400, 100), "FailedToInit", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("EXIT", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Back", SDL_Color{ 255, 0, 0, 255 });
 
 	renderEngine->EndScene();
 	return true;
