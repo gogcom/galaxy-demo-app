@@ -6,6 +6,14 @@
 #include <galaxy/GalaxyApi.h>
 #include <vector>
 
+namespace galaxy
+{
+	namespace api
+	{
+		extern bool IsFullyInitialized;
+	}
+}
+
 namespace gogtron
 {
 
@@ -18,6 +26,7 @@ namespace gogtron
 		GogTron(const renderer::OGLRendererPtr& renderEngine);
 
 		virtual bool Init(int argc, char** argv) override;
+
 		virtual bool Release() override;
 		virtual bool Update() override;
 
@@ -177,7 +186,10 @@ namespace gogtron
 
 		bool InitFontTextures();
 
-		bool InitGalaxy();
+		void InitGalaxy();
+
+		void InitListeners();
+
 		bool ReleaseGalaxy();
 
 		bool AnimateNextFrame(std::uint32_t fps, float& globalDeltaTime);

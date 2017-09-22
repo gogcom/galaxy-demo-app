@@ -21,6 +21,7 @@ namespace gogtron
 
 		IGame()
 			: closeRequested(false)
+			, currentGameState(scene::GameState::State::INIT_FAILED_VIEW)
 			, fileSharingStatus(FileSharingStatus::FAILED)
 		{
 		}

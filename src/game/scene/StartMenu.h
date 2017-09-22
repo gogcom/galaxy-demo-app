@@ -10,6 +10,26 @@ namespace gogtron
 	namespace scene
 	{
 
+		enum class GalaxyStatus
+		{
+			NotInitialized = 0b001,
+			Offline        = 0b010,
+			SignedIn       = 0b100,
+		};
+
+		inline GalaxyStatus operator|(GalaxyStatus a, GalaxyStatus b)
+		{
+			return static_cast<GalaxyStatus>(static_cast<int>(a) | static_cast<int>(b));
+		}
+
+		inline bool operator&(GalaxyStatus a, GalaxyStatus b)
+		{
+			auto aa = static_cast<int>(a);
+			auto bb = static_cast<int>(b);
+			auto r = a | b;
+			return (static_cast<int>(a) & static_cast<int>(b)) != 0;
+		}
+
 		class StartMenu : public GameState
 		{
 		public:
@@ -29,7 +49,7 @@ namespace gogtron
 
 		private:
 
-			std::vector<system::GUIElementPtr> guiElements;
+			std::vector<std::pair<system::GUIElementPtr, GalaxyStatus>> guiElements;
 		};
 
 	}

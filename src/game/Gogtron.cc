@@ -13,6 +13,14 @@
 #include <game/scene/Results.h>
 #include <engine/core/SDLResourceManager.h>
 
+namespace galaxy
+{
+	namespace api
+	{
+		bool IsFullyInitialized = false;
+	}
+}
+
 using namespace gogtron;
 using namespace gogtron::scene;
 using namespace gogtron::networking;
@@ -48,11 +56,35 @@ GogTron::GogTron(const renderer::OGLRendererPtr& _renderEngine)
 {
 }
 
+void GogTron::InitListeners()
+{
+	listeners.emplace_back(std::make_unique<AuthListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<UserStatsAndAchievementsRetrieveListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<AchievementChangeListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<StatsAndAchievementsStoreListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<LeaderboardsRetrieveListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<LeaderboardEntriesRetrieveListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<LeaderboardScoreUpdateListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<FileShareListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<SharedFileDownloadListener>(shared_from_this()));
+	listeners.emplace_back(std::make_unique<GameJoinRequestedListener>(shared_from_this()));
+}
+
 bool GogTron::Init(int argc, char** argv)
 {
 	ParseCmdLineArgs(argc, argv);
 
-	return InitFontTextures() && InitGalaxy();
+	if (!InitFontTextures())
+		return false;
+
+	InitGalaxy();
+
+	InitListeners();
+
+	galaxy::api::User()->SignIn();
+
+	SetGameState(GameState::State::START_MENU);
+	return true;
 }
 
 bool GogTron::Release()
@@ -259,32 +291,22 @@ bool GogTron::InitFontTextures()
 	return true;
 }
 
-bool GogTron::InitGalaxy()
+void GogTron::InitGalaxy()
 {
 
 	try
 	{
 		galaxy::api::Init(CLIENT_ID, CLIENT_SECRET);
 
-		listeners.emplace_back(std::make_unique<AuthListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<GameJoinRequestedListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<UserStatsAndAchievementsRetrieveListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<AchievementChangeListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<StatsAndAchievementsStoreListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<LeaderboardsRetrieveListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<LeaderboardEntriesRetrieveListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<LeaderboardScoreUpdateListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<FileShareListener>(shared_from_this()));
-		listeners.emplace_back(std::make_unique<SharedFileDownloadListener>(shared_from_this()));
+		galaxy::api::IsFullyInitialized = true;
 
-		galaxy::api::User()->SignIn();
+		InitListeners();
+
 	}
 	catch (const galaxy::api::IError& /*error*/)
 	{
-		return false;
+		galaxy::api::IsFullyInitialized = false;
 	}
-
-	return true;
 }
 
 bool GogTron::ReleaseGalaxy()
@@ -301,9 +323,7 @@ GogTron::AuthListener::AuthListener(const std::shared_ptr<GogTron>& _game)
 
 void GogTron::AuthListener::OnAuthSuccess()
 {
-	if (connectionString.empty())
-		game->SetGameState(GameState::State::START_MENU);
-	else
+	if (!connectionString.empty())
 	{
 		ILobbyPtr lobby = std::make_shared<Lobby>(game);
 		game->SetLobby(lobby);
@@ -322,12 +342,20 @@ void GogTron::AuthListener::OnAuthSuccess()
 
 void GogTron::AuthListener::OnAuthFailure(FailureReason reason)
 {
-	game->SetGameState(GameState::State::INIT_FAILED_VIEW);
+	// TODO: implement notification for "Could not sign in"
+	// TODO: implement reconnect button
 }
 
 void GogTron::AuthListener::OnAuthLost()
 {
-	game->SetGameState(GameState::State::INIT_FAILED_VIEW);
+	// TODO: implement notification for "Auth lost"
+	// TODO: implement reconnect button
+
+	auto gameState = game->GetGameState();
+	if (gameState == GameState::State::LOBBY_MENU
+		|| gameState == GameState::State::JOIN_LOBBY_MENU
+		|| gameState == GameState::State::IN_GAME)
+		game->SetGameState(GameState::State::START_MENU);
 }
 
 GogTron::GameJoinRequestedListener::GameJoinRequestedListener(const std::shared_ptr<GogTron>& _game)
