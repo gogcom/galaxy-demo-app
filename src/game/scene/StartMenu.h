@@ -13,8 +13,8 @@ namespace gogtron
 		enum class GalaxyStatus
 		{
 			NotInitialized = 0b001,
-			Offline        = 0b010,
-			SignedIn       = 0b100,
+			Offline = 0b010,
+			SignedIn = 0b100,
 		};
 
 		inline GalaxyStatus operator|(GalaxyStatus a, GalaxyStatus b)

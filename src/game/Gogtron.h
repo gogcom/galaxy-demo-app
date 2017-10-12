@@ -155,7 +155,8 @@ namespace gogtron
 			std::shared_ptr<GogTron> game;
 		};
 
-		class FileShareListener: public galaxy::api::GlobalFileShareListener {
+		class FileShareListener : public galaxy::api::GlobalFileShareListener
+		{
 		public:
 
 			FileShareListener(const std::shared_ptr<GogTron>& game);

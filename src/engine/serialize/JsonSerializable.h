@@ -5,19 +5,19 @@
 
 namespace gogtron
 {
-    namespace serialize
-    {
+	namespace serialize
+	{
 
-        class JsonSerializable
-        {
-        public:
- 
-            virtual ~JsonSerializable() = default;
-            virtual bool Serialize(Json::Value& root) = 0;
-            virtual bool Deserialize(Json::Value& root) = 0;
-        };
+		class JsonSerializable
+		{
+		public:
 
-    }
+			virtual ~JsonSerializable() = default;
+			virtual bool Serialize(Json::Value& root) = 0;
+			virtual bool Deserialize(Json::Value& root) = 0;
+		};
+
+	}
 }
 
 #endif

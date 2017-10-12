@@ -33,7 +33,7 @@ bool JoinLobbyMenu::Init()
 
 	backButton = std::make_shared<Button>(
 		"BACK", 1280 / 2 - 150, 500, 300, 100,
-		[&](){ game->SetGameState(GameState::State::LOBBY_MENU); });
+		[&]() { game->SetGameState(GameState::State::LOBBY_MENU); });
 
 	try
 	{
@@ -107,7 +107,7 @@ bool JoinLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 
 	if (!anyLobbies)
 	{
-		renderEngine->DisplayText("NO LOBBIES AVAILABLE", renderer::Sprite(1280 / 2 - 200, 100, 400, 100), "NoLobbies", SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText("NO LOBBIES AVAILABLE", renderer::Sprite(1280 / 2 - 200, 100, 400, 100), "NoLobbies", SDL_Color{255, 0, 0, 255});
 	}
 	else
 	{

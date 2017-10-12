@@ -8,51 +8,51 @@
 namespace gogtron
 {
 
-    class GameManager
-    {
-    public:
+	class GameManager
+	{
+	public:
 
-        enum class ServerState
-        {
-            INIT,
-            GAME,
-            RESULTS
-        };
+		enum class ServerState
+		{
+			INIT,
+			GAME,
+			RESULTS
+		};
 
-        enum class ClientState
-        {
-            INIT,
-            START_GAME,
-            GAME,
-            RESULT
-        };
+		enum class ClientState
+		{
+			INIT,
+			START_GAME,
+			GAME,
+			RESULT
+		};
 
-        bool Init();
-        bool Release();
+		bool Init();
+		bool Release();
 
-        const PlayerPtr& GetLocalPlayer() const;
-        const std::vector<PlayerPtr>& GetPlayers() const;
-        std::vector<PlayerPtr>& GetPlayers();
-        void AddPlayer(const PlayerPtr& player);
+		const PlayerPtr& GetLocalPlayer() const;
+		const std::vector<PlayerPtr>& GetPlayers() const;
+		std::vector<PlayerPtr>& GetPlayers();
+		void AddPlayer(const PlayerPtr& player);
 
-        void SetGameTime(uint64_t gameTime);
+		void SetGameTime(uint64_t gameTime);
 		uint64_t GetGameTime() const;
 
-        void SetServerState(const ServerState& state);
-        const ServerState& GetServerState() const;
+		void SetServerState(const ServerState& state);
+		const ServerState& GetServerState() const;
 
-        void SetClientState(const ClientState& state);
-        const ClientState& GetClientState() const;
+		void SetClientState(const ClientState& state);
+		const ClientState& GetClientState() const;
 
-    private:
+	private:
 
-        std::vector<PlayerPtr> players;
+		std::vector<PlayerPtr> players;
 		uint64_t gameTime;
-        ServerState serverState;
-        ClientState clientState;
-    };
+		ServerState serverState;
+		ClientState clientState;
+	};
 
-    using GameManagerPtr = std::shared_ptr<GameManager>;
+	using GameManagerPtr = std::shared_ptr<GameManager>;
 
 }
 

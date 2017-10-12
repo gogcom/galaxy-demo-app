@@ -65,19 +65,19 @@ void Results::OnKeyDown(SDL_Keysym key)
 {
 	switch (key.sym)
 	{
-	case SDLK_UP:
-		guiElements[0]->OnMouseMotion(450, 150);
-		break;
+		case SDLK_UP:
+			guiElements[0]->OnMouseMotion(450, 150);
+			break;
 
-	case SDLK_DOWN:
-		break;
+		case SDLK_DOWN:
+			break;
 
-	case SDLK_KP_ENTER:
-		guiElements[0]->OnMouseDown(450, 150);
-		break;
+		case SDLK_KP_ENTER:
+			guiElements[0]->OnMouseDown(450, 150);
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -226,7 +226,7 @@ bool Results::Display(const renderer::OGLRendererPtr& renderEngine)
 		element->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("Results:", renderer::Sprite(1280 / 2 - 50, 50, 100, 100), "FreeSans_Results", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("Results:", renderer::Sprite(1280 / 2 - 50, 50, 100, 100), "FreeSans_Results", SDL_Color{255, 0, 0, 255});
 	const int offsetY = 100;
 	int lastY = 50 + offsetY;
 	const auto& gameManager = game->GetGameManager();
@@ -235,7 +235,7 @@ bool Results::Display(const renderer::OGLRendererPtr& renderEngine)
 	for (const auto& player : players)
 	{
 		const auto& playerResult = galaxy::api::Friends()->GetFriendPersonaName(player->GetGalaxyID()) + std::string(" : ") + std::to_string(player->GetPoints());
-		renderEngine->DisplayText(playerResult, renderer::Sprite(50, lastY, 300, 100), std::string("FreeSans_result") + playerResult, SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText(playerResult, renderer::Sprite(50, lastY, 300, 100), std::string("FreeSans_result") + playerResult, SDL_Color{255, 0, 0, 255});
 		lastY += offsetY;
 	}
 

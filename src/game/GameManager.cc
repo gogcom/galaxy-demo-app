@@ -6,66 +6,66 @@ using namespace gogtron;
 
 bool GameManager::Init()
 {
-    SetClientState(GameManager::ClientState::INIT);
-    SetServerState(GameManager::ServerState::INIT);
-    players.clear();
-    return true;
+	SetClientState(GameManager::ClientState::INIT);
+	SetServerState(GameManager::ServerState::INIT);
+	players.clear();
+	return true;
 }
 
 bool GameManager::Release()
 {
-    return true;
+	return true;
 }
 
 const PlayerPtr& GameManager::GetLocalPlayer() const
 {
-    const auto& localPlayer = std::find_if(std::begin(players), std::end(players),
-        [](const PlayerPtr& player) { return player->GetGalaxyID() == galaxy::api::User()->GetGalaxyID(); });
-    assert(localPlayer != std::end(players));
-    return *localPlayer;
+	const auto& localPlayer = std::find_if(std::begin(players), std::end(players),
+		[](const PlayerPtr& player) { return player->GetGalaxyID() == galaxy::api::User()->GetGalaxyID(); });
+	assert(localPlayer != std::end(players));
+	return *localPlayer;
 }
 
 const std::vector<PlayerPtr>& GameManager::GetPlayers() const
 {
-    return players;
+	return players;
 }
 
 std::vector<PlayerPtr>& GameManager::GetPlayers()
 {
-    return players;
+	return players;
 }
 
 void GameManager::AddPlayer(const PlayerPtr& player)
 {
-    players.push_back(player);
+	players.push_back(player);
 }
 
 void GameManager::SetGameTime(uint64_t _gameTime)
 {
-    gameTime = _gameTime;
+	gameTime = _gameTime;
 }
 
 uint64_t GameManager::GetGameTime() const
 {
-    return gameTime;
+	return gameTime;
 }
 
 void GameManager::SetServerState(const GameManager::ServerState& state)
 {
-    serverState = state;
+	serverState = state;
 }
 
 const GameManager::ServerState& GameManager::GetServerState() const
 {
-    return serverState;
+	return serverState;
 }
 
 void GameManager::SetClientState(const GameManager::ClientState& state)
 {
-    clientState = state;
+	clientState = state;
 }
 
 const GameManager::ClientState& GameManager::GetClientState() const
 {
-    return clientState;
+	return clientState;
 }

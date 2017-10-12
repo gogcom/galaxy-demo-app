@@ -34,7 +34,8 @@ namespace gogtron
 
 			GameState(const IGamePtr& _game)
 				: game(_game)
-			{}
+			{
+			}
 
 			virtual ~GameState() = default;
 

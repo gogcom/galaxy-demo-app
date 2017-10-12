@@ -61,85 +61,85 @@ void Game::OnKeyDown(SDL_Keysym key)
 {
 	switch (key.sym)
 	{
-	case SDLK_ESCAPE:
-		game->SetClient(nullptr);
-		game->SetServer(nullptr);
-		game->SetLobby(nullptr);
-		game->SetGameState(GameState::State::START_MENU);
-		break;
+		case SDLK_ESCAPE:
+			game->SetClient(nullptr);
+			game->SetServer(nullptr);
+			game->SetLobby(nullptr);
+			game->SetGameState(GameState::State::START_MENU);
+			break;
 
-	case SDLK_UP:
-		camera.MoveCamera(0.125);
-		break;
+		case SDLK_UP:
+			camera.MoveCamera(0.125);
+			break;
 
-	case SDLK_DOWN:
-		camera.MoveCamera(-0.125);
-		break;
+		case SDLK_DOWN:
+			camera.MoveCamera(-0.125);
+			break;
 
-	case SDLK_LEFT:
-	{
-		const auto& client = game->GetClient();
-		if (client)
+		case SDLK_LEFT:
 		{
-			const auto& gameManager = game->GetGameManager();
-			switch (gameManager.GetClientState())
+			const auto& client = game->GetClient();
+			if (client)
 			{
-				case GameManager::ClientState::GAME:
+				const auto& gameManager = game->GetGameManager();
+				switch (gameManager.GetClientState())
 				{
-					const auto& localPlayer = gameManager.GetLocalPlayer();
-					const auto& playerDirection = localPlayer->GetDirection();
-					glm::vec2 newPlayerDirection;
+					case GameManager::ClientState::GAME:
+					{
+						const auto& localPlayer = gameManager.GetLocalPlayer();
+						const auto& playerDirection = localPlayer->GetDirection();
+						glm::vec2 newPlayerDirection;
 
-					if (playerDirection.x > 0)
-						newPlayerDirection = glm::vec2(0, -1);
-					else if (playerDirection.x < 0)
-						newPlayerDirection = glm::vec2(0, 1);
-					else if (playerDirection.y > 0)
-						newPlayerDirection = glm::vec2(1, 0);
-					else if (playerDirection.y < 0)
-						newPlayerDirection = glm::vec2(-1, 0);
+						if (playerDirection.x > 0)
+							newPlayerDirection = glm::vec2(0, -1);
+						else if (playerDirection.x < 0)
+							newPlayerDirection = glm::vec2(0, 1);
+						else if (playerDirection.y > 0)
+							newPlayerDirection = glm::vec2(1, 0);
+						else if (playerDirection.y < 0)
+							newPlayerDirection = glm::vec2(-1, 0);
 
-					client->SendUpdateDirectionToServer(newPlayerDirection);
+						client->SendUpdateDirectionToServer(newPlayerDirection);
+					}
+					break;
 				}
-				break;
 			}
 		}
-	}
-	break;
+		break;
 
-	case SDLK_RIGHT:
-	{
-		const auto& client = game->GetClient();
-		if (client)
+		case SDLK_RIGHT:
 		{
-			const auto& gameManager = game->GetGameManager();
-			switch (gameManager.GetClientState())
+			const auto& client = game->GetClient();
+			if (client)
 			{
-				case GameManager::ClientState::GAME:
+				const auto& gameManager = game->GetGameManager();
+				switch (gameManager.GetClientState())
 				{
-					const auto& localPlayer = gameManager.GetLocalPlayer();
-					const auto& playerDirection = localPlayer->GetDirection();
-					glm::vec2 newPlayerDirection;
+					case GameManager::ClientState::GAME:
+					{
+						const auto& localPlayer = gameManager.GetLocalPlayer();
+						const auto& playerDirection = localPlayer->GetDirection();
+						glm::vec2 newPlayerDirection;
 
-					if (playerDirection.x > 0)
-						newPlayerDirection = glm::vec2(0, 1);
-					else if (playerDirection.x < 0)
-						newPlayerDirection = glm::vec2(0, -1);
-					else if (playerDirection.y > 0)
-						newPlayerDirection = glm::vec2(-1, 0);
-					else if (playerDirection.y < 0)
-						newPlayerDirection = glm::vec2(1, 0);
+						if (playerDirection.x > 0)
+							newPlayerDirection = glm::vec2(0, 1);
+						else if (playerDirection.x < 0)
+							newPlayerDirection = glm::vec2(0, -1);
+						else if (playerDirection.y > 0)
+							newPlayerDirection = glm::vec2(-1, 0);
+						else if (playerDirection.y < 0)
+							newPlayerDirection = glm::vec2(1, 0);
 
-					client->SendUpdateDirectionToServer(newPlayerDirection);
+						client->SendUpdateDirectionToServer(newPlayerDirection);
+					}
+					break;
 				}
-				break;
 			}
 		}
-	}
-	break;
-
-	default:
 		break;
+
+		default:
+			break;
 	}
 }
 
@@ -169,13 +169,13 @@ bool Game::Update()
 	{
 		switch (game->GetGameManager().GetServerState())
 		{
-		case GameManager::ServerState::GAME:
-			UpdatePositions();
-			CheckCollisions();
-			break;
+			case GameManager::ServerState::GAME:
+				UpdatePositions();
+				CheckCollisions();
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 
@@ -184,17 +184,17 @@ bool Game::Update()
 	{
 		switch (game->GetGameManager().GetClientState())
 		{
-		case GameManager::ClientState::GAME:
-			if (game->GetLobby()->GetLobbyMembers().size() <= 1)
-			{
-				game->SetGameState(GameState::State::GAME_RESULT);
-			}
-			return true;
-			break;
+			case GameManager::ClientState::GAME:
+				if (game->GetLobby()->GetLobbyMembers().size() <= 1)
+				{
+					game->SetGameState(GameState::State::GAME_RESULT);
+				}
+				return true;
+				break;
 
-		case GameManager::ClientState::RESULT:
-			game->SetGameState(GameState::State::IN_LOBBY_MENU);
-			break;
+			case GameManager::ClientState::RESULT:
+				game->SetGameState(GameState::State::IN_LOBBY_MENU);
+				break;
 		}
 	}
 
@@ -221,7 +221,7 @@ bool Game::Display(const renderer::OGLRendererPtr& renderEngine)
 
 	const auto& gameManager = game->GetGameManager();
 	const auto& players = gameManager.GetPlayers();
-	const auto& localPlayer = std::find_if(std::begin(players), std::end(players), [](const PlayerPtr& p){return p->GetGalaxyID() == galaxy::api::User()->GetGalaxyID(); });
+	const auto& localPlayer = std::find_if(std::begin(players), std::end(players), [](const PlayerPtr& p) {return p->GetGalaxyID() == galaxy::api::User()->GetGalaxyID(); });
 
 	if (localPlayer != std::end(players))
 	{
@@ -360,7 +360,7 @@ bool Game::CheckCollisions()
 	if (!game->GetServer()->SendGameTick(players))
 		return false;
 
-	if (std::count_if(std::begin(players), std::end(players), [](const PlayerPtr& player){ return player->IsAlive(); }) <= 1)
+	if (std::count_if(std::begin(players), std::end(players), [](const PlayerPtr& player) { return player->IsAlive(); }) <= 1)
 	{
 		if (!game->GetServer()->SendGameResults(players, std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime))
 			return false;

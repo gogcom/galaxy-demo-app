@@ -6,27 +6,27 @@
 
 namespace gogtron
 {
-    namespace message
-    {
+	namespace message
+	{
 
-        class InitGame : public serialize::JsonSerializable
-        {
-        public:
+		class InitGame : public serialize::JsonSerializable
+		{
+		public:
 
-            InitGame();
-            InitGame(const std::vector<PlayerPtr>& players);
+			InitGame();
+			InitGame(const std::vector<PlayerPtr>& players);
 
-            virtual bool Serialize(Json::Value& root);
-            virtual bool Deserialize(Json::Value& root);
+			virtual bool Serialize(Json::Value& root);
+			virtual bool Deserialize(Json::Value& root);
 
-            const std::vector<PlayerPtr>& GetPlayers() const;
+			const std::vector<PlayerPtr>& GetPlayers() const;
 
-        private:
+		private:
 
-            std::vector<PlayerPtr> players;
-        };
+			std::vector<PlayerPtr> players;
+		};
 
-    }
+	}
 }
 
 #endif

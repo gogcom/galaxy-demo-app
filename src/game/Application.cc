@@ -24,10 +24,10 @@ PCHAR* Application::Helper::CommandLineToArgvA(PCHAR CmdLine, int* _argc)
 	BOOLEAN  in_SPACE;
 
 	len = strlen(CmdLine);
-	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
+	i = ((len + 2) / 2) * sizeof(PVOID) + sizeof(PVOID);
 
 	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-		i + (len + 2)*sizeof(CHAR));
+		i + (len + 2) * sizeof(CHAR));
 
 	_argv = (PCHAR)(((PUCHAR)argv) + i);
 
@@ -39,48 +39,57 @@ PCHAR* Application::Helper::CommandLineToArgvA(PCHAR CmdLine, int* _argc)
 	i = 0;
 	j = 0;
 
-	while (a = CmdLine[i]) {
-		if (in_QM) {
-			if (a == '\"') {
+	while (a = CmdLine[i])
+	{
+		if (in_QM)
+		{
+			if (a == '\"')
+			{
 				in_QM = FALSE;
 			}
-			else {
+			else
+			{
 				_argv[j] = a;
 				j++;
 			}
 		}
-		else {
-			switch (a) {
-			case '\"':
-				in_QM = TRUE;
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				in_SPACE = FALSE;
-				break;
-			case ' ':
-			case '\t':
-			case '\n':
-			case '\r':
-				if (in_TEXT) {
-					_argv[j] = '\0';
+		else
+		{
+			switch (a)
+			{
+				case '\"':
+					in_QM = TRUE;
+					in_TEXT = TRUE;
+					if (in_SPACE)
+					{
+						argv[argc] = _argv + j;
+						argc++;
+					}
+					in_SPACE = FALSE;
+					break;
+				case ' ':
+				case '\t':
+				case '\n':
+				case '\r':
+					if (in_TEXT)
+					{
+						_argv[j] = '\0';
+						j++;
+					}
+					in_TEXT = FALSE;
+					in_SPACE = TRUE;
+					break;
+				default:
+					in_TEXT = TRUE;
+					if (in_SPACE)
+					{
+						argv[argc] = _argv + j;
+						argc++;
+					}
+					_argv[j] = a;
 					j++;
-				}
-				in_TEXT = FALSE;
-				in_SPACE = TRUE;
-				break;
-			default:
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				_argv[j] = a;
-				j++;
-				in_SPACE = FALSE;
-				break;
+					in_SPACE = FALSE;
+					break;
 			}
 		}
 		i++;

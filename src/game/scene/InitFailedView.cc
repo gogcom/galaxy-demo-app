@@ -60,19 +60,19 @@ void InitFailedView::OnKeyDown(SDL_Keysym key)
 {
 	switch (key.sym)
 	{
-	case SDLK_UP:
-		guiElements[0]->OnMouseMotion(450, 150);
-		break;
+		case SDLK_UP:
+			guiElements[0]->OnMouseMotion(450, 150);
+			break;
 
-	case SDLK_DOWN:
-		break;
+		case SDLK_DOWN:
+			break;
 
-	case SDLK_KP_ENTER:
-		guiElements[0]->OnMouseDown(450, 150);
-		break;
+		case SDLK_KP_ENTER:
+			guiElements[0]->OnMouseDown(450, 150);
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -108,7 +108,7 @@ bool InitFailedView::Display(const renderer::OGLRendererPtr& renderEngine)
 		element->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("FAILED TO INITIALIZE", renderer::Sprite(1280 / 2 - 200, 100, 400, 100), "FailedToInit", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("FAILED TO INITIALIZE", renderer::Sprite(1280 / 2 - 200, 100, 400, 100), "FailedToInit", SDL_Color{255, 0, 0, 255});
 
 	renderEngine->EndScene();
 	return true;

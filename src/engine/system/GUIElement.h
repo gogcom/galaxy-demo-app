@@ -31,7 +31,10 @@ namespace gogtron
 
 			virtual void Display(const renderer::RendererPtr& renderEngine) = 0;
 
-			const renderer::Sprite& GetSprite() const { return sprite; }
+			const renderer::Sprite& GetSprite() const
+			{
+				return sprite;
+			}
 
 		protected:
 

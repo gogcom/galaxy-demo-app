@@ -83,7 +83,7 @@ bool StatsView::Update()
 
 	statsRequested = true;
 	return true;
-	}
+}
 
 bool StatsView::Display(const renderer::OGLRendererPtr& renderEngine)
 {
@@ -110,18 +110,18 @@ bool StatsView::Display(const renderer::OGLRendererPtr& renderEngine)
 
 	if (!errorMessage.empty())
 	{
-		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{255, 0, 0, 255});
 	}
 	else if (statsRequested)
 	{
-		renderEngine->DisplayText("User stats:", renderer::Sprite(1280 / 2 - 100, 50, 200, 100), "FreeSans_UserStats", SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText("User stats:", renderer::Sprite(1280 / 2 - 100, 50, 200, 100), "FreeSans_UserStats", SDL_Color{255, 0, 0, 255});
 		const int offsetY = 100;
 		int lastY = 50 + offsetY;
 		const auto& stats = game->GetGameplayData().GetUserStatistics(galaxy::api::User()->GetGalaxyID());
 		for (const auto& stat : stats)
 		{
 			const auto& statName = stat.second.GetName() + std::string(" ") + std::to_string(galaxy::api::Stats()->GetStatInt(stat.first.c_str()));
-			renderEngine->DisplayText(statName, renderer::Sprite(1280 / 2 - 100, lastY, 200, 100), std::string("FreeSans_Stat") + statName, SDL_Color{ 255, 0, 0, 255 });
+			renderEngine->DisplayText(statName, renderer::Sprite(1280 / 2 - 100, lastY, 200, 100), std::string("FreeSans_Stat") + statName, SDL_Color{255, 0, 0, 255});
 			lastY += offsetY;
 		}
 	}

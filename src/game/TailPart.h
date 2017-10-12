@@ -7,22 +7,22 @@
 namespace gogtron
 {
 
-    class TailPart : public GameObject
-    {
-    public:
+	class TailPart : public GameObject
+	{
+	public:
 
-        TailPart(const glm::vec3& position, const glm::vec4& color);
+		TailPart(const glm::vec3& position, const glm::vec4& color);
 
-        const glm::vec4& GetColor() const;
+		const glm::vec4& GetColor() const;
 
-        void SetColor(const glm::vec4& color);
+		void SetColor(const glm::vec4& color);
 
-    private:
+	private:
 
-        glm::vec4 color;
-    };
+		glm::vec4 color;
+	};
 
-    using TailPartPtr = std::shared_ptr<TailPart>;
+	using TailPartPtr = std::shared_ptr<TailPart>;
 
 }
 

@@ -129,11 +129,11 @@ bool LeaderboardsView::Display(const renderer::OGLRendererPtr& renderEngine)
 
 	if (!errorMessage.empty())
 	{
-		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{255, 0, 0, 255});
 	}
 	else if (leaderboardEntriesRequested)
 	{
-		renderEngine->DisplayText("Leaderboards:", renderer::Sprite(1280 / 2 - 100, 50, 200, 100), "FreeSans_BestLeaderboards", SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText("Leaderboards:", renderer::Sprite(1280 / 2 - 100, 50, 200, 100), "FreeSans_BestLeaderboards", SDL_Color{255, 0, 0, 255});
 		const int offsetY = 100;
 		const int offsetX = 250;
 		int lastY = 50 + offsetY;
@@ -142,14 +142,14 @@ bool LeaderboardsView::Display(const renderer::OGLRendererPtr& renderEngine)
 		{
 			int lastX = 50;
 			const auto& leaderboardName = leaderboard.second.displayName;
-			renderEngine->DisplayText(leaderboardName + ":", renderer::Sprite(lastX, lastY, 200, 100), std::string("FreeSans_Leaderboard") + leaderboardName, SDL_Color{ 255, 0, 0, 255 });
+			renderEngine->DisplayText(leaderboardName + ":", renderer::Sprite(lastX, lastY, 200, 100), std::string("FreeSans_Leaderboard") + leaderboardName, SDL_Color{255, 0, 0, 255});
 
 			const auto& entries = leaderboard.second.entries;
 			for (const auto& entry : entries)
 			{
 				lastX += offsetX;
 				const auto displayText = std::string(galaxy::api::Friends()->GetFriendPersonaName(entry.userID)) + " - " + std::to_string(entry.score);
-				renderEngine->DisplayText(displayText, renderer::Sprite(lastX, lastY, 200, 100), std::string("FreeSans_LeaderboardEntry") + displayText, SDL_Color{ 255, 0, 0, 255 });
+				renderEngine->DisplayText(displayText, renderer::Sprite(lastX, lastY, 200, 100), std::string("FreeSans_LeaderboardEntry") + displayText, SDL_Color{255, 0, 0, 255});
 			}
 
 			lastY += offsetY;

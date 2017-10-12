@@ -23,7 +23,7 @@ bool SDLResourceManager::LoadFont(const std::string& path, const std::string& fo
 	if (fonts.find(fontName) != std::end(fonts))
 		return true;
 
-	FontPtr<TTF_Font> font(TTF_OpenFont(path.c_str(), 32), [](TTF_Font* f){ if (f) TTF_CloseFont(f); });
+	FontPtr<TTF_Font> font(TTF_OpenFont(path.c_str(), 32), [](TTF_Font* f) { if (f) TTF_CloseFont(f); });
 
 	if (!font)
 		return false;
@@ -81,6 +81,6 @@ bool SDLResourceManager::LoadTexture(const TexturePtr<SDL_Surface>& texture, con
 
 bool SDLResourceManager::CreateTextureFromFont(const FontPtr<TTF_Font>& font, const std::string& text, const renderer::Color& color, const std::string& textureName)
 {
-	std::shared_ptr<SDL_Surface> textSurface(TTF_RenderText_Blended(font.get(), text.c_str(), color), [](SDL_Surface* s) { if(s) SDL_FreeSurface(s); });
+	std::shared_ptr<SDL_Surface> textSurface(TTF_RenderText_Blended(font.get(), text.c_str(), color), [](SDL_Surface* s) { if (s) SDL_FreeSurface(s); });
 	return LoadTexture(textSurface, textureName);
 }

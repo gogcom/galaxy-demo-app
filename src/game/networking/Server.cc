@@ -65,7 +65,7 @@ bool Server::SendGameTick(const std::vector<PlayerPtr>& _players)
 	players = _players;
 
 	return true;
-	}
+}
 
 bool Server::SendGameResults(const std::vector<PlayerPtr>& _players, uint64_t gameTime)
 {
@@ -84,7 +84,7 @@ bool Server::SendGameResults(const std::vector<PlayerPtr>& _players, uint64_t ga
 
 void Server::OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel)
 {
-	char message[4096] = { '\0' };
+	char message[4096] = {'\0'};
 	std::uint32_t messageSize;
 	galaxy::api::GalaxyID userID;
 	if (!galaxy::api::ServerNetworking()->PeekP2PPacket(message, sizeof(message), &messageSize, userID, channel))
@@ -119,11 +119,11 @@ void Server::OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel)
 		}
 		break;
 
-	case GameManager::ServerState::RESULTS:
-		break;
+		case GameManager::ServerState::RESULTS:
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 

@@ -5,22 +5,22 @@ using namespace gogtron;
 std::uint32_t GameObject::GameObjectId = 0;
 
 GameObject::GameObject(const glm::vec3& _position)
-    : position(_position)
-    , id(++GameObjectId)
+	: position(_position)
+	, id(++GameObjectId)
 {
 }
 
 const glm::vec3& GameObject::GetPosition() const
 {
-    return position;
+	return position;
 }
 
 std::uint32_t GameObject::GetId() const
 {
-    return id;
+	return id;
 }
 
 void GameObject::SetPosition(const glm::vec3& _position)
 {
-    position = _position;
+	position = _position;
 }

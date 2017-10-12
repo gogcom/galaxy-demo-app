@@ -107,17 +107,17 @@ namespace gogtron
 			switch (game->GetStorageSynchronizationStatus())
 			{
 				case IGame::FileSharingStatus::DOWNLOADED:
+				{
+					if (!galaxy::api::Storage()->FileExists(SAMPLE_FILE_NAME))
+						currentFileContent.clear();
+					else
 					{
-						if (!galaxy::api::Storage()->FileExists(SAMPLE_FILE_NAME))
-							currentFileContent.clear();
-						else
-						{
-							currentFileContent.resize(SAMPLE_FILE_MAX_SIZE);
-							uint32_t bytesRead = galaxy::api::Storage()->FileRead(SAMPLE_FILE_NAME, &currentFileContent[0], SAMPLE_FILE_MAX_SIZE);
-							currentFileContent.resize(bytesRead);
-						}
-						break;
+						currentFileContent.resize(SAMPLE_FILE_MAX_SIZE);
+						uint32_t bytesRead = galaxy::api::Storage()->FileRead(SAMPLE_FILE_NAME, &currentFileContent[0], SAMPLE_FILE_MAX_SIZE);
+						currentFileContent.resize(bytesRead);
 					}
+					break;
+				}
 				case IGame::FileSharingStatus::FAILED:
 					errorMessage = "Failed to download shared files";
 					break;
@@ -151,7 +151,7 @@ namespace gogtron
 
 			if (!errorMessage.empty())
 			{
-				renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "CloudStorageViewErrorMessage", SDL_Color{ 255, 0, 0, 255 });
+				renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "CloudStorageViewErrorMessage", SDL_Color{255, 0, 0, 255});
 			}
 			else
 			{
@@ -160,31 +160,31 @@ namespace gogtron
 					"Number of files in remote storage: " + std::to_string(galaxy::api::Storage()->GetFileCount()),
 					renderer::Sprite(1280 / 2 - 200, 25, 400, 50),
 					"FreeSans_FilesNumberInStorage",
-					SDL_Color{ 255, 0, 0, 255 });
+					SDL_Color{255, 0, 0, 255});
 
 				renderEngine->DisplayText(
 					"Current message:",
 					renderer::Sprite(1280 / 2 - 200, 100, 400, 50),
 					"FreeSans_CurrentMessageCaption",
-					SDL_Color{ 255, 0, 0, 255 });
+					SDL_Color{255, 0, 0, 255});
 
 				renderEngine->DisplayText(
 					currentFileContent,
 					renderer::Sprite(1280 / 2 - 200, 175, 400, 50),
 					"FreeSans_CurrentMessage" + currentFileContent,
-					SDL_Color{ 255, 0, 0, 255 });
+					SDL_Color{255, 0, 0, 255});
 
 				renderEngine->DisplayText(
 					"Type new message below:",
 					renderer::Sprite(1280 / 2 - 200, 250, 400, 50),
 					"FreeSans_NewMessageCaption",
-					SDL_Color{ 255, 0, 0, 255 });
+					SDL_Color{255, 0, 0, 255});
 
 				renderEngine->DisplayText(
 					newFileContent,
 					renderer::Sprite(1280 / 2 - 200, 325, 400, 100),
 					"FreeSans_MessageCaption" + newFileContent,
-					SDL_Color{ 255, 0, 0, 255 });
+					SDL_Color{255, 0, 0, 255});
 			}
 
 			renderEngine->EndScene();

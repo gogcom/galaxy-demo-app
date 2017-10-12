@@ -8,44 +8,44 @@
 namespace gogtron
 {
 
-    class User;
+	class User;
 
-    class GameplayData
-    {
-    public:
+	class GameplayData
+	{
+	public:
 
-        GameplayData();
+		GameplayData();
 
-        Achievements& GetUserAchievements(const galaxy::api::GalaxyID& userID);
+		Achievements& GetUserAchievements(const galaxy::api::GalaxyID& userID);
 
-        Statistics& GetUserStatistics(const galaxy::api::GalaxyID& userID);
+		Statistics& GetUserStatistics(const galaxy::api::GalaxyID& userID);
 
-        void SetUserAchievements(const galaxy::api::GalaxyID& userID, const Achievements& achievements);
+		void SetUserAchievements(const galaxy::api::GalaxyID& userID, const Achievements& achievements);
 
-        void SetUserStatistics(const galaxy::api::GalaxyID& userID, const Statistics& statistics);
+		void SetUserStatistics(const galaxy::api::GalaxyID& userID, const Statistics& statistics);
 
-        Leaderboard& GetLeaderboard(const std::string& leaderboardName);
+		Leaderboard& GetLeaderboard(const std::string& leaderboardName);
 
-        const Leaderboards& GetLeaderboards() const;
+		const Leaderboards& GetLeaderboards() const;
 
-        void SetLeaderboards(const Leaderboards& leaderboards);
+		void SetLeaderboards(const Leaderboards& leaderboards);
 
-        bool GetStatsAndAchievementsStatus() const;
+		bool GetStatsAndAchievementsStatus() const;
 
-        void SetStatsAndAchievementStatus(bool wereStatsAndAchievementsRequested);
+		void SetStatsAndAchievementStatus(bool wereStatsAndAchievementsRequested);
 
-        bool GetLeaderboardsStatus() const;
+		bool GetLeaderboardsStatus() const;
 
-        void SetLeaderboardsStatus(bool wereLeaderboardsRequested);
+		void SetLeaderboardsStatus(bool wereLeaderboardsRequested);
 
-    private:
+	private:
 
-        bool wereStatsAndAchievementsRequested;
-        bool wereLeaderboardsRequested;
-        UsersAchievements usersAchievements;
-        UsersStatistics usersStatistics;
-        Leaderboards leaderboards;
-    };
+		bool wereStatsAndAchievementsRequested;
+		bool wereLeaderboardsRequested;
+		UsersAchievements usersAchievements;
+		UsersStatistics usersStatistics;
+		Leaderboards leaderboards;
+	};
 
 }
 
