@@ -72,7 +72,7 @@ endif()
 include_directories(${JSONCPP_INCLUDE_DIR})
 
 if (MSVC)
-	add_definitions(/MP)
+	add_definitions(/MP /std:c++latest)
 else()
 	add_definitions(-std=c++1z -g -Wall)
 endif()
