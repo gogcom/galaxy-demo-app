@@ -10,7 +10,6 @@ using namespace gogtron::networking;
 
 SinglePlayerView::SinglePlayerView(const IGamePtr& _game)
 	: GameState(_game)
-	, anyLobbies(true)
 {
 }
 
