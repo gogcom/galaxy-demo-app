@@ -1,5 +1,13 @@
 #include "GameplayData.h"
 
+namespace galaxy
+{
+	namespace api
+	{
+		extern bool IsFullyInitialized;
+	}
+}
+
 namespace gogtron
 {
 
@@ -11,16 +19,23 @@ namespace gogtron
 
 	Achievements& GameplayData::GetUserAchievements(const galaxy::api::GalaxyID& userID)
 	{
-		UsersAchievements::iterator userAchievements = usersAchievements.find(userID);
-		assert(userAchievements != usersAchievements.end());
-		return userAchievements->second;
+		assert(userID.IsValid());
+
+		auto& userAchievements = usersAchievements[userID];
+		if (userAchievements.empty())
+			userAchievements = AchievementsFactory::CreateDefaultAchievements();
+
+		return userAchievements;
 	}
 
 	Statistics& GameplayData::GetUserStatistics(const galaxy::api::GalaxyID& userID)
 	{
-		UsersStatistics::iterator userStatistics = usersStatistics.find(userID);
-		assert(userStatistics != usersStatistics.end());
-		return userStatistics->second;
+		assert(userID.IsValid());
+		auto & userStatistics = usersStatistics[userID];
+		if (userStatistics.empty())
+			userStatistics = StatisticsFactory::CreateDefaultStatistics();
+
+		return userStatistics;
 	}
 
 	void GameplayData::SetUserAchievements(const galaxy::api::GalaxyID& userID, const Achievements& achievements)
@@ -74,7 +89,12 @@ namespace gogtron
 
 	void GameplayData::Init()
 	{
+		assert(galaxy::api::IsFullyInitialized && galaxy::api::User()->SignedIn());
+
 		InitListeners();
+
+		galaxy::api::Stats()->RequestUserStatsAndAchievements();
+		galaxy::api::Stats()->RequestLeaderboards();
 	}
 
 	void GameplayData::InitListeners()

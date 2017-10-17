@@ -293,7 +293,6 @@ void GogTron::InitGalaxy()
 		galaxy::api::IsFullyInitialized = true;
 
 		InitListeners();
-		gameplayData.Init();
 	}
 	catch (const galaxy::api::IError& /*error*/)
 	{
@@ -325,13 +324,7 @@ void GogTron::AuthListener::OnAuthSuccess()
 			game->SetGameState(GameState::State::INIT_FAILED_VIEW);
 	}
 
-	auto&& userID = galaxy::api::User()->GetGalaxyID();
-	game->GetGameplayData().SetUserAchievements(userID, AchievementsFactory::CreateDefaultAchievements());
-	game->GetGameplayData().SetUserStatistics(userID, StatisticsFactory::CreateDefaultStatistics());
-	game->GetGameplayData().SetLeaderboards(LeaderboardFactory::CreateDefaultLeaderboards());
-
-	galaxy::api::Stats()->RequestUserStatsAndAchievements();
-	galaxy::api::Stats()->RequestLeaderboards();
+	game->GetGameplayData().Init();
 }
 
 void GogTron::AuthListener::OnAuthFailure(FailureReason reason)

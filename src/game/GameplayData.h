@@ -138,6 +138,7 @@ namespace gogtron
 
 		bool wereStatsAndAchievementsRequested;
 		bool wereLeaderboardsRequested;
+
 		UsersAchievements usersAchievements;
 		UsersStatistics usersStatistics;
 		Leaderboards leaderboards;
