@@ -1,4 +1,5 @@
 #include "GameplayData.h"
+#include <iostream>
 
 namespace galaxy
 {
@@ -73,8 +74,15 @@ namespace gogtron
 
 		InitListeners();
 
-		galaxy::api::Stats()->RequestUserStatsAndAchievements();
-		galaxy::api::Stats()->RequestLeaderboards();
+		try
+		{
+			galaxy::api::Stats()->RequestUserStatsAndAchievements();
+			galaxy::api::Stats()->RequestLeaderboards();
+		}
+		catch (const galaxy::api::IError&)
+		{
+			std::cerr << "Failed to retrieve user stats and achievements";
+		}
 	}
 
 	void GameplayData::InitListeners()

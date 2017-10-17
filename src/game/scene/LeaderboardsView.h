@@ -29,7 +29,6 @@ namespace gogtron
 
 		private:
 
-			bool leaderboardsRequested;
 			bool leaderboardEntriesRequested;
 			std::string errorMessage;
 			std::vector<system::GUIElementPtr> guiElements;

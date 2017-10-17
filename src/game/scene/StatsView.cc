@@ -33,7 +33,14 @@ bool StatsView::Init()
 		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->SetGameState(GameState::State::START_MENU); }));
 
-	statsRequested = false;
+	try
+	{
+		galaxy::api::Stats()->RequestUserStatsAndAchievements();
+	}
+	catch (const galaxy::api::IError&)
+	{
+		errorMessage = "Failed to get stats";
+	}
 
 	return true;
 }
@@ -69,19 +76,6 @@ void StatsView::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 
 bool StatsView::Update()
 {
-	if (!statsRequested)
-	{
-		try
-		{
-			galaxy::api::Stats()->RequestUserStatsAndAchievements();
-		}
-		catch (const galaxy::api::IError&)
-		{
-			errorMessage = "Failed to get stats";
-		}
-	}
-
-	statsRequested = true;
 	return true;
 }
 
@@ -112,7 +106,7 @@ bool StatsView::Display(const renderer::OGLRendererPtr& renderEngine)
 	{
 		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{255, 0, 0, 255});
 	}
-	else if (statsRequested)
+	else
 	{
 		renderEngine->DisplayText("User stats:", renderer::Sprite(1280 / 2 - 100, 50, 200, 100), "FreeSans_UserStats", SDL_Color{255, 0, 0, 255});
 		const int offsetY = 100;
