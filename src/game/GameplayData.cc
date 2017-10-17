@@ -67,26 +67,6 @@ namespace gogtron
 		leaderboards = _leaderboards;
 	}
 
-	bool GameplayData::GetStatsAndAchievementsStatus() const
-	{
-		return wereStatsAndAchievementsRequested;
-	}
-
-	void GameplayData::SetStatsAndAchievementStatus(bool _wereStatsAndAchievementsRequested)
-	{
-		wereStatsAndAchievementsRequested = _wereStatsAndAchievementsRequested;
-	}
-
-	bool GameplayData::GetLeaderboardsStatus() const
-	{
-		return wereLeaderboardsRequested;
-	}
-
-	void GameplayData::SetLeaderboardsStatus(bool _wereLeaderboardsRequested)
-	{
-		wereLeaderboardsRequested = _wereLeaderboardsRequested;
-	}
-
 	void GameplayData::Init()
 	{
 		assert(galaxy::api::IsFullyInitialized && galaxy::api::User()->SignedIn());
@@ -159,8 +139,6 @@ namespace gogtron
 						assert(0 && "Unknown statistic type");
 				}
 			}
-
-			gameplayData.SetStatsAndAchievementStatus(true);
 		}
 		catch (const galaxy::api::IError& error)
 		{
@@ -261,7 +239,6 @@ namespace gogtron
 
 	void GameplayData::LeaderboardsRetrieveListener::OnLeaderboardsRetrieveSuccess()
 	{
-		gameplayData.SetLeaderboardsStatus(true);
 	}
 
 	void GameplayData::LeaderboardsRetrieveListener::OnLeaderboardsRetrieveFailure(FailureReason failureReason)

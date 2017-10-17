@@ -32,14 +32,6 @@ namespace gogtron
 
 		void SetLeaderboards(const Leaderboards& leaderboards);
 
-		bool GetStatsAndAchievementsStatus() const;
-
-		void SetStatsAndAchievementStatus(bool wereStatsAndAchievementsRequested);
-
-		bool GetLeaderboardsStatus() const;
-
-		void SetLeaderboardsStatus(bool wereLeaderboardsRequested);
-
 		void Init();
 
 	private:
