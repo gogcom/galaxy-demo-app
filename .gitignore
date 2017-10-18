@@ -33,3 +33,7 @@ Release
 
 # YCM
 .ycm_extra_conf.pyc
+
+# Galaxy configuration and log files
+Galaxy*.json
+debug.log
