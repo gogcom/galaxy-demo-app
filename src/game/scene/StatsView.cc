@@ -114,7 +114,7 @@ bool StatsView::Display(const renderer::OGLRendererPtr& renderEngine)
 		const auto& stats = game->GetGameplayData().GetUserStatistics(galaxy::api::User()->GetGalaxyID());
 		for (const auto& stat : stats)
 		{
-			const auto& statName = stat.second.GetName() + std::string(" ") + std::to_string(galaxy::api::Stats()->GetStatInt(stat.first.c_str()));
+			const auto& statName = stat.second.GetName() + std::string(" ") + std::to_string(stat.second.GetInt());
 			renderEngine->DisplayText(statName, renderer::Sprite(1280 / 2 - 100, lastY, 200, 100), std::string("FreeSans_Stat") + statName, SDL_Color{255, 0, 0, 255});
 			lastY += offsetY;
 		}
