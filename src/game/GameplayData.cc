@@ -1,5 +1,4 @@
 #include "GameplayData.h"
-#include <iostream>
 
 namespace galaxy
 {
@@ -79,9 +78,9 @@ namespace gogtron
 			galaxy::api::Stats()->RequestUserStatsAndAchievements();
 			galaxy::api::Stats()->RequestLeaderboards();
 		}
-		catch (const galaxy::api::IError&)
+		catch (const galaxy::api::IError& error)
 		{
-			std::cerr << "Failed to retrieve user stats and achievements";
+			galaxy::api::Logger()->Error("Failed to retrieve user stats and achievements: %s", error.GetMsg());
 		}
 	}
 
@@ -150,7 +149,7 @@ namespace gogtron
 		}
 		catch (const galaxy::api::IError& error)
 		{
-			fprintf(stderr, "Error occurred during OnUserStatsAndAchievementsRetrieveSuccess execution, error=%s\n", error.GetMsg());
+			galaxy::api::Logger()->Error("Error occurred during OnUserStatsAndAchievementsRetrieveSuccess execution, error=%s\n", error.GetMsg());
 		}
 	}
 
@@ -174,7 +173,7 @@ namespace gogtron
 		}
 		catch (const galaxy::api::IError& error)
 		{
-			fprintf(stderr, "Error occurred during OnAchievementUnlocked execution, error=%s\n", error.GetMsg());
+			galaxy::api::Logger()->Error("Error occurred during OnAchievementUnlocked execution, error=%s\n", error.GetMsg());
 		}
 	}
 
@@ -232,7 +231,7 @@ namespace gogtron
 		}
 		catch (const galaxy::api::IError& error)
 		{
-			fprintf(stderr, "Error occurred during OnUserStatsAndAchievementsStoreSuccess execution, error=%s\n", error.GetMsg());
+			galaxy::api::Logger()->Error("Error occurred during OnUserStatsAndAchievementsStoreSuccess execution, error=%s\n", error.GetMsg());
 		}
 	}
 
@@ -274,7 +273,7 @@ namespace gogtron
 				Leaderboard::Entry entry;
 				galaxy::api::Stats()->GetRequestedLeaderboardEntry(i, entry.rank, entry.score, entry.userID);
 				const char* userName = galaxy::api::Friends()->GetFriendPersonaName(entry.userID);
-				fprintf(stdout, "[%u] user name=%s, userID=%llu, rank=%u, score=%d\n", i, userName, entry.userID.ToUint64(), entry.rank, entry.rank);
+				galaxy::api::Logger()->Info("[%u] user name=%s, userID=%llu, rank=%u, score=%d\n", i, userName, entry.userID.ToUint64(), entry.rank, entry.score);
 				entires.push_back(entry);
 			}
 
@@ -282,7 +281,7 @@ namespace gogtron
 		}
 		catch (const galaxy::api::IError& error)
 		{
-			fprintf(stderr, "Error occurred during OnLeaderboardEntriesRetrieveSuccess execution, error=%s", error.GetMsg());
+			galaxy::api::Logger()->Error("Error occurred during OnLeaderboardEntriesRetrieveSuccess execution, error=%s", error.GetMsg());
 		}
 	}
 

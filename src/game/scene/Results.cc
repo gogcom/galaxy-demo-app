@@ -108,7 +108,7 @@ bool Results::Update()
 		}
 		catch (const galaxy::api::IError& er)
 		{
-			auto msg = er.GetMsg();
+			galaxy::api::Logger()->Error("Failed to get user stats: ", er.GetMsg());
 		}
 	}
 
@@ -124,15 +124,22 @@ bool Results::Update()
 			}
 			catch (const galaxy::api::IError& er)
 			{
-				auto msg = er.GetMsg();
+				galaxy::api::Logger()->Error("Failed to set 'first_win' achievement: ", er.GetMsg());
 			}
 		}
 
 		{
-			const auto& achievement = achievements.find("quick_win");
-			const int quickWinTimeout = 15;
-			if (achievement != std::end(achievements) && !achievement->second.unlocked && game->GetGameManager().GetGameTime() < quickWinTimeout)
-				galaxy::api::Stats()->SetAchievement("quick_win");
+			try
+			{
+				const auto& achievement = achievements.find("quick_win");
+				const int quickWinTimeout = 15;
+				if (achievement != std::end(achievements) && !achievement->second.unlocked && game->GetGameManager().GetGameTime() < quickWinTimeout)
+					galaxy::api::Stats()->SetAchievement("quick_win");
+			}
+			catch (const galaxy::api::IError& er)
+			{
+				galaxy::api::Logger()->Error("Failed to set 'quick_win' achievement: ", er.GetMsg());
+			}
 		}
 
 		auto& stats = game->GetGameplayData().GetUserStatistics(galaxy::api::User()->GetGalaxyID());
@@ -145,7 +152,7 @@ bool Results::Update()
 			}
 			catch (const galaxy::api::IError& er)
 			{
-				auto msg = er.GetMsg();
+				galaxy::api::Logger()->Error("Failed to set stat 'win_count': ", er.GetMsg());
 			}
 		}
 
@@ -163,7 +170,7 @@ bool Results::Update()
 				}
 				catch (const galaxy::api::IError& er)
 				{
-					auto msg = er.GetMsg();
+					galaxy::api::Logger()->Error("Failed to set leaderboard score 'best_winners': ", er.GetMsg());
 				}
 			}
 		}
@@ -184,7 +191,7 @@ bool Results::Update()
 				}
 				catch (const galaxy::api::IError& er)
 				{
-					auto msg = er.GetMsg();
+					galaxy::api::Logger()->Error("Failed to set leaderboard score 'quickest_winners': ", er.GetMsg());
 				}
 			}
 		}
@@ -196,7 +203,7 @@ bool Results::Update()
 	}
 	catch (const galaxy::api::IError& er)
 	{
-		auto msg = er.GetMsg();
+		galaxy::api::Logger()->Error("Failed to store stats and achievements: ", er.GetMsg());
 	}
 
 	resultsStored = true;
