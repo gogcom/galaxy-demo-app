@@ -15,20 +15,6 @@ SinglePlayerView::SinglePlayerView(const IGamePtr& _game)
 
 bool SinglePlayerView::Init()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	backButton = std::make_shared<Button>(
 		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->SetGameState(GameState::State::START_MENU); });
@@ -78,24 +64,7 @@ bool SinglePlayerView::Update()
 
 bool SinglePlayerView::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	renderEngine->StartScene();
-
 	backButton->Display(renderEngine);
 
-	renderEngine->EndScene();
 	return true;
 }

@@ -35,6 +35,19 @@ namespace gogtron
 			GameState(const IGamePtr& _game)
 				: game(_game)
 			{
+				glViewport(0, 0, 1280, 720);
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
+
+				glClearColor(0.0, 0.0, 0.0, 0.0);
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
+
+				glEnable(GL_BLEND);
+				glEnable(GL_TEXTURE_2D);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			}
 
 			virtual ~GameState() = default;
@@ -48,9 +61,20 @@ namespace gogtron
 			virtual void OnLobbyEvent(const networking::LobbyEvent& lobbyEvent) = 0;
 
 			virtual bool Update() = 0;
-			virtual bool Display(const renderer::OGLRendererPtr& renderEngine) = 0;
+
+			virtual bool Render(const renderer::OGLRendererPtr& renderEngine) final
+			{
+				renderEngine->StartScene();
+
+				auto ret = Display(renderEngine);
+
+				renderEngine->EndScene();
+				return ret;
+			}
 
 		protected:
+
+			virtual bool Display(const renderer::OGLRendererPtr& renderEngine) = 0;
 
 			IGamePtr game;
 		};

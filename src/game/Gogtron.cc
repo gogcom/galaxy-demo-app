@@ -99,7 +99,7 @@ bool GogTron::Update()
 		CalculateFrameRate(deltaTime);
 
 		if (gameState && gameState->Update() && !stateChanged)
-			gameState->Display(renderEngine);
+			gameState->Render(renderEngine);
 
 		galaxy::api::ProcessData();
 	}
@@ -285,7 +285,6 @@ bool GogTron::InitFontTextures()
 
 void GogTron::InitGalaxy()
 {
-
 	try
 	{
 		galaxy::api::Init(CLIENT_ID, CLIENT_SECRET);

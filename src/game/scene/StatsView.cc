@@ -15,20 +15,6 @@ StatsView::StatsView(const IGamePtr& _game)
 
 bool StatsView::Init()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	guiElements.emplace_back(std::make_shared<Button>(
 		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->SetGameState(GameState::State::START_MENU); }));
@@ -81,22 +67,6 @@ bool StatsView::Update()
 
 bool StatsView::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	renderEngine->StartScene();
-
 	for (const auto& element : guiElements)
 	{
 		element->Display(renderEngine);
@@ -120,6 +90,5 @@ bool StatsView::Display(const renderer::OGLRendererPtr& renderEngine)
 		}
 	}
 
-	renderEngine->EndScene();
 	return true;
 }
