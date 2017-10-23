@@ -1,0 +1,155 @@
+@Library("lib-galaxy-jenkins-pipeline") _
+
+class Config implements Serializable {
+    String worker
+    String version
+    String galaxyDevKit
+    String pipelineTools
+    String pipelineBuilderBin
+}
+
+def downloadTools(config) {
+    fileOperations([
+        fileDownloadOperation(
+            url: "http://cdn.gog.com/open/galaxy/sdk/${GALAXY_SDK_VERSION}/Downloads/${config.galaxyDevKit}.tar.gz",
+            targetLocation: ".",
+            targetFileName: "devkit-galaxy-sdk.tar.gz",
+            userName: "",
+            password: ""
+        ),
+        fileUnTarOperation(
+            filePath: "devkit-galaxy-sdk.tar.gz",
+            isGZIP: true,
+            targetLocation: "."
+        ),
+
+        fileDownloadOperation(
+            url: "http://cdn.gog.com/open/galaxy/pipeline/${PIPELINE_TOOLS_VERSION}/${config.pipelineTools}.zip",
+            targetLocation: ".",
+            targetFileName: "pipeline-tools.zip",
+            userName: "",
+            password: ""
+        ),
+        fileUnZipOperation(
+            filePath: "pipeline-tools.zip",
+            targetLocation: "."
+        )
+    ])
+
+    if (config.worker == "macos") {
+        fileOperations([
+            fileUnZipOperation(
+                filePath: "${config.pipelineTools}/GOGGalaxyPipelineBuilder.zip",
+                targetLocation: "${config.pipelineTools}"
+            )
+        ])
+    }
+}
+
+def buildGame(config) {
+    run "cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGALAXY_SDK_ROOT='${config.galaxyDevKit}'"
+    run "cmake --build ."
+}
+
+def compileAndUploadGamePackage(config) {
+    withCredentials([
+        usernamePassword(
+            credentialsId: "devportal-galaxy-sdk",
+            usernameVariable: "devportalLogin",
+            passwordVariable: "devportalPassword"
+        ),
+        usernamePassword(
+            credentialsId: "devportal-demo-game-devel-branch",
+            usernameVariable: "develBranch",
+            passwordVariable: "develPassword"
+        )
+    ])
+    {
+        run "python -u  publishing/update_game_package.py --login=${devportalLogin} --password=${devportalPassword} --product_id=${PRODUCT_ID} \
+            --branch=${develBranch} --branch_password=${develPassword} --pipeline_builder=${config.pipelineBuilderBin} \
+            --galaxy_sdk_root=\"${config.galaxyDevKit}\" --version=${config.version}"
+    }
+}
+
+def parallelBuild(config) {
+    node(config.worker) {
+        stage("${config.worker}: Clean-up") {
+            deleteDir()
+            checkout scm
+        }
+        stage("${config.worker}: Download tools") {
+            downloadTools(config)
+        }
+        stage("${config.worker}: Build") {
+            buildGame(config)
+        }
+        stage("${config.worker}: Compile game package") {
+            compileAndUploadGamePackage(config)
+        }
+    }
+}
+
+// Actual work starts here
+
+properties([
+    disableConcurrentBuilds(),
+    parameters ([
+        string(name: "GIT_REFSPEC", defaultValue: "master", description: "Explicit Git SCM refspec to build"),
+        string(name: "PRODUCT_ID", defaultValue: "1445435418", description: "Base game product ID. See https://devportal.gog.com/panel/games"),
+        string(name: "GALAXY_SDK_VERSION", defaultValue: "1.112.1", description: "Galaxy SDK version used to compile the game"),
+        string(name: "PIPELINE_TOOLS_VERSION", defaultValue: "10.2.1.200", description: "GOG Galaxy Pipeline Tools version used to release the game. See https://devportal.gog.com/panel/components/pipeline"),
+        booleanParam(name: "ADD_TAG", defaultValue: true, description: "Tag sources after successful build")
+    ])
+])
+
+node("master") {
+    stage("Prepare") {
+        deleteDir()
+        checkout scm
+
+        version = run("python -u publishing/get_last_version_info.py publishing/changelog --version", true).trim()
+        if(ADD_TAG) {
+            // Make sure tag doesn't exists yet
+            tagExists = sh(script: "git tag -l | grep ${version}", returnStatus: true) == 0
+            if (tagExists) {
+                echo "Version ${version} already released."
+                return 1
+            }
+        }
+
+        parallel(
+            "windows": {
+                parallelBuild(
+                    new Config (
+                        worker: "windows",
+                        version: "${version}",
+                        galaxyDevKit: "DevelopmentKit_${GALAXY_SDK_VERSION}_Windows_MSVC18_32bit",
+                        pipelineTools: "GOGGalaxyPipelineTools_windows_${PIPELINE_TOOLS_VERSION}",
+                        pipelineBuilderBin: "GOGGalaxyPipelineTools_windows_${PIPELINE_TOOLS_VERSION}/GOGGalaxyPipelineBuilder.exe"
+                    )
+                )
+            },
+            "macos": {
+                parallelBuild(
+                    new Config (
+                        worker: "macos",
+                        version: "${version}",
+                        galaxyDevKit: "DevelopmentKit_${GALAXY_SDK_VERSION}_Darwin_universal",
+                        pipelineTools: "GOGGalaxyPipelineTools_osx_${PIPELINE_TOOLS_VERSION}",
+                        pipelineBuilderBin: "GOGGalaxyPipelineTools_osx_${PIPELINE_TOOLS_VERSION}/GOGGalaxyPipelineBuilder"
+                    )
+                )
+            },
+            failFast: true
+        )
+
+        if(ADD_TAG) {
+            stage("Tag sources") {
+                comment = run("python -u publishing/get_last_version_info.py publishing/changelog --comment", true).trim()
+
+                run "git tag -a '${version}' -m '${comment}'"
+                run "git push --tags"
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+	"hint": "Add newer versions to the top",
+	"versions": [
+		{
+			"version": "0.1.0",
+			"comment": "Make game DRM-free"
+		},
+		{
+			"version": "0.0.4",
+			"comment": "Add remote storage menu"
+		}
+	]
+}
