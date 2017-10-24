@@ -1,5 +1,5 @@
-set (GALAXY_PATHS	${GALAXY_ROOT}
-					$ENV{GALAXY_ROOT}
+set (GALAXY_PATHS	${GALAXY_SDK_ROOT}
+					$ENV{GALAXY_SDK_ROOT}
 					~/Library/Frameworks
 					/Library/Frameworks
 					/usr/local
