@@ -3,33 +3,36 @@
 
 #include "GUIElement.h"
 
-namespace gogtron::system
+namespace gogtron
 {
-
-	class Button : public GUIElement
+	namespace system
 	{
-	public:
 
-		Button(
-			const std::string& caption,
-			uint32_t x,
-			uint32_t y,
-			uint32_t width,
-			uint32_t height,
-			const GUINotification& _action);
+		class Button : public GUIElement
+		{
+		public:
 
-		virtual void OnMouseDown(std::uint32_t x, std::uint32_t y) override;
-		virtual void OnMouseMotion(std::uint32_t x, std::uint32_t y) override;
-		virtual void Display(const renderer::RendererPtr& renderEngine) override;
+			Button(
+				const std::string& caption,
+				uint32_t x,
+				uint32_t y,
+				uint32_t width,
+				uint32_t height,
+				const GUINotification& _action);
 
-	private:
+			virtual void OnMouseDown(std::uint32_t x, std::uint32_t y) override;
+			virtual void OnMouseMotion(std::uint32_t x, std::uint32_t y) override;
+			virtual void Display(const renderer::RendererPtr& renderEngine) override;
 
-		const std::string caption;
-		const uint32_t x, y, width, height;
-		std::string currentDisplayedTextureName;
-		const std::string secondTextureName;
-	};
+		private:
 
+			const std::string caption;
+			const uint32_t x, y, width, height;
+			std::string currentDisplayedTextureName;
+			const std::string secondTextureName;
+		};
+
+	}
 }
 
 #endif
