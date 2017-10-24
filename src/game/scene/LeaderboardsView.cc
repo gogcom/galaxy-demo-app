@@ -33,7 +33,15 @@ bool LeaderboardsView::Init()
 		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]() { game->SetGameState(GameState::State::START_MENU); }));
 
-	leaderboardsRequested = false;
+	try
+	{
+		galaxy::api::Stats()->RequestLeaderboards();
+	}
+	catch (const galaxy::api::IError&)
+	{
+		errorMessage = "Failed to get leaderboards";
+	}
+
 	leaderboardEntriesRequested = false;
 
 	return true;
@@ -70,20 +78,7 @@ void LeaderboardsView::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 
 bool LeaderboardsView::Update()
 {
-	if (!leaderboardsRequested)
-	{
-		try
-		{
-			galaxy::api::Stats()->RequestLeaderboards();
-		}
-		catch (const galaxy::api::IError&)
-		{
-			errorMessage = "Failed to get leaderboards";
-		}
-
-		leaderboardsRequested = true;
-	}
-	else if (leaderboardsRequested && !leaderboardEntriesRequested)
+	if (!leaderboardEntriesRequested)
 	{
 		const auto& leaderboards = game->GetGameplayData().GetLeaderboards();
 		for (const auto& leaderboard : leaderboards)

@@ -29,7 +29,6 @@ namespace gogtron
 
 		private:
 
-			bool statsRequested;
 			std::string errorMessage;
 			std::vector<system::GUIElementPtr> guiElements;
 		};
