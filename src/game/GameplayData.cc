@@ -13,8 +13,6 @@ namespace gogtron
 {
 
 	GameplayData::GameplayData()
-		: wereStatsAndAchievementsRequested(false)
-		, wereLeaderboardsRequested(false)
 	{
 	}
 
@@ -240,8 +238,7 @@ namespace gogtron
 	{
 	}
 
-	GameplayData::LeaderboardsRetrieveListener::LeaderboardsRetrieveListener(GameplayData& _gameplayData)
-		: gameplayData(_gameplayData)
+	GameplayData::LeaderboardsRetrieveListener::LeaderboardsRetrieveListener(GameplayData& /*_gameplayData*/)
 	{
 	}
 

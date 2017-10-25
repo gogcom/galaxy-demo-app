@@ -16,8 +16,8 @@ namespace gogtron
 
 			Game(const IGamePtr& _game);
 
-			virtual bool Init();
-			virtual bool Release();
+			virtual bool Init() override;
+			virtual bool Release() override;
 
 			virtual void OnMouseDown(std::uint32_t x, std::uint32_t y) override;
 			virtual void OnMouseMotion(std::uint32_t x, std::uint32_t y) override;

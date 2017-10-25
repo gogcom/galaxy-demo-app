@@ -90,10 +90,6 @@ namespace gogtron
 			virtual void OnLeaderboardsRetrieveSuccess() override;
 
 			virtual void OnLeaderboardsRetrieveFailure(FailureReason failureReason) override;
-
-		private:
-
-			GameplayData& gameplayData;
 		};
 
 		class LeaderboardEntriesRetrieveListener : public galaxy::api::GlobalLeaderboardEntriesRetrieveListener
@@ -127,9 +123,6 @@ namespace gogtron
 		};
 
 		std::vector<std::unique_ptr<galaxy::api::IGalaxyListener>> listeners;
-
-		bool wereStatsAndAchievementsRequested;
-		bool wereLeaderboardsRequested;
 
 		UsersAchievements usersAchievements;
 		UsersStatistics usersStatistics;

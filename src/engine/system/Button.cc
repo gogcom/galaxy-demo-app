@@ -10,7 +10,6 @@ namespace gogtron
 		namespace
 		{
 
-			constexpr uint32_t CAPTION_INDENTATION = 20;
 			constexpr uint32_t CAPTION_GLYPH_HIEGHT = 50;
 			constexpr uint32_t CAPTION_GLYPH_WIDTH = 18;
 
@@ -58,9 +57,9 @@ namespace gogtron
 			renderEngine->DisplayText(
 				caption,
 				renderer::Sprite{
-				x + (width - caption.length() * CAPTION_GLYPH_WIDTH) / 2,
-				y + (height - CAPTION_GLYPH_HIEGHT) / 2,
-				caption.length() * CAPTION_GLYPH_WIDTH,
+				static_cast<uint32_t>(x + (width - caption.length() * CAPTION_GLYPH_WIDTH) / 2),
+				static_cast<uint32_t>(y + (height - CAPTION_GLYPH_HIEGHT) / 2),
+				static_cast<uint32_t>(caption.length() * CAPTION_GLYPH_WIDTH),
 				CAPTION_GLYPH_HIEGHT
 			},
 				"FreeSans_" + caption,

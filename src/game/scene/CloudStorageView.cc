@@ -103,6 +103,8 @@ namespace gogtron
 					}
 					break;
 				}
+				case IGame::FileSharingStatus::SHARED:
+					break;
 				case IGame::FileSharingStatus::FAILED:
 					errorMessage = "Failed to download shared files";
 					break;
