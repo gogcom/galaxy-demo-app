@@ -12,9 +12,11 @@ namespace gogtron
 
 		enum class GalaxyStatus
 		{
-			NotInitialized = 0b001,
-			Offline = 0b010,
-			SignedIn = 0b100,
+			NotInitialized  = 0b0001, // Galaxy Peer has not been fully initialized
+			SignedOff       = 0b0010, // Galaxy Peer initialized, but user is not yet authenticated
+			SignedInOffline = 0b0100, // User has been successfully signed in locally to Galaxy Service, but not yet logged on to Galaxy backend services
+			SignedInOnline  = 0b1000, // User successfully authorized on Galaxy backend services
+			Any             = 0b1111
 		};
 
 		inline GalaxyStatus operator|(GalaxyStatus a, GalaxyStatus b)
@@ -24,9 +26,6 @@ namespace gogtron
 
 		inline bool operator&(GalaxyStatus a, GalaxyStatus b)
 		{
-			auto aa = static_cast<int>(a);
-			auto bb = static_cast<int>(b);
-			auto r = a | b;
 			return (static_cast<int>(a) & static_cast<int>(b)) != 0;
 		}
 
