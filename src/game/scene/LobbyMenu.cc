@@ -17,20 +17,6 @@ LobbyMenu::LobbyMenu(const IGamePtr& _game)
 
 bool LobbyMenu::Init()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	guiElements.emplace_back(std::make_shared<Button>(
 		"CREATE LOBBY", 1280 / 2 - 150, 100, 300, 100,
 		[&]()
@@ -116,22 +102,6 @@ bool LobbyMenu::Update()
 
 bool LobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	renderEngine->StartScene();
-
 	for (const auto& element : guiElements)
 	{
 		element->Display(renderEngine);
@@ -142,6 +112,5 @@ bool LobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 		renderEngine->DisplayText(errorMessage.c_str(), renderer::Sprite(50, 100, 300, 100), "LobbyMenuErrorMessage", SDL_Color{255, 0, 0, 255});
 	}
 
-	renderEngine->EndScene();
 	return true;
 }

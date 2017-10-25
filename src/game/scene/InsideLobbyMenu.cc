@@ -18,20 +18,6 @@ InsideLobbyMenu::InsideLobbyMenu(const IGamePtr& _game)
 
 bool InsideLobbyMenu::Init()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	guiElements.emplace_back(std::make_shared<Button>(
 		"PLAY", 1280 / 2 - 150, 100, 300, 100,
 		[&]()
@@ -144,20 +130,6 @@ void InsideLobbyMenu::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 
 bool InsideLobbyMenu::Update()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	const auto& server = game->GetServer();
 	if (server)
 	{
@@ -189,8 +161,6 @@ bool InsideLobbyMenu::Update()
 
 bool InsideLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	renderEngine->StartScene();
-
 	for (const auto& element : guiElements)
 	{
 		element->Display(renderEngine);
@@ -207,6 +177,5 @@ bool InsideLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 		lastY += offsetY;
 	}
 
-	renderEngine->EndScene();
 	return true;
 }
