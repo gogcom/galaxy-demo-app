@@ -4,7 +4,6 @@
 
 #if defined(_WIN32)
 #include <shellapi.h>
-#include <cstdio>
 #endif
 
 using namespace gogtron;
