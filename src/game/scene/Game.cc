@@ -82,26 +82,22 @@ void Game::OnKeyDown(SDL_Keysym key)
 			if (client)
 			{
 				const auto& gameManager = game->GetGameManager();
-				switch (gameManager.GetClientState())
+				if (gameManager.GetClientState() == GameManager::ClientState::GAME)
 				{
-					case GameManager::ClientState::GAME:
-					{
-						const auto& localPlayer = gameManager.GetLocalPlayer();
-						const auto& playerDirection = localPlayer->GetDirection();
-						glm::vec2 newPlayerDirection;
+					const auto& localPlayer = gameManager.GetLocalPlayer();
+					const auto& playerDirection = localPlayer->GetDirection();
+					glm::vec2 newPlayerDirection;
 
-						if (playerDirection.x > 0)
-							newPlayerDirection = glm::vec2(0, -1);
-						else if (playerDirection.x < 0)
-							newPlayerDirection = glm::vec2(0, 1);
-						else if (playerDirection.y > 0)
-							newPlayerDirection = glm::vec2(1, 0);
-						else if (playerDirection.y < 0)
-							newPlayerDirection = glm::vec2(-1, 0);
+					if (playerDirection.x > 0)
+						newPlayerDirection = glm::vec2(0, -1);
+					else if (playerDirection.x < 0)
+						newPlayerDirection = glm::vec2(0, 1);
+					else if (playerDirection.y > 0)
+						newPlayerDirection = glm::vec2(1, 0);
+					else if (playerDirection.y < 0)
+						newPlayerDirection = glm::vec2(-1, 0);
 
-						client->SendUpdateDirectionToServer(newPlayerDirection);
-					}
-					break;
+					client->SendUpdateDirectionToServer(newPlayerDirection);
 				}
 			}
 		}
@@ -113,26 +109,22 @@ void Game::OnKeyDown(SDL_Keysym key)
 			if (client)
 			{
 				const auto& gameManager = game->GetGameManager();
-				switch (gameManager.GetClientState())
+				if (gameManager.GetClientState() == GameManager::ClientState::GAME)
 				{
-					case GameManager::ClientState::GAME:
-					{
-						const auto& localPlayer = gameManager.GetLocalPlayer();
-						const auto& playerDirection = localPlayer->GetDirection();
-						glm::vec2 newPlayerDirection;
+					const auto& localPlayer = gameManager.GetLocalPlayer();
+					const auto& playerDirection = localPlayer->GetDirection();
+					glm::vec2 newPlayerDirection;
 
-						if (playerDirection.x > 0)
-							newPlayerDirection = glm::vec2(0, 1);
-						else if (playerDirection.x < 0)
-							newPlayerDirection = glm::vec2(0, -1);
-						else if (playerDirection.y > 0)
-							newPlayerDirection = glm::vec2(-1, 0);
-						else if (playerDirection.y < 0)
-							newPlayerDirection = glm::vec2(1, 0);
+					if (playerDirection.x > 0)
+						newPlayerDirection = glm::vec2(0, 1);
+					else if (playerDirection.x < 0)
+						newPlayerDirection = glm::vec2(0, -1);
+					else if (playerDirection.y > 0)
+						newPlayerDirection = glm::vec2(-1, 0);
+					else if (playerDirection.y < 0)
+						newPlayerDirection = glm::vec2(1, 0);
 
-						client->SendUpdateDirectionToServer(newPlayerDirection);
-					}
-					break;
+					client->SendUpdateDirectionToServer(newPlayerDirection);
 				}
 			}
 		}
@@ -145,20 +137,11 @@ void Game::OnKeyDown(SDL_Keysym key)
 
 void Game::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 {
-	switch (lobbyEvent)
+	if (lobbyEvent == LobbyEvent::LOBBY_MEMBER_LEFT
+		&& game->GetLobby()->GetLobbyMembers().size() <= 1
+		&& game->GetServer())
 	{
-		case LobbyEvent::LOBBY_MEMBER_LEFT:
-		{
-			if (game->GetLobby()->GetLobbyMembers().size() <= 1)
-			{
-				if (game->GetServer())
-				{
-					if (!game->GetServer()->SendGameResults(game->GetGameManager().GetPlayers(), std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime))
-						return;
-				}
-			}
-		}
-		break;
+		game->GetServer()->SendGameResults(game->GetGameManager().GetPlayers(), std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime);
 	}
 }
 
@@ -194,6 +177,9 @@ bool Game::Update()
 
 			case GameManager::ClientState::RESULT:
 				game->SetGameState(GameState::State::IN_LOBBY_MENU);
+				break;
+
+			default:
 				break;
 		}
 	}
