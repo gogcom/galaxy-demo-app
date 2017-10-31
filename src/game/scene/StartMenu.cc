@@ -52,21 +52,28 @@ bool StartMenu::Init()
 	GUIElementPtr statsButton(std::make_shared<Button>(
 		"button",
 		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 200, 300, 100),
+		renderer::Sprite(1280 / 2 - 150, 175, 300, 100),
 		[&]() { game->SetGameState(GameState::State::STATS_VIEW); }));
 	guiElements.push_back(statsButton);
 
 	GUIElementPtr leaderboardsButton(std::make_shared<Button>(
 		"button",
 		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 350, 300, 100),
+		renderer::Sprite(1280 / 2 - 150, 300, 300, 100),
 		[&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }));
 	guiElements.push_back(leaderboardsButton);
+
+	GUIElementPtr remoteStorageButton(std::make_shared<Button>(
+		"button",
+		"selectedbutton",
+		renderer::Sprite(1280 / 2 - 150, 425, 300, 100),
+		[&]() { game->SetGameState(GameState::State::REMOTE_STORAGE_VIEW); }));
+	guiElements.push_back(remoteStorageButton);
 
 	GUIElementPtr quitButton(std::make_shared<Button>(
 		"button",
 		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
+		renderer::Sprite(1280 / 2 - 150, 550, 300, 100),
 		/*Sprite(400, 400, 400, 224),*/
 		[&](){ game->Close(); }));
 
@@ -149,9 +156,10 @@ bool StartMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 	}
 
 	renderEngine->DisplayText("PLAY", renderer::Sprite(1280 / 2 - 50, 50, 100, 100), "FreeSans_Play", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("STATS", renderer::Sprite(1280 / 2 - 50, 200, 100, 100), "FreeSans_Stats", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("LEADERBOARDS", renderer::Sprite(1280 / 2 - 100, 350, 200, 100), "FreeSans_Leaderboards", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("QUIT", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Quit", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("STATS", renderer::Sprite(1280 / 2 - 50, 175, 100, 100), "FreeSans_Stats", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("LEADERBOARDS", renderer::Sprite(1280 / 2 - 100, 300, 200, 100), "FreeSans_Leaderboards", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("REMOTE STORAGE", renderer::Sprite(1280 / 2 - 100, 425, 200, 100), "FreeSans_RemoteStorage", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("QUIT", renderer::Sprite(1280 / 2 - 50, 550, 100, 100), "FreeSans_Quit", SDL_Color{ 255, 0, 0, 255 });
 	renderEngine->EndScene();
 	return true;
 }

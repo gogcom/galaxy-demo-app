@@ -57,14 +57,14 @@ bool LobbyMenu::Init()
 
 		try
 		{
-			galaxy::api::Matchmaking()->CreateLobby(galaxy::api::LOBBY_TYPE_PUBLIC, 4);
+			galaxy::api::Matchmaking()->CreateLobby(galaxy::api::LOBBY_TYPE_PUBLIC, 4, true, galaxy::api::LOBBY_TOPOLOGY_TYPE_FCM_OWNERSHIP_TRANSITION);
 		}
 		catch (const galaxy::api::IError& error)
 		{
 			return;
 		}
 
-		game->SetGameState(GameState::State::IN_LOBBY_MENU); 
+		game->SetGameState(GameState::State::IN_LOBBY_MENU);
 	}));
 
 	guiElements.push_back(createLobbyButton);
