@@ -151,5 +151,25 @@ node("master") {
                 run "git push --tags"
             }
         }
+
+        stage("Push to github") {
+            commitMessage = run("python -u publishing/get_last_version_info.py publishing/changelog", true).trim()
+
+            sh "git remote add github git@github.com:gogcom/galaxy-demo-app.git"
+            sh "git fetch --depth 1 github"
+            sh "git checkout github/master"
+
+            // create patch against master since last local commit(last release)
+            sh "git diff HEAD origin/master | git apply"
+
+            // remove files we do not want to be public
+            sh "rm -f publishing"
+
+            // commit as a whole and push it to github and gerrit
+            sh "git add ."
+            sh "git commit -m '${commitMessage}'"
+
+            sh "git push github HEAD:master"
+        }
     }
 }
