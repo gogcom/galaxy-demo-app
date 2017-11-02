@@ -2,10 +2,24 @@ cmake_minimum_required(VERSION 3.1)
 
 project (gogtron)
 
-
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-include (Local.cmake)
+if(EXISTS "Local.cmake")
+	include (Local.cmake)
+endif()
+
+if (APPLE)
+	set (DEPENDENCY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dep/osx)
+else()
+	set (DEPENDENCY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dep/win)
+endif()
+
+set (SDL2DIR "${DEPENDENCY_DIR}/SDL2")
+set (SDL2IMAGEDIR "${DEPENDENCY_DIR}/SDL2_image")
+set (SDL2TTFDIR "${DEPENDENCY_DIR}/SDL2_ttf")
+set (GLEW_DIR "${DEPENDENCY_DIR}//glew")
+set (GLM_ROOT_DIR "${DEPENDENCY_DIR}/glm")
+set (JSONCPP_ROOT "${DEPENDENCY_DIR}/jsoncpp")
 
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 set (INSTALL_DIR ${CMAKE_SOURCE_DIR}/output CACHE STRING "Instalation path")
@@ -72,9 +86,9 @@ endif()
 include_directories(${JSONCPP_INCLUDE_DIR})
 
 if (MSVC)
-	add_definitions(/MP)
+	add_definitions(/MP /std:c++latest)
 else()
-	add_definitions(-std=c++1z -g -Wall)
+	add_definitions(-std=c++1z -g -Wall -Wno-unused-function)
 endif()
 
 add_subdirectory (src)
@@ -103,7 +117,7 @@ add_subdirectory (src)
 				FILES_MATCHING PATTERN "*.dll"
 			)
 			install(
-				DIRECTORY "${GALAXY_ROOT}/Libraries/"
+				DIRECTORY "${GALAXY_SDK_ROOT}/Libraries/"
 				DESTINATION "${INSTALL_DIR}"
 				FILES_MATCHING PATTERN "Galaxy.dll"
 			)
@@ -114,7 +128,7 @@ add_subdirectory (src)
 		)
 	else()
 		install(
-			DIRECTORY "${GALAXY_ROOT}/Libraries/"
+			DIRECTORY "${GALAXY_SDK_ROOT}/Libraries/"
 			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Frameworks"
 			FILES_MATCHING PATTERN "libGalaxy.dylib"
 		)

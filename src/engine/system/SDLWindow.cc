@@ -44,7 +44,7 @@ bool SDLWindow::Init()
 bool SDLWindow::Release()
 {
 	ReleaseOpenGL();
-	
+
 	SDL_DestroyWindow(handle);
 	SDL_Quit();
 	return true;

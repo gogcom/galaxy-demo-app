@@ -6,21 +6,21 @@
 
 namespace gogtron
 {
-    namespace serialize
-    {
+	namespace serialize
+	{
 
-        class JsonSerializer
-        {
-        public:
+		class JsonSerializer
+		{
+		public:
 
-            JsonSerializer() = delete;
-            JsonSerializer(const JsonSerializer&) = delete;
+			JsonSerializer() = delete;
+			JsonSerializer(const JsonSerializer&) = delete;
 
-            static bool Serialize(JsonSerializable* object, std::string& output);
-            static bool Deserialize(JsonSerializable* object, const std::string& input);
-        };
+			static bool Serialize(JsonSerializable* object, std::string& output);
+			static bool Deserialize(JsonSerializable* object, const std::string& input);
+		};
 
-    }
+	}
 }
 
 #endif

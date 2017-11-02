@@ -6,6 +6,14 @@
 #include <galaxy/GalaxyApi.h>
 #include <vector>
 
+namespace galaxy
+{
+	namespace api
+	{
+		extern bool IsFullyInitialized;
+	}
+}
+
 namespace gogtron
 {
 
@@ -18,6 +26,7 @@ namespace gogtron
 		GogTron(const renderer::OGLRendererPtr& renderEngine);
 
 		virtual bool Init(int argc, char** argv) override;
+
 		virtual bool Release() override;
 		virtual bool Update() override;
 
@@ -58,110 +67,42 @@ namespace gogtron
 			std::shared_ptr<GogTron> game;
 		};
 
-		class UserStatsAndAchievementsRetrieveListener : public galaxy::api::GlobalUserStatsAndAchievementsRetrieveListener
+		class FileShareListener : public galaxy::api::GlobalFileShareListener
 		{
 		public:
 
-			UserStatsAndAchievementsRetrieveListener(const std::shared_ptr<GogTron>& game);
+			FileShareListener(const std::shared_ptr<GogTron>& game);
 
-			virtual void OnUserStatsAndAchievementsRetrieveSuccess(galaxy::api::GalaxyID userID) override;
+			virtual void OnFileShareSuccess(const char* fileName, galaxy::api::SharedFileID sharedFileID) override;
 
-			virtual void OnUserStatsAndAchievementsRetrieveFailure(galaxy::api::GalaxyID userID, FailureReason failureReason) override;
+			virtual void OnFileShareFailure(const char* fileName, FailureReason failureReason) override;
 
 		private:
 
 			std::shared_ptr<GogTron> game;
 		};
 
-		class AchievementChangeListener : public galaxy::api::GlobalAchievementChangeListener
+		class SharedFileDownloadListener : public galaxy::api::GlobalSharedFileDownloadListener
 		{
 		public:
 
-			AchievementChangeListener(const std::shared_ptr<GogTron>& game);
+			SharedFileDownloadListener(const std::shared_ptr<GogTron>& game);
 
-			virtual void OnAchievementUnlocked(const char* name) override;
+			virtual void OnSharedFileDownloadSuccess(galaxy::api::SharedFileID sharedFileID, const char* fileName) override;
+
+			virtual void OnSharedFileDownloadFailure(galaxy::api::SharedFileID sharedFileID, FailureReason failureReason) override;
 
 		private:
 
 			std::shared_ptr<GogTron> game;
 		};
 
-		class StatsAndAchievementsStoreListener : public galaxy::api::GlobalStatsAndAchievementsStoreListener
-		{
-		public:
+		bool InitFontTextures();
 
-			StatsAndAchievementsStoreListener(const std::shared_ptr<GogTron>& game);
+		void InitGalaxy();
 
-			virtual void OnUserStatsAndAchievementsStoreSuccess() override;
+		void InitListeners();
 
-			virtual void OnUserStatsAndAchievementsStoreFailure(FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
-		class LeaderboardsRetrieveListener : public galaxy::api::GlobalLeaderboardsRetrieveListener
-		{
-		public:
-
-			LeaderboardsRetrieveListener(const std::shared_ptr<GogTron>& game);
-
-			virtual void OnLeaderboardsRetrieveSuccess() override;
-
-			virtual void OnLeaderboardsRetrieveFailure(FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
-		class LeaderboardEntriesRetrieveListener : public galaxy::api::GlobalLeaderboardEntriesRetrieveListener
-		{
-		public:
-
-			LeaderboardEntriesRetrieveListener(const std::shared_ptr<GogTron>& game);
-
-			virtual void OnLeaderboardEntriesRetrieveSuccess(const char* name, uint32_t entryCount) override;
-
-			virtual void OnLeaderboardEntriesRetrieveFailure(const char* name, FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
-		class LeaderboardScoreUpdateListener : public galaxy::api::GlobalLeaderboardScoreUpdateListener
-		{
-		public:
-
-			LeaderboardScoreUpdateListener(const std::shared_ptr<GogTron>& game);
-
-			virtual void OnLeaderboardScoreUpdateSuccess(const char* name, int32_t score, uint32_t oldRank, uint32_t newRank) override;
-
-			virtual void OnLeaderboardScoreUpdateFailure(const char* name, int32_t score, FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
-		class StorageSynchronizeListener : public galaxy::api::GlobalStorageSynchronizationListener
-		{
-		public:
-
-			StorageSynchronizeListener(const std::shared_ptr<GogTron>& game);
-
-			virtual void OnStorageSynchronizationSuccess() override;
-
-			virtual void OnStorageSynchronizationFailure(FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
-		bool InitGalaxy();
 		bool ReleaseGalaxy();
 
 		bool AnimateNextFrame(std::uint32_t fps, float& globalDeltaTime);

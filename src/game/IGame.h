@@ -21,7 +21,8 @@ namespace gogtron
 
 		IGame()
 			: closeRequested(false)
-			, storageSynchronizationStatus(NOT_SYNCHRONIZED)
+			, currentGameState(scene::GameState::State::INIT_FAILED_VIEW)
+			, fileSharingStatus(FileSharingStatus::FAILED)
 		{
 		}
 
@@ -36,35 +37,72 @@ namespace gogtron
 		virtual void OnKeyDown(SDL_Keysym key) = 0;
 		virtual void OnLobbyEvent(const networking::LobbyEvent& lobbyEvent) = 0;
 
-		scene::GameState::State GetGameState() const { return currentGameState; }
-		virtual bool SetGameState(const scene::GameState::State& state) = 0;
-		void SetLobby(const networking::ILobbyPtr& _lobby) { lobby = _lobby; }
-		const networking::ILobbyPtr& GetLobby() const { return lobby; }
-
-		void SetServer(const networking::IServerPtr& _server) { server = _server; }
-		const networking::IServerPtr& GetServer() const { return server; }
-
-		void SetClient(const networking::IClientPtr& _client) { client = _client; }
-		const networking::IClientPtr& GetClient() const { return client; }
-
-		GameManager& GetGameManager() { return gameManager; }
-
-		GameplayData& GetGameplayData() { return gameplayData; }
-
-		enum SynchronizationStatus {
-			NOT_SYNCHRONIZED,
-			SYNCHRONIZED,
-			NO_CONNECTION,
-			SYNCHRONIZATION_ERROR
-		};
-		SynchronizationStatus GetStorageSynchronizationStatus() const { return storageSynchronizationStatus; }
-		void SetStorageSynchronizationStatus(SynchronizationStatus _storageSynchronizationStatus)
+		scene::GameState::State GetGameState() const
 		{
-			storageSynchronizationStatus = _storageSynchronizationStatus;
+			return currentGameState;
+		}
+		virtual bool SetGameState(const scene::GameState::State& state) = 0;
+		void SetLobby(const networking::ILobbyPtr& _lobby)
+		{
+			lobby = _lobby;
+		}
+		const networking::ILobbyPtr& GetLobby() const
+		{
+			return lobby;
 		}
 
-		void Close() { closeRequested = true; }
-		bool IsRunning() const { return !closeRequested; }
+		void SetServer(const networking::IServerPtr& _server)
+		{
+			server = _server;
+		}
+		const networking::IServerPtr& GetServer() const
+		{
+			return server;
+		}
+
+		void SetClient(const networking::IClientPtr& _client)
+		{
+			client = _client;
+		}
+		const networking::IClientPtr& GetClient() const
+		{
+			return client;
+		}
+
+		GameManager& GetGameManager()
+		{
+			return gameManager;
+		}
+
+		GameplayData& GetGameplayData()
+		{
+			return gameplayData;
+		}
+
+		enum class FileSharingStatus
+		{
+			FAILED,
+			SHARED,
+			DOWNLOADED
+		};
+
+		FileSharingStatus GetStorageSynchronizationStatus() const
+		{
+			return fileSharingStatus;
+		}
+		void SetStorageSynchronizationStatus(FileSharingStatus _storageSynchronizationStatus)
+		{
+			fileSharingStatus = _storageSynchronizationStatus;
+		}
+
+		void Close()
+		{
+			closeRequested = true;
+		}
+		bool IsRunning() const
+		{
+			return !closeRequested;
+		}
 
 	protected:
 
@@ -77,7 +115,7 @@ namespace gogtron
 		networking::IClientPtr client;
 		GameManager gameManager;
 		GameplayData gameplayData;
-		SynchronizationStatus storageSynchronizationStatus;
+		FileSharingStatus fileSharingStatus;
 	};
 
 	using IGamePtr = std::shared_ptr<IGame>;

@@ -7,28 +7,28 @@
 
 namespace gogtron
 {
-    namespace message
-    {
+	namespace message
+	{
 
-        class UpdateDirection : public serialize::JsonSerializable
-        {
-        public:
+		class UpdateDirection : public serialize::JsonSerializable
+		{
+		public:
 
-            UpdateDirection();
-            UpdateDirection(const glm::vec2& direction);
+			UpdateDirection();
+			UpdateDirection(const glm::vec2& direction);
 
-            virtual bool Serialize(Json::Value& root);
-            virtual bool Deserialize(Json::Value& root);
+			virtual bool Serialize(Json::Value& root);
+			virtual bool Deserialize(Json::Value& root);
 
-            const glm::vec2& GetDirection() const;
+			const glm::vec2& GetDirection() const;
 
-        private:
+		private:
 
-            glm::vec2 direction;
-            static std::string type;
-        };
+			glm::vec2 direction;
+			static std::string type;
+		};
 
-    }
+	}
 }
 
 #endif

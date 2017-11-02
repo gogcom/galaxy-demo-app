@@ -19,7 +19,7 @@ namespace gogtron
 			virtual bool RetrievedReadyFromEachClient() const override;
 			virtual bool SendInitGame() override;
 			virtual bool SendGameTick(const std::vector<PlayerPtr>& players) override;
-			virtual bool SendGameResults(const std::vector<PlayerPtr>& players, int gameTime) override;
+			virtual bool SendGameResults(const std::vector<PlayerPtr>& players, uint64_t gameTime) override;
 
 		private:
 

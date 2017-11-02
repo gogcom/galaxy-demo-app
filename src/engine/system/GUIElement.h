@@ -21,8 +21,8 @@ namespace gogtron
 
 			GUIElement(const std::string& _textureName, const renderer::Sprite& _sprite, const GUINotification& _guiNotification)
 				: textureName(_textureName)
-				, sprite(_sprite)
 				, guiNotification(_guiNotification)
+				, sprite(_sprite)
 			{
 			}
 
@@ -31,7 +31,10 @@ namespace gogtron
 
 			virtual void Display(const renderer::RendererPtr& renderEngine) = 0;
 
-			const renderer::Sprite& GetSprite() const { return sprite; }
+			const renderer::Sprite& GetSprite() const
+			{
+				return sprite;
+			}
 
 		protected:
 

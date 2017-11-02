@@ -38,8 +38,14 @@ namespace gogtron
 
 			virtual std::string GetConnectionString() const = 0;
 
-			const galaxy::api::GalaxyID& GetLobbyID() const { return lobbyID; }
-			const std::vector<galaxy::api::GalaxyID>& GetLobbyMembers() const { return lobbyMembers; }
+			const galaxy::api::GalaxyID& GetLobbyID() const
+			{
+				return lobbyID;
+			}
+			const std::vector<galaxy::api::GalaxyID>& GetLobbyMembers() const
+			{
+				return lobbyMembers;
+			}
 
 		protected:
 

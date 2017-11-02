@@ -19,8 +19,8 @@ namespace gogtron
 
 			JoinLobbyMenu(const IGamePtr& _game);
 
-			virtual bool Init();
-			virtual bool Release();
+			virtual bool Init() override;
+			virtual bool Release() override;
 
 			virtual void OnMouseDown(std::uint32_t x, std::uint32_t y) override;
 			virtual void OnMouseMotion(std::uint32_t x, std::uint32_t y) override;
@@ -35,7 +35,7 @@ namespace gogtron
 			virtual void OnLobbyList(uint32_t lobbyCount, bool ioFailure) override;
 
 			system::GUIElementPtr backButton;
-			std::vector<std::pair<system::GUIElementPtr, std::string>> guiElements;
+			std::vector<system::GUIElementPtr> guiElements;
 			bool anyLobbies;
 		};
 

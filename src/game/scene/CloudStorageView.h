@@ -1,20 +1,20 @@
-#ifndef GOGTRON_SCENE_GAME_H
-#define GOGTRON_SCENE_GAME_H
+#ifndef GOGTRON_SCENE_CLOUD_STORAGE_VIEW_H
+#define GOGTRON_SCENE_CLOUD_STORAGE_VIEW_H
 
 #include "GameState.h"
-#include <game/GameManager.h>
-#include <engine/renderer/Camera.h>
+#include <engine/system/GUIElement.h>
+#include <vector>
 
 namespace gogtron
 {
 	namespace scene
 	{
 
-		class Game : public GameState
+		class CloudStorageView : public GameState
 		{
 		public:
 
-			Game(const IGamePtr& _game);
+			CloudStorageView(const IGamePtr& _game);
 
 			virtual bool Init() override;
 			virtual bool Release() override;
@@ -29,12 +29,12 @@ namespace gogtron
 
 		private:
 
-			bool UpdatePositions();
-			bool CheckCollisions();
+			void Reset();
 
-			GameManager gameManager;
-			renderer::Camera camera;
-			uint64_t startGameTime;
+			std::string errorMessage;
+			std::string currentFileContent;
+			std::string newFileContent;
+			std::vector<system::GUIElementPtr> guiElements;
 		};
 
 	}

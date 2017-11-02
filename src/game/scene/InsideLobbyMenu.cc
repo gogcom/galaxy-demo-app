@@ -4,7 +4,6 @@
 #include <game/networking/Server.h>
 #include <game/networking/Client.h>
 #include <engine/system/Button.h>
-#include <engine/core/SDLResourceManager.h>
 #include <SDL_opengl.h>
 
 using namespace gogtron;
@@ -19,33 +18,8 @@ InsideLobbyMenu::InsideLobbyMenu(const IGamePtr& _game)
 
 bool InsideLobbyMenu::Init()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//button.png", "button"))
-		return false;
-
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//selectedbutton.png", "selectedbutton"))
-		return false;
-
-	if (!core::SDLResourceManager::GetInstance().LoadFont("res//fonts//FreeSans.ttf", "FreeSans"))
-		return false;
-
-	GUIElementPtr playButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 100, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"PLAY", 1280 / 2 - 150, 100, 300, 100,
 		[&]()
 	{
 		const auto& client = game->GetClient();
@@ -56,12 +30,8 @@ bool InsideLobbyMenu::Init()
 			return;
 	}));
 
-	guiElements.push_back(playButton);
-
-	GUIElementPtr inviteFriend(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 300, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"INVITE FRIEND", 1280 / 2 - 150, 300, 300, 100,
 		[&]()
 	{
 		try
@@ -76,12 +46,8 @@ bool InsideLobbyMenu::Init()
 		}
 	}));
 
-	guiElements.push_back(inviteFriend);
-
-	GUIElementPtr backButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 500, 300, 100),
+	guiElements.emplace_back(std::make_shared<Button>(
+		"BACK", 1280 / 2 - 150, 500, 300, 100,
 		[&]()
 	{
 		game->SetClient(nullptr);
@@ -89,8 +55,6 @@ bool InsideLobbyMenu::Init()
 		game->SetLobby(nullptr);
 		game->SetGameState(GameState::State::LOBBY_MENU);
 	}));
-
-	guiElements.push_back(backButton);
 
 	auto& gameManager = game->GetGameManager();
 	gameManager.SetClientState(GameManager::ClientState::INIT);
@@ -166,43 +130,29 @@ void InsideLobbyMenu::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 
 bool InsideLobbyMenu::Update()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	const auto& server = game->GetServer();
 	if (server)
 	{
 		switch (game->GetGameManager().GetServerState())
 		{
-		case GameManager::ServerState::INIT:
-		{
-			if (!server->RetrievedReadyFromEachClient())
-				break;
+			case GameManager::ServerState::INIT:
+			{
+				if (!server->RetrievedReadyFromEachClient())
+					break;
 
-			const auto& lobbyMembers = game->GetLobby()->GetLobbyMembers();
-			if (lobbyMembers.size() <= 1)
-				break;
+				const auto& lobbyMembers = game->GetLobby()->GetLobbyMembers();
+				if (lobbyMembers.size() <= 1)
+					break;
 
-			if (!server->SendInitGame())
-				break;
+				if (!server->SendInitGame())
+					break;
 
-			game->GetGameManager().SetServerState(GameManager::ServerState::GAME);
-		}
-		break;
-
-		default:
+				game->GetGameManager().SetServerState(GameManager::ServerState::GAME);
+			}
 			break;
+
+			default:
+				break;
 		}
 	}
 
@@ -211,28 +161,21 @@ bool InsideLobbyMenu::Update()
 
 bool InsideLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	renderEngine->StartScene();
-
 	for (const auto& element : guiElements)
 	{
 		element->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("PLAY", renderer::Sprite(1280 / 2 - 50, 100, 100, 100), "FreeSans_PlayGame", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("INVITE FRIEND", renderer::Sprite(1280 / 2 - 100, 300, 200, 100), "FreeSans_InviteFriend", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("BACK", renderer::Sprite(1280 / 2 - 50, 500, 100, 100), "FreeSans_Back", SDL_Color{ 255, 0, 0, 255 });
-
-	renderEngine->DisplayText("Lobby members:", renderer::Sprite(50, 50, 200, 100), "FreeSans_Nicknames", SDL_Color{ 255, 0, 0, 255 });
+	renderEngine->DisplayText("Lobby members:", renderer::Sprite(50, 50, 200, 100), "FreeSans_Nicknames", SDL_Color{255, 0, 0, 255});
 	const int offsetY = 100;
 	int lastY = 50 + offsetY;
 	const auto& lobbyMembers = game->GetLobby()->GetLobbyMembers();
 	for (const auto& lobbyMember : lobbyMembers)
 	{
 		const auto& lobbyMemberNickname = galaxy::api::Friends()->GetFriendPersonaName(lobbyMember);
-		renderEngine->DisplayText(lobbyMemberNickname, renderer::Sprite(50, lastY, 100, 100), std::string("FreeSans_Nickname") + lobbyMemberNickname, SDL_Color{ 255, 0, 0, 255 });
+		renderEngine->DisplayText(lobbyMemberNickname, renderer::Sprite(50, lastY, 100, 100), std::string("FreeSans_Nickname") + lobbyMemberNickname, SDL_Color{255, 0, 0, 255});
 		lastY += offsetY;
 	}
 
-	renderEngine->EndScene();
 	return true;
 }

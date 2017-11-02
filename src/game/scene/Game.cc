@@ -61,30 +61,28 @@ void Game::OnKeyDown(SDL_Keysym key)
 {
 	switch (key.sym)
 	{
-	case SDLK_ESCAPE:
-		game->SetClient(nullptr);
-		game->SetServer(nullptr);
-		game->SetLobby(nullptr);
-		game->SetGameState(GameState::State::START_MENU);
-		break;
+		case SDLK_ESCAPE:
+			game->SetClient(nullptr);
+			game->SetServer(nullptr);
+			game->SetLobby(nullptr);
+			game->SetGameState(GameState::State::START_MENU);
+			break;
 
-	case SDLK_UP:
-		camera.MoveCamera(0.125);
-		break;
+		case SDLK_UP:
+			camera.MoveCamera(0.125);
+			break;
 
-	case SDLK_DOWN:
-		camera.MoveCamera(-0.125);
-		break;
+		case SDLK_DOWN:
+			camera.MoveCamera(-0.125);
+			break;
 
-	case SDLK_LEFT:
-	{
-		const auto& client = game->GetClient();
-		if (client)
+		case SDLK_LEFT:
 		{
-			const auto& gameManager = game->GetGameManager();
-			switch (gameManager.GetClientState())
+			const auto& client = game->GetClient();
+			if (client)
 			{
-				case GameManager::ClientState::GAME:
+				const auto& gameManager = game->GetGameManager();
+				if (gameManager.GetClientState() == GameManager::ClientState::GAME)
 				{
 					const auto& localPlayer = gameManager.GetLocalPlayer();
 					const auto& playerDirection = localPlayer->GetDirection();
@@ -101,21 +99,17 @@ void Game::OnKeyDown(SDL_Keysym key)
 
 					client->SendUpdateDirectionToServer(newPlayerDirection);
 				}
-				break;
 			}
 		}
-	}
-	break;
+		break;
 
-	case SDLK_RIGHT:
-	{
-		const auto& client = game->GetClient();
-		if (client)
+		case SDLK_RIGHT:
 		{
-			const auto& gameManager = game->GetGameManager();
-			switch (gameManager.GetClientState())
+			const auto& client = game->GetClient();
+			if (client)
 			{
-				case GameManager::ClientState::GAME:
+				const auto& gameManager = game->GetGameManager();
+				if (gameManager.GetClientState() == GameManager::ClientState::GAME)
 				{
 					const auto& localPlayer = gameManager.GetLocalPlayer();
 					const auto& playerDirection = localPlayer->GetDirection();
@@ -132,33 +126,22 @@ void Game::OnKeyDown(SDL_Keysym key)
 
 					client->SendUpdateDirectionToServer(newPlayerDirection);
 				}
-				break;
 			}
 		}
-	}
-	break;
-
-	default:
 		break;
+
+		default:
+			break;
 	}
 }
 
 void Game::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 {
-	switch (lobbyEvent)
+	if (lobbyEvent == LobbyEvent::LOBBY_MEMBER_LEFT
+		&& game->GetLobby()->GetLobbyMembers().size() <= 1
+		&& game->GetServer())
 	{
-		case LobbyEvent::LOBBY_MEMBER_LEFT:
-		{
-			if (game->GetLobby()->GetLobbyMembers().size() <= 1)
-			{
-				if (game->GetServer())
-				{
-					if (!game->GetServer()->SendGameResults(game->GetGameManager().GetPlayers(), std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime))
-						return;
-				}
-			}
-		}
-		break;
+		game->GetServer()->SendGameResults(game->GetGameManager().GetPlayers(), std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime);
 	}
 }
 
@@ -169,32 +152,35 @@ bool Game::Update()
 	{
 		switch (game->GetGameManager().GetServerState())
 		{
-		case GameManager::ServerState::GAME:
-			UpdatePositions();
-			CheckCollisions();
-			break;
+			case GameManager::ServerState::GAME:
+				UpdatePositions();
+				CheckCollisions();
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 	}
-   
+
 	const auto& client = game->GetClient();
 	if (client)
 	{
 		switch (game->GetGameManager().GetClientState())
 		{
-		case GameManager::ClientState::GAME:
-			if (game->GetLobby()->GetLobbyMembers().size() <= 1)
-			{
-				game->SetGameState(GameState::State::GAME_RESULT);
-			}
-			return true;
-			break;
+			case GameManager::ClientState::GAME:
+				if (game->GetLobby()->GetLobbyMembers().size() <= 1)
+				{
+					game->SetGameState(GameState::State::GAME_RESULT);
+				}
+				return true;
+				break;
 
-		case GameManager::ClientState::RESULT:
-			game->SetGameState(GameState::State::IN_LOBBY_MENU);
-			break;
+			case GameManager::ClientState::RESULT:
+				game->SetGameState(GameState::State::IN_LOBBY_MENU);
+				break;
+
+			default:
+				break;
 		}
 	}
 
@@ -221,7 +207,7 @@ bool Game::Display(const renderer::OGLRendererPtr& renderEngine)
 
 	const auto& gameManager = game->GetGameManager();
 	const auto& players = gameManager.GetPlayers();
-	const auto& localPlayer = std::find_if(std::begin(players), std::end(players), [](const PlayerPtr& p){return p->GetGalaxyID() == galaxy::api::User()->GetGalaxyID(); });
+	const auto& localPlayer = std::find_if(std::begin(players), std::end(players), [](const PlayerPtr& p) {return p->GetGalaxyID() == galaxy::api::User()->GetGalaxyID(); });
 
 	if (localPlayer != std::end(players))
 	{
@@ -360,7 +346,7 @@ bool Game::CheckCollisions()
 	if (!game->GetServer()->SendGameTick(players))
 		return false;
 
-	if (std::count_if(std::begin(players), std::end(players), [](const PlayerPtr& player){ return player->IsAlive(); }) <= 1)
+	if (std::count_if(std::begin(players), std::end(players), [](const PlayerPtr& player) { return player->IsAlive(); }) <= 1)
 	{
 		if (!game->GetServer()->SendGameResults(players, std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime))
 			return false;

@@ -1,13 +1,38 @@
 #include "StartMenu.h"
 #include <game/IGame.h>
 #include <engine/system/Button.h>
-#include <engine/core/SDLResourceManager.h>
+#include <galaxy/GalaxyApi.h>
 #include <SDL_opengl.h>
+
+namespace galaxy
+{
+	namespace api
+	{
+		extern bool IsFullyInitialized;
+	}
+}
 
 using namespace gogtron;
 using namespace gogtron::system;
 using namespace gogtron::scene;
 using namespace gogtron::networking;
+
+namespace
+{
+	static inline GalaxyStatus GetCurrentStatus()
+	{
+		if (!galaxy::api::IsFullyInitialized)
+			return GalaxyStatus::NotInitialized;
+
+		if (galaxy::api::User()->IsLoggedOn())
+			return GalaxyStatus::SignedInOnline;
+
+		if (galaxy::api::User()->SignedIn())
+			return GalaxyStatus::SignedInOffline;
+
+		return GalaxyStatus::SignedOff;
+	}
+}
 
 StartMenu::StartMenu(const IGamePtr& _game)
 	: GameState(_game)
@@ -16,68 +41,37 @@ StartMenu::StartMenu(const IGamePtr& _game)
 
 bool StartMenu::Init()
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
+	guiElements.push_back({
+		std::make_shared<Button>("PLAY", 1280 / 2 - 150, 25, 300, 100, [&]() { game->SetGameState(GameState::State::SINGLE_PLAYER_VIEW); }),
+		GalaxyStatus::Any
+	});
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
+	guiElements.push_back({std::make_shared<Button>("Logging in...", 1280 / 2 - 150, 125, 300, 100, [&]() {}),
+		GalaxyStatus::NotInitialized | GalaxyStatus::SignedOff
+	});
 
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	guiElements.push_back({std::make_shared<Button>("LOBBY", 1280 / 2 - 150, 125, 300, 100, [&]() { game->SetGameState(GameState::State::LOBBY_MENU); }),
+		GalaxyStatus::SignedInOnline
+	});
 
+	// TODO: add feature from IApps
+	// TODO: add filesystem features
 
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//button.png", "button"))
-		return false;
+	guiElements.push_back({std::make_shared<Button>("STATS", 1280 / 2 - 150, 225, 300, 100, [&]() { game->SetGameState(GameState::State::STATS_VIEW); }),
+		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
+	});
 
-	if (!core::SDLResourceManager::GetInstance().LoadTexture("res//images//selectedbutton.png", "selectedbutton"))
-		return false;
+	guiElements.push_back({std::make_shared<Button>("LEADERBOARDS", 1280 / 2 - 150, 325, 300, 100, [&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }),
+		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
+	});
 
-	if (!core::SDLResourceManager::GetInstance().LoadFont("res//fonts//FreeSans.ttf", "FreeSans"))
-		return false;
+	guiElements.push_back({std::make_shared<Button>("CLOUD STORAGE", 1280 / 2 - 150, 425, 300, 100, [&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }),
+		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
+	});
 
-	GUIElementPtr playButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 50, 300, 100),
-		/*Sprite(400, 100, 400, 224),*/
-		[&](){ game->SetGameState(GameState::State::LOBBY_MENU); }));
-
-	guiElements.push_back(playButton);
-
-	GUIElementPtr statsButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 175, 300, 100),
-		[&]() { game->SetGameState(GameState::State::STATS_VIEW); }));
-	guiElements.push_back(statsButton);
-
-	GUIElementPtr leaderboardsButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 300, 300, 100),
-		[&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }));
-	guiElements.push_back(leaderboardsButton);
-
-	GUIElementPtr remoteStorageButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 425, 300, 100),
-		[&]() { game->SetGameState(GameState::State::REMOTE_STORAGE_VIEW); }));
-	guiElements.push_back(remoteStorageButton);
-
-	GUIElementPtr quitButton(std::make_shared<Button>(
-		"button",
-		"selectedbutton",
-		renderer::Sprite(1280 / 2 - 150, 550, 300, 100),
-		/*Sprite(400, 400, 400, 224),*/
-		[&](){ game->Close(); }));
-
-	guiElements.push_back(quitButton);
+	guiElements.push_back({std::make_shared<Button>("QUIT", 1280 / 2 - 150, 550, 300, 100, [&]() { game->Close(); }),
+		GalaxyStatus::Any
+	});
 
 	return true;
 }
@@ -91,7 +85,8 @@ void StartMenu::OnMouseDown(std::uint32_t x, std::uint32_t y)
 {
 	for (const auto& element : guiElements)
 	{
-		element->OnMouseDown(x, y);
+		if (element.second & GetCurrentStatus())
+			element.first->OnMouseDown(x, y);
 	}
 }
 
@@ -99,7 +94,8 @@ void StartMenu::OnMouseMotion(std::uint32_t x, std::uint32_t y)
 {
 	for (const auto& element : guiElements)
 	{
-		element->OnMouseMotion(x, y);
+		if (element.second & GetCurrentStatus())
+			element.first->OnMouseMotion(x, y);
 	}
 }
 
@@ -107,19 +103,19 @@ void StartMenu::OnKeyDown(SDL_Keysym key)
 {
 	switch (key.sym)
 	{
-	case SDLK_UP:
-		guiElements[0]->OnMouseMotion(450, 150);
-		break;
+		case SDLK_UP:
+			guiElements[0].first->OnMouseMotion(450, 150);
+			break;
 
-	case SDLK_DOWN:
-		break;
+		case SDLK_DOWN:
+			break;
 
-	case SDLK_KP_ENTER:
-		guiElements[0]->OnMouseDown(450, 150);
-		break;
+		case SDLK_KP_ENTER:
+			guiElements[0].first->OnMouseDown(450, 150);
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -134,32 +130,11 @@ bool StartMenu::Update()
 
 bool StartMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 720, 1.0, -1.0, 1.0);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	renderEngine->StartScene();
-
 	for (const auto& element : guiElements)
 	{
-		element->Display(renderEngine);
+		if (element.second & GetCurrentStatus())
+			element.first->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("PLAY", renderer::Sprite(1280 / 2 - 50, 50, 100, 100), "FreeSans_Play", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("STATS", renderer::Sprite(1280 / 2 - 50, 175, 100, 100), "FreeSans_Stats", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("LEADERBOARDS", renderer::Sprite(1280 / 2 - 100, 300, 200, 100), "FreeSans_Leaderboards", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("REMOTE STORAGE", renderer::Sprite(1280 / 2 - 100, 425, 200, 100), "FreeSans_RemoteStorage", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->DisplayText("QUIT", renderer::Sprite(1280 / 2 - 50, 550, 100, 100), "FreeSans_Quit", SDL_Color{ 255, 0, 0, 255 });
-	renderEngine->EndScene();
 	return true;
 }

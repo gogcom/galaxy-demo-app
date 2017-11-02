@@ -90,18 +90,18 @@ void Lobby::OnLobbyMemberStateChanged(const galaxy::api::GalaxyID& lobbyID, cons
 {
 	switch (memberStateChange)
 	{
-	case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_ENTERED:
-		break;
+		case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_ENTERED:
+			break;
 
-	case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_LEFT:
-	case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_DISCONNECTED:
-	case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_KICKED:
-		lobbyMembers.erase(std::remove_if(std::begin(lobbyMembers), std::end(lobbyMembers), [&](const galaxy::api::GalaxyID& userID){ return userID == memberID; }));
-		game->OnLobbyEvent(LobbyEvent::LOBBY_MEMBER_LEFT);
-		break;
+		case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_LEFT:
+		case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_DISCONNECTED:
+		case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_KICKED:
+			lobbyMembers.erase(std::remove_if(std::begin(lobbyMembers), std::end(lobbyMembers), [&](const galaxy::api::GalaxyID& userID) { return userID == memberID; }));
+			game->OnLobbyEvent(LobbyEvent::LOBBY_MEMBER_LEFT);
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -130,21 +130,21 @@ void Lobby::OnLobbyOwnerChanged(const galaxy::api::GalaxyID& lobbyID, const gala
 		game->SetServer(server);
 		switch (game->GetGameManager().GetClientState())
 		{
-		case GameManager::ClientState::INIT:
-			game->GetGameManager().SetServerState(GameManager::ServerState::INIT);
-			break;
+			case GameManager::ClientState::INIT:
+				game->GetGameManager().SetServerState(GameManager::ServerState::INIT);
+				break;
 
-		case GameManager::ClientState::START_GAME:
-			game->GetGameManager().SetServerState(GameManager::ServerState::INIT);
-			break;
+			case GameManager::ClientState::START_GAME:
+				game->GetGameManager().SetServerState(GameManager::ServerState::INIT);
+				break;
 
-		case GameManager::ClientState::GAME:
-			game->GetGameManager().SetServerState(GameManager::ServerState::GAME);
-			break;
+			case GameManager::ClientState::GAME:
+				game->GetGameManager().SetServerState(GameManager::ServerState::GAME);
+				break;
 
-		case GameManager::ClientState::RESULT:
-			game->GetGameManager().SetServerState(GameManager::ServerState::RESULTS);
-			break;
+			case GameManager::ClientState::RESULT:
+				game->GetGameManager().SetServerState(GameManager::ServerState::RESULTS);
+				break;
 		}
 	}
 }

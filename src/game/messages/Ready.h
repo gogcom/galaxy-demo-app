@@ -7,29 +7,29 @@
 
 namespace gogtron
 {
-    namespace message
-    {
+	namespace message
+	{
 
-        class Ready : public serialize::JsonSerializable
-        {
-        public:
+		class Ready : public serialize::JsonSerializable
+		{
+		public:
 
-            Ready() = default;
-            Ready(const galaxy::api::GalaxyID& playerID);
-            virtual bool Serialize(Json::Value& root);
-            virtual bool Deserialize(Json::Value& root);
+			Ready() = default;
+			Ready(const galaxy::api::GalaxyID& playerID);
+			virtual bool Serialize(Json::Value& root);
+			virtual bool Deserialize(Json::Value& root);
 
-            const galaxy::api::GalaxyID& GetPlayerID() const;
+			const galaxy::api::GalaxyID& GetPlayerID() const;
 
-            void SetPlayerID(const galaxy::api::GalaxyID& playerID);
+			void SetPlayerID(const galaxy::api::GalaxyID& playerID);
 
-        private:
+		private:
 
-            galaxy::api::GalaxyID playerID;
-            static std::string type;
-        };
+			galaxy::api::GalaxyID playerID;
+			static std::string type;
+		};
 
-    }
+	}
 }
 
 #endif

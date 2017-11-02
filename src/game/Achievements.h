@@ -9,28 +9,28 @@
 namespace gogtron
 {
 
-    struct Achievement
-    {
-        std::string name;
-        bool unlocked;
-        uint32_t unlockedTime;
-        std::string displayName;
-        std::string description;
-        bool visible;
+	struct Achievement
+	{
+		std::string name;
+		bool unlocked;
+		uint32_t unlockedTime;
+		std::string displayName;
+		std::string description;
+		bool visible;
 
-        Achievement(const std::string& _name = "");
-    };
+		Achievement(const std::string& _name = "");
+	};
 
-    typedef std::map<std::string, Achievement> Achievements;
+	typedef std::map<std::string, Achievement> Achievements;
 
-    typedef std::map<galaxy::api::GalaxyID, Achievements> UsersAchievements;
+	typedef std::map<galaxy::api::GalaxyID, Achievements> UsersAchievements;
 
-    class AchievementsFactory
-    {
-    public:
+	class AchievementsFactory
+	{
+	public:
 
-        static Achievements CreateDefaultAchievements();
-    };
+		static Achievements CreateDefaultAchievements();
+	};
 
 }
 

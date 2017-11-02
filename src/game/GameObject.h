@@ -7,26 +7,26 @@
 namespace gogtron
 {
 
-    class GameObject
-    {
-    public:
+	class GameObject
+	{
+	public:
 
-        GameObject(const glm::vec3& position);
+		GameObject(const glm::vec3& position);
 
-        const glm::vec3& GetPosition() const;
-        std::uint32_t GetId() const;
+		const glm::vec3& GetPosition() const;
+		std::uint32_t GetId() const;
 
-        void SetPosition(const glm::vec3& position);
+		void SetPosition(const glm::vec3& position);
 
-    protected:
+	protected:
 
-        glm::vec3 position;
-        std::uint32_t id;
+		glm::vec3 position;
+		std::uint32_t id;
 
-    private:
+	private:
 
-        static std::uint32_t GameObjectId;
-    };
+		static std::uint32_t GameObjectId;
+	};
 
 }
 

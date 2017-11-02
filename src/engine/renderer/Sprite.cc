@@ -12,20 +12,20 @@ Sprite::Sprite(std::uint32_t _x, std::uint32_t _y, std::uint32_t _width, std::ui
 
 std::uint32_t Sprite::GetX() const
 {
-    return x;
+	return x;
 }
 
 std::uint32_t Sprite::GetY() const
 {
-    return y;
+	return y;
 }
 
 std::uint32_t Sprite::GetWidth() const
 {
-    return width;
+	return width;
 }
 
 std::uint32_t Sprite::GetHeight() const
 {
-    return height;
+	return height;
 }

@@ -33,11 +33,20 @@ namespace gogtron
 			virtual bool RetrievedReadyFromEachClient() const = 0;
 			virtual bool SendInitGame() = 0;
 			virtual bool SendGameTick(const std::vector<PlayerPtr>& players) = 0;
-			virtual bool SendGameResults(const std::vector<PlayerPtr>& players, int gameTime) = 0;
+			virtual bool SendGameResults(const std::vector<PlayerPtr>& players, uint64_t gameTime) = 0;
 
-			void SetPlayers(const std::vector<PlayerPtr>& _players) { players = _players; }
-			void AddPlayer(const PlayerPtr& player) { players.push_back(player); }
-			const std::vector<PlayerPtr>& GetPlayers() const { return players; }
+			void SetPlayers(const std::vector<PlayerPtr>& _players)
+			{
+				players = _players;
+			}
+			void AddPlayer(const PlayerPtr& player)
+			{
+				players.push_back(player);
+			}
+			const std::vector<PlayerPtr>& GetPlayers() const
+			{
+				return players;
+			}
 
 		protected:
 

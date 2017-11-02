@@ -37,7 +37,7 @@ namespace gogtron
 			template<typename T>
 			operator T() const
 			{
-				return T{ r, g, b, a };
+				return T{r, g, b, a};
 			}
 
 		private:

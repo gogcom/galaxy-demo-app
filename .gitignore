@@ -18,6 +18,7 @@ CMakeCache.txt
 
 # VS
 .vs
+*.VC.opendb
 *.vcxproj
 *.vcxproj.filters
 Win32
@@ -26,8 +27,13 @@ Win32
 *.sln
 *.*.suo
 *.user
+Output
 Debug
 Release
 
 # YCM
 .ycm_extra_conf.pyc
+
+# Galaxy configuration and log files
+Galaxy*.json
+debug.log

@@ -1,14 +1,2 @@
-if (APPLE)
-	set (DEPENDENCY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dep/osx)
-else()
-	set (DEPENDENCY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dep/win)
-endif()
-
-set (SDL2DIR "${DEPENDENCY_DIR}/SDL2")
-set (SDL2IMAGEDIR "${DEPENDENCY_DIR}/SDL2_image")
-set (SDL2TTFDIR "${DEPENDENCY_DIR}/SDL2_ttf")
-set (GLEW_DIR "${DEPENDENCY_DIR}//glew")
-set (GLM_ROOT_DIR "${DEPENDENCY_DIR}/glm")
-set (JSONCPP_ROOT "${DEPENDENCY_DIR}/jsoncpp")
-
-set (GALAXY_ROOT SET_PATH_HERE)
+# Set path to the Galaxy SDK root either here or provide as a -DGALAXY_SDK_ROOT=<path> parameter
+set (GALAXY_SDK_ROOT SET_PATH_HERE)
