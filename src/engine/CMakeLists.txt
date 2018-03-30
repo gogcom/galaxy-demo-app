@@ -19,6 +19,12 @@ source_group ("engine\\serialize" FILES ${ENGINE_SERIALIZE_SRCS})
 file (GLOB ENGINE_CORE_SRCS ${PROJECT_SOURCE_DIR}/src/engine/core/*.cc ${PROJECT_SOURCE_DIR}/src/engine/core/*.h)
 source_group ("engine\\core" FILES ${ENGINE_CORE_SRCS})
 
+file (GLOB ENGINE_GAMELOGIC_SRCS ${PROJECT_SOURCE_DIR}/src/engine/gamelogic/*.cc ${PROJECT_SOURCE_DIR}/src/engine/gamelogic/*.h)
+source_group ("engine\\gamelogic" FILES ${ENGINE_GAMELOGIC_SRCS})
+
+file (GLOB ENGINE_UTILS_SRCS ${PROJECT_SOURCE_DIR}/src/engine/utils/*.cc ${PROJECT_SOURCE_DIR}/src/engine/utils/*.h)
+source_group ("engine\\utils" FILES ${ENGINE_UTILS_SRCS})
+
 list (APPEND ENGINE_ALL_SRCS
 	${ENGINE_SRCS}
 	${ENGINE_SYSTEM_SRCS}
@@ -26,7 +32,9 @@ list (APPEND ENGINE_ALL_SRCS
 	${ENGINE_PHYSICS_SRCS}
 	${ENGINE_NETWORKING_SRCS}
 	${ENGINE_SERIALIZE_SRCS}
-	${ENGINE_CORE_SRCS})
+	${ENGINE_CORE_SRCS}
+	${ENGINE_GAMELOGIC_SRCS}
+	${ENGINE_UTILS_SRCS})
 
 list (APPEND EXTERNAL_LIBS ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY})
 add_library (engine STATIC ${ENGINE_ALL_SRCS})

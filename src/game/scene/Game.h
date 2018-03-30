@@ -29,8 +29,7 @@ namespace gogtron
 
 		private:
 
-			bool UpdatePositions();
-			bool CheckCollisions();
+			void SendGameResults() const;
 
 			GameManager gameManager;
 			renderer::Camera camera;

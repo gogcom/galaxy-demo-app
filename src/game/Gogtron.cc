@@ -59,8 +59,6 @@ GogTron::GogTron(const renderer::OGLRendererPtr& _renderEngine)
 void GogTron::InitListeners()
 {
 	listeners.emplace_back(std::make_unique<AuthListener>(shared_from_this()));
-	listeners.emplace_back(std::make_unique<FileShareListener>(shared_from_this()));
-	listeners.emplace_back(std::make_unique<SharedFileDownloadListener>(shared_from_this()));
 	listeners.emplace_back(std::make_unique<GameJoinRequestedListener>(shared_from_this()));
 }
 
@@ -283,7 +281,7 @@ void GogTron::InitGalaxy()
 {
 	try
 	{
-		galaxy::api::Init(CLIENT_ID, CLIENT_SECRET);
+		galaxy::api::Init({CLIENT_ID, CLIENT_SECRET});
 
 		galaxy::api::IsFullyInitialized = true;
 
@@ -350,42 +348,4 @@ void GogTron::GameJoinRequestedListener::OnGameJoinRequested(galaxy::api::Galaxy
 	ILobbyPtr lobby = std::make_shared<Lobby>(game);
 	game->SetLobby(lobby);
 	Lobby::ConnectToLobbyByConnectionString(connectionString);
-}
-
-gogtron::GogTron::FileShareListener::FileShareListener(const std::shared_ptr<GogTron>& _game)
-	: game(_game)
-{
-}
-
-void gogtron::GogTron::FileShareListener::OnFileShareSuccess(const char* fileName, galaxy::api::SharedFileID sharedFileID)
-{
-	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::SHARED);
-	//TODO: implement file sharing
-	throw std::logic_error("File sharing not fully implemented");
-}
-
-void gogtron::GogTron::FileShareListener::OnFileShareFailure(const char* fileName, FailureReason failureReason)
-{
-	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::FAILED);
-	//TODO: implement file sharing
-	throw std::logic_error("File sharing not fully implemented");
-}
-
-gogtron::GogTron::SharedFileDownloadListener::SharedFileDownloadListener(const std::shared_ptr<GogTron>& _game)
-	: game(_game)
-{
-}
-
-void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadSuccess(galaxy::api::SharedFileID sharedFileID, const char* fileName)
-{
-	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::DOWNLOADED);
-	//TODO: implement file sharing
-	throw std::logic_error("File sharing not fully implemented");
-}
-
-void gogtron::GogTron::SharedFileDownloadListener::OnSharedFileDownloadFailure(galaxy::api::SharedFileID sharedFileID, FailureReason failureReason)
-{
-	game->SetStorageSynchronizationStatus(IGame::FileSharingStatus::FAILED);
-	//TODO: implement file sharing
-	throw std::logic_error("File sharing not fully implemented");
 }

@@ -73,7 +73,13 @@ bool JoinLobbyMenu::Update()
 
 bool JoinLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	backButton->Display(renderEngine);
+	// Refresh lobby list once in a while
+	static int refreshCount = 0;
+	if (refreshCount++ > 50)
+	{
+		galaxy::api::Matchmaking()->RequestLobbyList();
+		refreshCount = 0;
+	}
 
 	if (!anyLobbies)
 	{
@@ -86,7 +92,10 @@ bool JoinLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 			element->Display(renderEngine);
 		}
 	}
+
+	backButton->Display(renderEngine);
 	return true;
+
 }
 
 void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
@@ -97,33 +106,40 @@ void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
 		return;
 	}
 
-	try
+	guiElements.clear();
+
+	for (uint32_t idx{0}; idx < lobbyCount; ++idx)
 	{
-		const auto& lobbyID = galaxy::api::Matchmaking()->GetLobbyByIndex(0);
-
-		std::uint32_t posY = 100;
-
-		guiElements.emplace_back(std::make_shared<Button>(
-			std::to_string(lobbyID.ToUint64()), 1280 / 2 - 200, posY, 400, 100,
-			[&, lobbyID]()
+		try
 		{
-			ILobbyPtr lobby = std::make_shared<Lobby>(game);
-			game->SetLobby(lobby);
+			const auto& lobbyID = galaxy::api::Matchmaking()->GetLobbyByIndex(idx);
 
-			try
-			{
-				galaxy::api::Matchmaking()->JoinLobby(lobbyID);
-			}
-			catch (const galaxy::api::IError& /*error*/)
-			{
-				return;
-			}
+			std::uint32_t posY = 100 * idx;
 
-			game->SetGameState(GameState::State::IN_LOBBY_MENU);
-		}));
-	}
-	catch (const galaxy::api::IError& /*error*/)
-	{
-		return;
+			guiElements.emplace_back(std::make_shared<Button>(
+				std::to_string(lobbyID.ToUint64()), 1280 / 2 - 200, posY, 400, 100,
+				[&, lobbyID]()
+			{
+				ILobbyPtr lobby = std::make_shared<Lobby>(game);
+				game->SetLobby(lobby);
+
+				try
+				{
+					galaxy::api::Matchmaking()->JoinLobby(lobbyID);
+				}
+				catch (const galaxy::api::IError& /*error*/)
+				{
+					return;
+				}
+
+				game->SetGameState(GameState::State::IN_LOBBY_MENU);
+			}));
+		}
+		catch (const galaxy::api::IError& /*error*/)
+		{
+			return;
+		}
+
+		anyLobbies = true;
 	}
 }

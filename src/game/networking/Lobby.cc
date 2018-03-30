@@ -65,6 +65,12 @@ void Lobby::OnLobbyCreated(const galaxy::api::GalaxyID& _lobbyID, galaxy::api::L
 	galaxy::api::Friends()->SetRichPresence("connect", GetConnectionString().c_str());
 }
 
+void Lobby::AddLobbyMember(const galaxy::api::GalaxyID& galaxyID)
+{
+	if (std::find(std::begin(lobbyMembers), std::end(lobbyMembers), galaxyID) == std::end(lobbyMembers))
+		lobbyMembers.push_back(galaxyID);
+}
+
 void Lobby::OnLobbyEntered(const galaxy::api::GalaxyID& _lobbyID, galaxy::api::LobbyEnterResult result)
 {
 	if (result != galaxy::api::LOBBY_ENTER_RESULT_SUCCESS)
@@ -74,8 +80,10 @@ void Lobby::OnLobbyEntered(const galaxy::api::GalaxyID& _lobbyID, galaxy::api::L
 		return;
 	}
 
-	if (std::find(std::begin(lobbyMembers), std::end(lobbyMembers), galaxy::api::User()->GetGalaxyID()) == std::end(lobbyMembers))
-		lobbyMembers.push_back(galaxy::api::User()->GetGalaxyID());
+	for (uint32_t i = 0; i < galaxy::api::Matchmaking()->GetNumLobbyMembers(_lobbyID); ++i)
+	{
+		AddLobbyMember(galaxy::api::Matchmaking()->GetLobbyMemberByIndex(_lobbyID, i));
+	}
 
 	lobbyID = _lobbyID;
 	game->SetGameState(scene::GameState::State::IN_LOBBY_MENU);
@@ -91,6 +99,7 @@ void Lobby::OnLobbyMemberStateChanged(const galaxy::api::GalaxyID& lobbyID, cons
 	switch (memberStateChange)
 	{
 		case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_ENTERED:
+			AddLobbyMember(memberID);
 			break;
 
 		case galaxy::api::LOBBY_MEMBER_STATE_CHANGED_LEFT:
@@ -107,8 +116,6 @@ void Lobby::OnLobbyMemberStateChanged(const galaxy::api::GalaxyID& lobbyID, cons
 
 void Lobby::OnPersonaDataChanged(galaxy::api::GalaxyID userID, uint32_t personaStateChange)
 {
-	if (std::find(std::begin(lobbyMembers), std::end(lobbyMembers), userID) == std::end(lobbyMembers))
-		lobbyMembers.push_back(userID);
 }
 
 void Lobby::OnLobbyOwnerChanged(const galaxy::api::GalaxyID& lobbyID, const galaxy::api::GalaxyID& newOwnerID)

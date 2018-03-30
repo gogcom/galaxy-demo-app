@@ -3,6 +3,9 @@
 
 #include "GameState.h"
 #include <engine/system/GUIElement.h>
+
+#include <galaxy/IStorage.h>
+
 #include <vector>
 
 namespace gogtron
@@ -10,31 +13,34 @@ namespace gogtron
 	namespace scene
 	{
 
-		class CloudStorageView : public GameState
+		class CloudStorageView
+			: public GameState
 		{
 		public:
 
-			CloudStorageView(const IGamePtr& _game);
+			explicit CloudStorageView(const IGamePtr& _game);
 
-			virtual bool Init() override;
-			virtual bool Release() override;
+			bool Init() override;
+			bool Release() override;
 
-			virtual void OnMouseDown(std::uint32_t x, std::uint32_t y) override;
-			virtual void OnMouseMotion(std::uint32_t x, std::uint32_t y) override;
-			virtual void OnKeyDown(SDL_Keysym key) override;
-			virtual void OnLobbyEvent(const networking::LobbyEvent& lobbyEvent) override;
+			void OnMouseDown(std::uint32_t x, std::uint32_t y) override;
+			void OnMouseMotion(std::uint32_t x, std::uint32_t y) override;
+			void OnKeyDown(SDL_Keysym key) override;
+			void OnLobbyEvent(const networking::LobbyEvent& lobbyEvent) override;
 
-			virtual bool Update() override;
-			virtual bool Display(const renderer::OGLRendererPtr& renderEngine) override;
+			bool Update() override;
+			bool Display(const renderer::OGLRendererPtr& renderEngine) override;
 
 		private:
 
-			void Reset();
+			void SaveNewFile() const;
+			uint32_t ReadSavedFiles();
 
-			std::string errorMessage;
-			std::string currentFileContent;
-			std::string newFileContent;
+			std::string newFileName;
+
+			std::vector<std::string> savedFileNames;
 			std::vector<system::GUIElementPtr> guiElements;
+			std::vector<system::GUIElementPtr> fileRemoveButtons;
 		};
 
 	}

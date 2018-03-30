@@ -3,6 +3,7 @@
 
 #include <game/Player.h>
 #include <engine/networking/AbstractServer.h>
+#include <engine/gamelogic/GameLogic.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -28,7 +29,10 @@ namespace gogtron
 			{
 			}
 
-			virtual ~IServer() = default;
+			virtual ~IServer()
+			{
+				gameLogic.reset();
+			}
 
 			virtual bool RetrievedReadyFromEachClient() const = 0;
 			virtual bool SendInitGame() = 0;
@@ -39,13 +43,25 @@ namespace gogtron
 			{
 				players = _players;
 			}
+
 			void AddPlayer(const PlayerPtr& player)
 			{
 				players.push_back(player);
 			}
+
 			const std::vector<PlayerPtr>& GetPlayers() const
 			{
 				return players;
+			}
+
+			void InitGameLogic()
+			{
+				gameLogic = std::make_unique<gamelogic::GameLogic>(GetPlayers());
+			}
+
+			gamelogic::GameLogic& GetGameLogic()
+			{
+				return *gameLogic;
 			}
 
 		protected:
@@ -53,6 +69,7 @@ namespace gogtron
 			virtual void OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel) = 0;
 
 			IGamePtr game;
+			std::unique_ptr<gamelogic::GameLogic> gameLogic;
 			std::vector<PlayerPtr> players;
 			std::map<galaxy::api::GalaxyID, std::vector<std::string>> messages;
 		};

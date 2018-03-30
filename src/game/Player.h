@@ -15,6 +15,9 @@ namespace gogtron
 	public:
 
 		Player() = default;
+
+		Player(const galaxy::api::GalaxyID& galaxyID);
+
 		Player(
 			const galaxy::api::GalaxyID& galaxyID,
 			const glm::vec3& position,
@@ -68,6 +71,7 @@ namespace gogtron
 	};
 
 	using PlayerPtr = std::shared_ptr<Player>;
+	using PlayerPtrList = std::vector<PlayerPtr>;
 }
 
 #endif

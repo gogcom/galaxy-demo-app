@@ -64,6 +64,8 @@ bool SinglePlayerView::Update()
 
 bool SinglePlayerView::Display(const renderer::OGLRendererPtr& renderEngine)
 {
+	renderEngine->DisplayText("Here you could play single player game", renderer::Sprite(1280 / 2 - 240, 100, 480, 100), "SinglePlayerNotImplementedMessage1", SDL_Color{255, 0, 0, 255});
+	renderEngine->DisplayText("if it would be implemented", renderer::Sprite(1280 / 2 - 180, 200, 360, 100), "SinglePlayerNotImplementedMessage2", SDL_Color{255, 0, 0, 255});
 	backButton->Display(renderEngine);
 
 	return true;

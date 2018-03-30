@@ -22,7 +22,6 @@ namespace gogtron
 		IGame()
 			: closeRequested(false)
 			, currentGameState(scene::GameState::State::INIT_FAILED_VIEW)
-			, fileSharingStatus(FileSharingStatus::FAILED)
 		{
 		}
 
@@ -79,22 +78,6 @@ namespace gogtron
 			return gameplayData;
 		}
 
-		enum class FileSharingStatus
-		{
-			FAILED,
-			SHARED,
-			DOWNLOADED
-		};
-
-		FileSharingStatus GetStorageSynchronizationStatus() const
-		{
-			return fileSharingStatus;
-		}
-		void SetStorageSynchronizationStatus(FileSharingStatus _storageSynchronizationStatus)
-		{
-			fileSharingStatus = _storageSynchronizationStatus;
-		}
-
 		void Close()
 		{
 			closeRequested = true;
@@ -115,7 +98,6 @@ namespace gogtron
 		networking::IClientPtr client;
 		GameManager gameManager;
 		GameplayData gameplayData;
-		FileSharingStatus fileSharingStatus;
 	};
 
 	using IGamePtr = std::shared_ptr<IGame>;

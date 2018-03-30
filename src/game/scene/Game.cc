@@ -15,6 +15,13 @@ using namespace gogtron;
 using namespace gogtron::scene;
 using namespace gogtron::networking;
 
+namespace
+{
+
+	constexpr uint32_t MIN_PLAYERS_TO_PLAY = 2;
+
+}
+
 Game::Game(const IGamePtr& _game)
 	: GameState(_game)
 {
@@ -135,13 +142,21 @@ void Game::OnKeyDown(SDL_Keysym key)
 	}
 }
 
+void Game::SendGameResults() const
+{
+	game->GetServer()->SendGameResults(game->GetGameManager().GetPlayers(), std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime);
+}
+
 void Game::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 {
 	if (lobbyEvent == LobbyEvent::LOBBY_MEMBER_LEFT
-		&& game->GetLobby()->GetLobbyMembers().size() <= 1
-		&& game->GetServer())
+		&& game->GetLobby()->GetLobbyMembers().size() < MIN_PLAYERS_TO_PLAY)
 	{
-		game->GetServer()->SendGameResults(game->GetGameManager().GetPlayers(), std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime);
+		auto& gameServer = game->GetServer();
+		if (!gameServer)
+			return;
+
+		SendGameResults();
 	}
 }
 
@@ -153,10 +168,16 @@ bool Game::Update()
 		switch (game->GetGameManager().GetServerState())
 		{
 			case GameManager::ServerState::GAME:
-				UpdatePositions();
-				CheckCollisions();
-				break;
+			{
+				auto& gameLogic = server->GetGameLogic();
 
+				gameLogic.Tick();
+				server->SendGameTick(server->GetPlayers());
+
+				if (gameLogic.IsWinnerDefined())
+					SendGameResults();
+				break;
+			}
 			default:
 				break;
 		}
@@ -168,7 +189,7 @@ bool Game::Update()
 		switch (game->GetGameManager().GetClientState())
 		{
 			case GameManager::ClientState::GAME:
-				if (game->GetLobby()->GetLobbyMembers().size() <= 1)
+				if (game->GetLobby()->GetLobbyMembers().size() < MIN_PLAYERS_TO_PLAY)
 				{
 					game->SetGameState(GameState::State::GAME_RESULT);
 				}
@@ -189,19 +210,6 @@ bool Game::Update()
 
 bool Game::Display(const renderer::OGLRendererPtr& renderEngine)
 {
-	glEnable(GL_DEPTH_TEST);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	glViewport(0, 0, 1280, 720);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	gluPerspective(45.0f, (GLfloat)1280 / (GLfloat)720, 1.0f, 150.0f);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	renderEngine->StartScene();
 	glPushMatrix();
 	glLoadIdentity();
 
@@ -245,112 +253,6 @@ bool Game::Display(const renderer::OGLRendererPtr& renderEngine)
 	}
 
 	glPopMatrix();
-	renderEngine->EndScene();
-
-	return true;
-}
-
-bool Game::UpdatePositions()
-{
-	const auto& players = game->GetServer()->GetPlayers();
-	for (const auto& player : players)
-	{
-		if (!player->IsAlive())
-			continue;
-
-		const auto& lastPlayerPosition = player->GetPosition();
-		const auto& playerDirection = player->GetDirection();
-		const auto& lastPlayerDirection = player->GetLastDirection();
-		const auto& lastTailPartPosition = player->GetLastTailPosition();
-
-		const auto newPlayerPosition = glm::vec3(
-			lastPlayerPosition.x + lastPlayerDirection.x * 0.125f,
-			lastPlayerPosition.y,
-			lastPlayerPosition.z + lastPlayerDirection.y * 0.125f);
-
-		if (lastPlayerDirection.x)
-		{
-			if (std::fabsf(newPlayerPosition.x - lastTailPartPosition.x) == 1.0f)
-			{
-				player->AddTailPart(glm::vec3(lastTailPartPosition.x, lastTailPartPosition.y, lastTailPartPosition.z));
-				player->SetLastTailPosition(glm::vec3(lastTailPartPosition.x + lastPlayerDirection.x, lastTailPartPosition.y, lastTailPartPosition.z));
-				player->SetLastDirection(playerDirection);
-			}
-		}
-		else if (lastPlayerDirection.y)
-		{
-			if (std::fabsf(newPlayerPosition.z - lastTailPartPosition.z) == 1.0f)
-			{
-				player->AddTailPart(glm::vec3(lastTailPartPosition.x, lastTailPartPosition.y, lastTailPartPosition.z));
-				player->SetLastTailPosition(glm::vec3(lastTailPartPosition.x, lastTailPartPosition.y, lastTailPartPosition.z + lastPlayerDirection.y));
-				player->SetLastDirection(playerDirection);
-			}
-		}
-
-		player->SetPosition(newPlayerPosition);
-	}
-
-	return true;
-}
-
-bool Game::CheckCollisions()
-{
-	const auto& server = game->GetServer();
-	auto& players = server->GetPlayers();
-	for (auto& player : players)
-	{
-		if (!player->IsAlive())
-			continue;
-
-		const auto& playerPosition = player->GetPosition();
-
-		if (playerPosition.x >= 50 || playerPosition.x <= -50
-			|| playerPosition.z >= 50 || playerPosition.z <= -50)
-		{
-			player->SetIsAlive(false);
-			continue;
-		}
-
-		auto& otherPlayers = server->GetPlayers();
-		for (auto& otherPlayer : otherPlayers)
-		{
-			if (!otherPlayer->IsAlive())
-				continue;
-
-			const auto& otherPlayerPosition = otherPlayer->GetPosition();
-
-			if (player->GetGalaxyID() != otherPlayer->GetGalaxyID()
-				&& std::fabsf(playerPosition.x - otherPlayerPosition.x) < 0.2f
-				&& std::fabsf(playerPosition.z - otherPlayerPosition.z) <= 0.2f)
-			{
-				player->SetIsAlive(false);
-				otherPlayer->SetIsAlive(false);
-				continue;
-			}
-
-			const auto& playerTail = otherPlayer->GetTail();
-			for (const auto& tailPart : playerTail)
-			{
-				if (std::fabsf(playerPosition.x - tailPart->GetPosition().x) < 0.2f
-					&& std::fabsf(playerPosition.z - tailPart->GetPosition().z) <= 0.2f)
-				{
-					player->SetIsAlive(false);
-					if (player->GetGalaxyID() != otherPlayer->GetGalaxyID())
-						otherPlayer->SetPoints(otherPlayer->GetPoints() + 10);
-					break;
-				}
-			}
-		}
-	}
-
-	if (!game->GetServer()->SendGameTick(players))
-		return false;
-
-	if (std::count_if(std::begin(players), std::end(players), [](const PlayerPtr& player) { return player->IsAlive(); }) <= 1)
-	{
-		if (!game->GetServer()->SendGameResults(players, std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - startGameTime))
-			return false;
-	}
 
 	return true;
 }

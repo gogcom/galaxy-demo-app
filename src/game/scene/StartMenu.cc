@@ -65,7 +65,7 @@ bool StartMenu::Init()
 		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
 	});
 
-	guiElements.push_back({std::make_shared<Button>("CLOUD STORAGE", 1280 / 2 - 150, 425, 300, 100, [&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }),
+	guiElements.push_back({std::make_shared<Button>("STORAGE", 1280 / 2 - 150, 425, 300, 100, [&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }),
 		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
 	});
 

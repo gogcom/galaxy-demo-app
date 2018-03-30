@@ -67,36 +67,6 @@ namespace gogtron
 			std::shared_ptr<GogTron> game;
 		};
 
-		class FileShareListener : public galaxy::api::GlobalFileShareListener
-		{
-		public:
-
-			FileShareListener(const std::shared_ptr<GogTron>& game);
-
-			virtual void OnFileShareSuccess(const char* fileName, galaxy::api::SharedFileID sharedFileID) override;
-
-			virtual void OnFileShareFailure(const char* fileName, FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
-		class SharedFileDownloadListener : public galaxy::api::GlobalSharedFileDownloadListener
-		{
-		public:
-
-			SharedFileDownloadListener(const std::shared_ptr<GogTron>& game);
-
-			virtual void OnSharedFileDownloadSuccess(galaxy::api::SharedFileID sharedFileID, const char* fileName) override;
-
-			virtual void OnSharedFileDownloadFailure(galaxy::api::SharedFileID sharedFileID, FailureReason failureReason) override;
-
-		private:
-
-			std::shared_ptr<GogTron> game;
-		};
-
 		bool InitFontTextures();
 
 		void InitGalaxy();

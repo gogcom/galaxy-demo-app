@@ -11,6 +11,8 @@ namespace galaxy
 namespace gogtron
 {
 
+	constexpr uint32_t MAX_LEADERBOARDS_ENTRIES = 3;
+
 	GameplayData::GameplayData()
 	{
 	}
@@ -74,12 +76,20 @@ namespace gogtron
 		try
 		{
 			galaxy::api::Stats()->RequestUserStatsAndAchievements();
+
+			leaderboards = LeaderboardFactory::CreateDefaultLeaderboards();
 			galaxy::api::Stats()->RequestLeaderboards();
 		}
 		catch (const galaxy::api::IError& error)
 		{
 			galaxy::api::Logger()->Error("Failed to retrieve user stats and achievements: %s", error.GetMsg());
 		}
+	}
+
+	void GameplayData::RefreshLeaderboardsEntries() const
+	{
+		for (const auto& leaderboard : GetLeaderboards())
+			galaxy::api::Stats()->RequestLeaderboardEntriesGlobal(leaderboard.first.c_str(), 0, MAX_LEADERBOARDS_ENTRIES);
 	}
 
 	void GameplayData::InitListeners()
@@ -237,12 +247,14 @@ namespace gogtron
 	{
 	}
 
-	GameplayData::LeaderboardsRetrieveListener::LeaderboardsRetrieveListener(GameplayData& /*_gameplayData*/)
+	GameplayData::LeaderboardsRetrieveListener::LeaderboardsRetrieveListener(GameplayData& _gameplayData)
+		: gameplayData{_gameplayData}
 	{
 	}
 
 	void GameplayData::LeaderboardsRetrieveListener::OnLeaderboardsRetrieveSuccess()
 	{
+		gameplayData.RefreshLeaderboardsEntries();
 	}
 
 	void GameplayData::LeaderboardsRetrieveListener::OnLeaderboardsRetrieveFailure(FailureReason failureReason)
@@ -265,12 +277,14 @@ namespace gogtron
 			leaderboard.displayType = galaxy::api::Stats()->GetLeaderboardDisplayType(name);
 
 			Leaderboard::Entries entires;
+
+			constexpr uint32_t MAX_NAME_BUFFER_SIZE = 1024;
+			char nameBuffer[MAX_NAME_BUFFER_SIZE];
 			for (uint32_t i = 0; i < entryCount; ++i)
 			{
 				Leaderboard::Entry entry;
 				galaxy::api::Stats()->GetRequestedLeaderboardEntry(i, entry.rank, entry.score, entry.userID);
-				const char* userName = galaxy::api::Friends()->GetFriendPersonaName(entry.userID);
-				galaxy::api::Logger()->Info("[%u] user name=%s, userID=%llu, rank=%u, score=%d\n", i, userName, entry.userID.ToUint64(), entry.rank, entry.score);
+				galaxy::api::Friends()->GetFriendPersonaNameCopy(entry.userID, &nameBuffer[0], MAX_NAME_BUFFER_SIZE);
 				entires.push_back(entry);
 			}
 

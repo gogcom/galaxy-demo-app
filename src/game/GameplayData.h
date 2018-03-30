@@ -34,6 +34,8 @@ namespace gogtron
 
 		void Init();
 
+		void RefreshLeaderboardsEntries() const;
+
 	private:
 
 		void InitListeners();
@@ -90,6 +92,8 @@ namespace gogtron
 			virtual void OnLeaderboardsRetrieveSuccess() override;
 
 			virtual void OnLeaderboardsRetrieveFailure(FailureReason failureReason) override;
+
+			GameplayData& gameplayData;
 		};
 
 		class LeaderboardEntriesRetrieveListener : public galaxy::api::GlobalLeaderboardEntriesRetrieveListener

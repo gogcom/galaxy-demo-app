@@ -4,6 +4,8 @@
 #include <game/networking/LobbyEvent.h>
 #include <engine/renderer/OGLRenderer.h>
 
+#include <utility>
+
 namespace gogtron
 {
 
@@ -32,8 +34,8 @@ namespace gogtron
 				GAME_RESULT
 			};
 
-			GameState(const IGamePtr& _game)
-				: game(_game)
+			explicit GameState(IGamePtr  _game)
+				: game(std::move(_game))
 			{
 				glViewport(0, 0, 1280, 720);
 				glMatrixMode(GL_PROJECTION);

@@ -20,7 +20,7 @@ bool Results::Init()
 {
 	guiElements.push_back(std::make_shared<Button>(
 		"BACK", 1280 / 2 - 150, 500, 300, 100,
-		[&]() { game->SetGameState(GameState::State::IN_LOBBY_MENU); }));
+		[&]() { game->SetGameState(GameState::State::JOIN_LOBBY_MENU); }));
 
 	resultsStored = false;
 	return true;

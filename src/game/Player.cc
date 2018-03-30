@@ -2,6 +2,11 @@
 
 using namespace gogtron;
 
+gogtron::Player::Player(const galaxy::api::GalaxyID& _galaxyID)
+	: Player{_galaxyID, {}, {}, {}, {}, {}, false, 0}
+{
+}
+
 Player::Player(
 	const galaxy::api::GalaxyID& _galaxyID,
 	const glm::vec3& _position,

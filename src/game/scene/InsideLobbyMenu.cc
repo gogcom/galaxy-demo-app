@@ -11,6 +11,13 @@ using namespace gogtron::system;
 using namespace gogtron::scene;
 using namespace gogtron::networking;
 
+namespace
+{
+
+	constexpr uint32_t MIN_PLAYERS_TO_START_GAME = 2;
+
+}
+
 InsideLobbyMenu::InsideLobbyMenu(const IGamePtr& _game)
 	: GameState(_game)
 {
@@ -141,12 +148,13 @@ bool InsideLobbyMenu::Update()
 					break;
 
 				const auto& lobbyMembers = game->GetLobby()->GetLobbyMembers();
-				if (lobbyMembers.size() <= 1)
+				if (lobbyMembers.size() < MIN_PLAYERS_TO_START_GAME)
 					break;
 
 				if (!server->SendInitGame())
 					break;
 
+				server->InitGameLogic();
 				game->GetGameManager().SetServerState(GameManager::ServerState::GAME);
 			}
 			break;
@@ -166,14 +174,23 @@ bool InsideLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 		element->Display(renderEngine);
 	}
 
-	renderEngine->DisplayText("Lobby members:", renderer::Sprite(50, 50, 200, 100), "FreeSans_Nicknames", SDL_Color{255, 0, 0, 255});
+	renderEngine->DisplayText("Lobby members:", renderer::Sprite(50, 50, 200, 100), "FreeSans_Nicknames", SDL_Color{ 255, 0, 0, 255 });
 	const int offsetY = 100;
 	int lastY = 50 + offsetY;
 	const auto& lobbyMembers = game->GetLobby()->GetLobbyMembers();
 	for (const auto& lobbyMember : lobbyMembers)
 	{
-		const auto& lobbyMemberNickname = galaxy::api::Friends()->GetFriendPersonaName(lobbyMember);
-		renderEngine->DisplayText(lobbyMemberNickname, renderer::Sprite(50, lastY, 100, 100), std::string("FreeSans_Nickname") + lobbyMemberNickname, SDL_Color{255, 0, 0, 255});
+		const char* lobbyMemberNickname = NULL;
+		try
+		{
+			lobbyMemberNickname = galaxy::api::Friends()->GetFriendPersonaName(lobbyMember);
+		}
+		catch (const galaxy::api::IError& /*error*/)
+		{
+			lobbyMemberNickname = "unknown";
+		}
+
+		renderEngine->DisplayText(lobbyMemberNickname, renderer::Sprite(50, lastY, 100, 100), std::string("FreeSans_Nickname") + lobbyMemberNickname, SDL_Color{ 255, 0, 0, 255 });
 		lastY += offsetY;
 	}
 
