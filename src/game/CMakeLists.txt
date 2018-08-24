@@ -17,36 +17,36 @@ list (APPEND GAME_ALL_SRCS
 	${GAME_NETWORKING_SRCS})
 
 if (WIN32)
-	add_executable (gogtron WIN32 ${GAME_ALL_SRCS})
+	add_executable (galaxy-demo WIN32 ${GAME_ALL_SRCS})
 else()
-	add_executable (gogtron MACOSX_BUNDLE ${GAME_ALL_SRCS})
+	add_executable (galaxy-demo MACOSX_BUNDLE ${GAME_ALL_SRCS})
 endif()
 
 list (APPEND EXTERNAL_LIBS engine ${GALAXY_LIBRARY} ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY})
 
-target_link_libraries (gogtron ${EXTERNAL_LIBS})
+target_link_libraries (galaxy-demo ${EXTERNAL_LIBS})
 
 if (APPLE)
-	add_custom_command(TARGET gogtron
+	add_custom_command(TARGET galaxy-demo
 		POST_BUILD COMMAND
 		${CMAKE_INSTALL_NAME_TOOL} -change @loader_path/libGalaxy.dylib "@rpath/libGalaxy.dylib"
-		$<TARGET_FILE:gogtron>)
+		$<TARGET_FILE:galaxy-demo>)
 
-	add_custom_command(TARGET gogtron
+	add_custom_command(TARGET galaxy-demo
 		POST_BUILD COMMAND
 		${CMAKE_INSTALL_NAME_TOOL} -change /usr/lib/libGLEW.1.13.0.dylib "@rpath/libGLEW.1.13.0.dylib"
-		$<TARGET_FILE:gogtron>)
+		$<TARGET_FILE:galaxy-demo>)
 
-	add_custom_command(TARGET gogtron
+	add_custom_command(TARGET galaxy-demo
 		POST_BUILD COMMAND
 		${CMAKE_INSTALL_NAME_TOOL} -add_rpath "@loader_path/../Frameworks"
-		$<TARGET_FILE:gogtron>)
+		$<TARGET_FILE:galaxy-demo>)
 endif()
 
 if (WIN32)
-	configure_file (${CMAKE_SOURCE_DIR}/cmake/project.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/gogtron.vcxproj.user @ONLY)
+	configure_file (${CMAKE_SOURCE_DIR}/cmake/project.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/galaxy-demo.vcxproj.user @ONLY)
 endif()
 
 install (
-	TARGETS gogtron
+	TARGETS galaxy-demo
 	DESTINATION ${INSTALL_DIR})

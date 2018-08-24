@@ -8,7 +8,7 @@ namespace galaxy
 	}
 }
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	constexpr uint32_t MAX_LEADERBOARDS_ENTRIES = 3;

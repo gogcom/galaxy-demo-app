@@ -1,12 +1,12 @@
-#ifndef GOGTRON_LEADERBOARDS_H
-#define GOGTRON_LEADERBOARDS_H
+#ifndef GALAXY_DEMO_LEADERBOARDS_H
+#define GALAXY_DEMO_LEADERBOARDS_H
 
 #include <galaxy/IStats.h>
 #include <vector>
 #include <map>
 #include <string>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	struct Leaderboard

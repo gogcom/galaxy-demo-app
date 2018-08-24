@@ -1,6 +1,6 @@
 #include "GameTick.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

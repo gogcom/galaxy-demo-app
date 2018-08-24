@@ -1,10 +1,10 @@
-#ifndef GOGTRON_PHYSICS_PHYSICS_ENGINE_H
-#define GOGTRON_PHYSICS_PHYSICS_ENGINE_H
+#ifndef GALAXY_DEMO_PHYSICS_PHYSICS_ENGINE_H
+#define GALAXY_DEMO_PHYSICS_PHYSICS_ENGINE_H
 
 #include <engine/renderer/Sprite.h>
 #include <cstdint>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace physics
 	{

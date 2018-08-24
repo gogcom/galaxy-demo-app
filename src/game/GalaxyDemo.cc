@@ -1,4 +1,4 @@
-#include "Gogtron.h"
+#include "GalaxyDemo.h"
 #include <game/networking/Lobby.h>
 #include <game/scene/InitFailedView.h>
 #include <game/scene/SinglePlayerView.h>
@@ -21,9 +21,9 @@ namespace galaxy
 	}
 }
 
-using namespace gogtron;
-using namespace gogtron::scene;
-using namespace gogtron::networking;
+using namespace galaxy::demo;
+using namespace galaxy::demo::scene;
+using namespace galaxy::demo::networking;
 
 namespace
 {
@@ -51,18 +51,18 @@ namespace
 
 }
 
-GogTron::GogTron(const renderer::OGLRendererPtr& _renderEngine)
+GalaxyDemo::GalaxyDemo(const renderer::OGLRendererPtr& _renderEngine)
 	: renderEngine(_renderEngine)
 {
 }
 
-void GogTron::InitListeners()
+void GalaxyDemo::InitListeners()
 {
 	listeners.emplace_back(std::make_unique<AuthListener>(shared_from_this()));
 	listeners.emplace_back(std::make_unique<GameJoinRequestedListener>(shared_from_this()));
 }
 
-bool GogTron::Init(int argc, char** argv)
+bool GalaxyDemo::Init(int argc, char** argv)
 {
 	ParseCmdLineArgs(argc, argv);
 
@@ -77,7 +77,7 @@ bool GogTron::Init(int argc, char** argv)
 	return true;
 }
 
-bool GogTron::Release()
+bool GalaxyDemo::Release()
 {
 	ReleaseGalaxy();
 
@@ -89,7 +89,7 @@ bool GogTron::Release()
 	return true;
 }
 
-bool GogTron::Update()
+bool GalaxyDemo::Update()
 {
 	float deltaTime = 0.0f;
 	if (AnimateNextFrame(30, deltaTime))
@@ -165,7 +165,7 @@ bool GogTron::Update()
 	return true;
 }
 
-void GogTron::OnMouseDown(std::uint32_t x, std::uint32_t y)
+void GalaxyDemo::OnMouseDown(std::uint32_t x, std::uint32_t y)
 {
 	if (!gameState)
 		return;
@@ -173,7 +173,7 @@ void GogTron::OnMouseDown(std::uint32_t x, std::uint32_t y)
 	gameState->OnMouseDown(x, y);
 }
 
-void GogTron::OnMouseMotion(std::uint32_t x, std::uint32_t y)
+void GalaxyDemo::OnMouseMotion(std::uint32_t x, std::uint32_t y)
 {
 	if (!gameState)
 		return;
@@ -181,7 +181,7 @@ void GogTron::OnMouseMotion(std::uint32_t x, std::uint32_t y)
 	gameState->OnMouseMotion(x, y);
 }
 
-void GogTron::OnKeyDown(SDL_Keysym key)
+void GalaxyDemo::OnKeyDown(SDL_Keysym key)
 {
 	if (!gameState)
 		return;
@@ -189,7 +189,7 @@ void GogTron::OnKeyDown(SDL_Keysym key)
 	gameState->OnKeyDown(key);
 }
 
-void GogTron::OnLobbyEvent(const LobbyEvent& lobbyEvent)
+void GalaxyDemo::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 {
 	if (!gameState)
 		return;
@@ -197,7 +197,7 @@ void GogTron::OnLobbyEvent(const LobbyEvent& lobbyEvent)
 	gameState->OnLobbyEvent(lobbyEvent);
 }
 
-bool GogTron::SetGameState(const GameState::State& state)
+bool GalaxyDemo::SetGameState(const GameState::State& state)
 {
 	if (gameState)
 		gameState->Release();
@@ -207,7 +207,7 @@ bool GogTron::SetGameState(const GameState::State& state)
 	return true;
 }
 
-bool GogTron::AnimateNextFrame(std::uint32_t fps, float& globalDeltaTime)
+bool GalaxyDemo::AnimateNextFrame(std::uint32_t fps, float& globalDeltaTime)
 {
 	static float lastTime = SDL_GetTicks() * 0.001f;
 	static float elapsedTime = 0.0f;
@@ -233,7 +233,7 @@ bool GogTron::AnimateNextFrame(std::uint32_t fps, float& globalDeltaTime)
 	return false;
 }
 
-void GogTron::CalculateFrameRate(float& globalDeltaTime)
+void GalaxyDemo::CalculateFrameRate(float& globalDeltaTime)
 {
 	static int framesPerSecond = 0;				// This will store our fps
 	static float fpsTime = 0.0f;				// Amount of elapsed time until we update the FPS count
@@ -261,7 +261,7 @@ void GogTron::CalculateFrameRate(float& globalDeltaTime)
 	}
 }
 
-bool GogTron::InitFontTextures()
+bool GalaxyDemo::InitFontTextures()
 {
 	core::SDLResourceManager& sdlResourceManager = core::SDLResourceManager::GetInstance();
 
@@ -277,7 +277,7 @@ bool GogTron::InitFontTextures()
 	return true;
 }
 
-void GogTron::InitGalaxy()
+void GalaxyDemo::InitGalaxy()
 {
 	try
 	{
@@ -293,7 +293,7 @@ void GogTron::InitGalaxy()
 	}
 }
 
-bool GogTron::ReleaseGalaxy()
+bool GalaxyDemo::ReleaseGalaxy()
 {
 	// Destroy all listeners before shutting down GalaxySDK
 	listeners.clear();
@@ -302,12 +302,12 @@ bool GogTron::ReleaseGalaxy()
 	return true;
 }
 
-GogTron::AuthListener::AuthListener(const std::shared_ptr<GogTron>& _game)
+GalaxyDemo::AuthListener::AuthListener(const std::shared_ptr<GalaxyDemo>& _game)
 	: game(_game)
 {
 }
 
-void GogTron::AuthListener::OnAuthSuccess()
+void GalaxyDemo::AuthListener::OnAuthSuccess()
 {
 	if (!connectionString.empty())
 	{
@@ -320,13 +320,13 @@ void GogTron::AuthListener::OnAuthSuccess()
 	game->GetGameplayData().Init();
 }
 
-void GogTron::AuthListener::OnAuthFailure(FailureReason reason)
+void GalaxyDemo::AuthListener::OnAuthFailure(FailureReason reason)
 {
 	// TODO: implement notification for "Could not sign in"
 	// TODO: implement reconnect button
 }
 
-void GogTron::AuthListener::OnAuthLost()
+void GalaxyDemo::AuthListener::OnAuthLost()
 {
 	// TODO: implement notification for "Auth lost"
 	// TODO: implement reconnect button
@@ -338,12 +338,12 @@ void GogTron::AuthListener::OnAuthLost()
 		game->SetGameState(GameState::State::START_MENU);
 }
 
-GogTron::GameJoinRequestedListener::GameJoinRequestedListener(const std::shared_ptr<GogTron>& _game)
+GalaxyDemo::GameJoinRequestedListener::GameJoinRequestedListener(const std::shared_ptr<GalaxyDemo>& _game)
 	: game(_game)
 {
 }
 
-void GogTron::GameJoinRequestedListener::OnGameJoinRequested(galaxy::api::GalaxyID userID, const char* connectionString)
+void GalaxyDemo::GameJoinRequestedListener::OnGameJoinRequested(galaxy::api::GalaxyID userID, const char* connectionString)
 {
 	ILobbyPtr lobby = std::make_shared<Lobby>(game);
 	game->SetLobby(lobby);

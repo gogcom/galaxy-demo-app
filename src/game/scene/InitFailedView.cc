@@ -4,9 +4,9 @@
 #include <SDL_opengl.h>
 #include <algorithm>
 
-using namespace gogtron;
-using namespace gogtron::system;
-using namespace gogtron::scene;
+using namespace galaxy::demo;
+using namespace galaxy::demo::system;
+using namespace galaxy::demo::scene;
 
 InitFailedView::InitFailedView(const IGamePtr& _game)
 	: GameState(_game)

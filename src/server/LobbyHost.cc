@@ -27,7 +27,7 @@ namespace
 
 }
 
-namespace gogtron::server
+namespace galaxy::demo::server
 {
 
 	LobbyHost::LobbyHost(const galaxy::api::GalaxyID& _lobbyID)

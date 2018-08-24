@@ -16,7 +16,7 @@ namespace
 	constexpr auto SERVER_LOOP_TIMEOUT = std::chrono::milliseconds(10);
 }
 
-namespace gogtron::server
+namespace galaxy::demo::server
 {
 
 	DedicatedServer::DedicatedServer()

@@ -1,6 +1,6 @@
 #include "GameResults.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

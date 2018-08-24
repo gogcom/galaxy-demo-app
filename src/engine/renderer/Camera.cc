@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include <cmath>
 
-using namespace gogtron::renderer;
+using namespace galaxy::demo::renderer;
 
 Camera::Camera()
 {

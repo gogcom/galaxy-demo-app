@@ -1,6 +1,6 @@
 #include "JsonSerializer.h"
 
-using namespace gogtron::serialize;
+using namespace galaxy::demo::serialize;
 
 bool JsonSerializer::Serialize(JsonSerializable* object, std::string& output)
 {

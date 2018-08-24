@@ -1,12 +1,12 @@
-#ifndef GOGTRON_ACHIEVEMENTS_H
-#define GOGTRON_ACHIEVEMENTS_H
+#ifndef GALAXY_DEMO_ACHIEVEMENTS_H
+#define GALAXY_DEMO_ACHIEVEMENTS_H
 
 #include <string>
 #include <map>
 #include <stdint.h>
 #include <galaxy/GalaxyID.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	struct Achievement

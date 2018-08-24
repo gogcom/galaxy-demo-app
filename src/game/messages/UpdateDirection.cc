@@ -1,6 +1,6 @@
 #include "UpdateDirection.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

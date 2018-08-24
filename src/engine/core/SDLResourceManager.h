@@ -1,11 +1,11 @@
-#ifndef GOGTRON_CORE_SDLRESOURCE_MANAGER_H
-#define GOGTRON_CORE_SDLRESOURCE_MANAGER_H
+#ifndef GALAXY_DEMO_CORE_SDLRESOURCE_MANAGER_H
+#define GALAXY_DEMO_CORE_SDLRESOURCE_MANAGER_H
 
 #include "ResourceManager.h"
 #include <SDL_ttf.h>
 #include <SDL_opengl.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace core
 	{

@@ -1,5 +1,5 @@
-#ifndef GOGTRON_NETWORKING_I_CLIENT_H
-#define GOGTRON_NETWORKING_I_CLIENT_H
+#ifndef GALAXY_DEMO_NETWORKING_I_CLIENT_H
+#define GALAXY_DEMO_NETWORKING_I_CLIENT_H
 
 #include <engine/networking/AbstractClient.h>
 #include <glm/vec2.hpp>
@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class IGame;

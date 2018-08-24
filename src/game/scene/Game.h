@@ -1,11 +1,11 @@
-#ifndef GOGTRON_SCENE_GAME_H
-#define GOGTRON_SCENE_GAME_H
+#ifndef GALAXY_DEMO_SCENE_GAME_H
+#define GALAXY_DEMO_SCENE_GAME_H
 
 #include "GameState.h"
 #include <game/GameManager.h>
 #include <engine/renderer/Camera.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace scene
 	{

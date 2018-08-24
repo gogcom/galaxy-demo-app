@@ -1,9 +1,9 @@
-#ifndef GOGTRON_NETWORKING_CLIENT_H
-#define GOGTRON_NETWORKING_CLIENT_H
+#ifndef GALAXY_DEMO_NETWORKING_CLIENT_H
+#define GALAXY_DEMO_NETWORKING_CLIENT_H
 
 #include "IClient.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace networking
 	{

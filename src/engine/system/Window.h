@@ -1,11 +1,11 @@
-#ifndef GOGTRON_ENGINE_SYSTEM_WINDOW_H
-#define GOGTRON_ENGINE_SYSTEM_WINDOW_H
+#ifndef GALAXY_DEMO_ENGINE_SYSTEM_WINDOW_H
+#define GALAXY_DEMO_ENGINE_SYSTEM_WINDOW_H
 
 #include <cstdint>
 #include <string>
 #include <memory>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace system
 	{

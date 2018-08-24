@@ -2,7 +2,7 @@
 #include <engine/core/SDLResourceManager.h>
 #include <engine/physics/PhysicsEngine.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace system
 	{

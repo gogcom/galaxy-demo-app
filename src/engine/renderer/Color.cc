@@ -1,6 +1,6 @@
 #include "Color.h"
 
-using namespace gogtron::renderer;
+using namespace galaxy::demo::renderer;
 
 Color::Color(std::uint8_t _r, std::uint8_t _g, std::uint8_t _b, std::uint8_t _a)
 	: r(_r)

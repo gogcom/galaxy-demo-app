@@ -1,5 +1,5 @@
-#ifndef GOGTRON_GAMEPLAY_DATA_H
-#define GOGTRON_GAMEPLAY_DATA_H
+#ifndef GALAXY_DEMO_GAMEPLAY_DATA_H
+#define GALAXY_DEMO_GAMEPLAY_DATA_H
 
 #include "Achievements.h"
 #include "Statistics.h"
@@ -7,7 +7,7 @@
 #include <galaxy/GalaxyApi.h>
 #include <memory>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class User;

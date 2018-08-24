@@ -1,5 +1,5 @@
-#ifndef GOGTRON_GOGTRON_H
-#define GOGTRON_GOGTRON_H
+#ifndef GALAXY_DEMO_GALAXY_DEMO_H
+#define GALAXY_DEMO_GALAXY_DEMO_H
 
 #include "IGame.h"
 #include <engine/renderer/OGLRenderer.h>
@@ -14,16 +14,16 @@ namespace galaxy
 	}
 }
 
-namespace gogtron
+namespace galaxy::demo
 {
 
-	class GogTron
+	class GalaxyDemo
 		: public IGame
-		, public std::enable_shared_from_this<GogTron>
+		, public std::enable_shared_from_this<GalaxyDemo>
 	{
 	public:
 
-		GogTron(const renderer::OGLRendererPtr& renderEngine);
+		GalaxyDemo(const renderer::OGLRendererPtr& renderEngine);
 
 		virtual bool Init(int argc, char** argv) override;
 
@@ -43,7 +43,7 @@ namespace gogtron
 		{
 		public:
 
-			AuthListener(const std::shared_ptr<GogTron>& game);
+			AuthListener(const std::shared_ptr<GalaxyDemo>& game);
 
 			virtual void OnAuthSuccess() override;
 			virtual void OnAuthFailure(FailureReason reason) override;
@@ -51,20 +51,20 @@ namespace gogtron
 
 		private:
 
-			std::shared_ptr<GogTron> game;
+			std::shared_ptr<GalaxyDemo> game;
 		};
 
 		class GameJoinRequestedListener : public galaxy::api::GlobalGameJoinRequestedListener
 		{
 		public:
 
-			GameJoinRequestedListener(const std::shared_ptr<GogTron>& game);
+			GameJoinRequestedListener(const std::shared_ptr<GalaxyDemo>& game);
 
 			virtual void OnGameJoinRequested(galaxy::api::GalaxyID userID, const char* connectionString) override;
 
 		private:
 
-			std::shared_ptr<GogTron> game;
+			std::shared_ptr<GalaxyDemo> game;
 		};
 
 		bool InitFontTextures();

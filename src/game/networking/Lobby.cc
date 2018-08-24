@@ -5,8 +5,8 @@
 #include <game/IGame.h>
 #include <algorithm>
 
-using namespace gogtron;
-using namespace gogtron::networking;
+using namespace galaxy::demo;
+using namespace galaxy::demo::networking;
 
 Lobby::Lobby(const IGamePtr& game)
 	: ILobby(game)

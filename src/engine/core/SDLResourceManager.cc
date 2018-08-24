@@ -1,8 +1,8 @@
 #include "SDLResourceManager.h"
 #include <SDL_image.h>
 
-using namespace gogtron;
-using namespace gogtron::core;
+using namespace galaxy::demo;
+using namespace galaxy::demo::core;
 
 std::unique_ptr<SDLResourceManager> SDLResourceManager::instance = nullptr;
 

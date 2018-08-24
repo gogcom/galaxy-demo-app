@@ -1,9 +1,9 @@
-#ifndef GOGTRON_SYSTEM_BUTTON_H
-#define GOGTRON_SYSTEM_BUTTON_H
+#ifndef GALAXY_DEMO_SYSTEM_BUTTON_H
+#define GALAXY_DEMO_SYSTEM_BUTTON_H
 
 #include "GUIElement.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace system
 	{

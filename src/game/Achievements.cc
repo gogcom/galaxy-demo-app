@@ -1,6 +1,6 @@
 #include "Achievements.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	Achievement::Achievement(const std::string& _name)

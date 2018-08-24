@@ -12,10 +12,10 @@ namespace galaxy
 	}
 }
 
-using namespace gogtron;
-using namespace gogtron::system;
-using namespace gogtron::scene;
-using namespace gogtron::networking;
+using namespace galaxy::demo;
+using namespace galaxy::demo::system;
+using namespace galaxy::demo::scene;
+using namespace galaxy::demo::networking;
 
 namespace
 {

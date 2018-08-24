@@ -11,9 +11,9 @@
 #include <algorithm>
 #include <chrono>
 
-using namespace gogtron;
-using namespace gogtron::scene;
-using namespace gogtron::networking;
+using namespace galaxy::demo;
+using namespace galaxy::demo::scene;
+using namespace galaxy::demo::networking;
 
 namespace
 {

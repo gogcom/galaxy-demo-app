@@ -1,5 +1,5 @@
-#ifndef GOGTRON_SCENE_CLOUD_STORAGE_VIEW_H
-#define GOGTRON_SCENE_CLOUD_STORAGE_VIEW_H
+#ifndef GALAXY_DEMO_SCENE_CLOUD_STORAGE_VIEW_H
+#define GALAXY_DEMO_SCENE_CLOUD_STORAGE_VIEW_H
 
 #include "GameState.h"
 #include <engine/system/GUIElement.h>
@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace scene
 	{

@@ -1,11 +1,11 @@
-#ifndef GOGTRON_MESSAGE_UPDATE_DIRECTION_H
-#define GOGTRON_MESSAGE_UPDATE_DIRECTION_H
+#ifndef GALAXY_DEMO_MESSAGE_UPDATE_DIRECTION_H
+#define GALAXY_DEMO_MESSAGE_UPDATE_DIRECTION_H
 
 #include <engine/serialize/JsonSerializable.h>
 #include <glm/vec2.hpp>
 #include <string>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

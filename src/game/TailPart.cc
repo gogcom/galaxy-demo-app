@@ -1,6 +1,6 @@
 #include "TailPart.h"
 
-using namespace gogtron;
+using namespace galaxy::demo;
 
 TailPart::TailPart(const glm::vec3& _position, const glm::vec4& _color)
 	: GameObject(_position)

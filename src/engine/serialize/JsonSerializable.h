@@ -1,9 +1,9 @@
-#ifndef GOGTRON_SERIALIZE_JSON_SERIALIZABLE_H
-#define GOGTRON_SERIALIZE_JSON_SERIALIZABLE_H
+#ifndef GALAXY_DEMO_SERIALIZE_JSON_SERIALIZABLE_H
+#define GALAXY_DEMO_SERIALIZE_JSON_SERIALIZABLE_H
 
 #include <json/json.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace serialize
 	{

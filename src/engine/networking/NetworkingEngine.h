@@ -1,10 +1,10 @@
-#ifndef GOGTRON_NETWORKING_NETWORKING_ENGINE_H
-#define GOGTRON_NETWORKING_NETWORKING_ENGINE_H
+#ifndef GALAXY_DEMO_NETWORKING_NETWORKING_ENGINE_H
+#define GALAXY_DEMO_NETWORKING_NETWORKING_ENGINE_H
 
 #include <galaxy/GalaxyApi.h>
 #include <string>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace networking
 	{

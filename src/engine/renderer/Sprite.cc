@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-using namespace gogtron::renderer;
+using namespace galaxy::demo::renderer;
 
 Sprite::Sprite(std::uint32_t _x, std::uint32_t _y, std::uint32_t _width, std::uint32_t _height)
 	: x(_x)

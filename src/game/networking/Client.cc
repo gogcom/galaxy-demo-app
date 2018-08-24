@@ -8,9 +8,9 @@
 #include <engine/serialize/JsonSerializer.h>
 #include <algorithm>
 
-using namespace gogtron;
-using namespace gogtron::networking;
-using namespace gogtron::scene;
+using namespace galaxy::demo;
+using namespace galaxy::demo::networking;
+using namespace galaxy::demo::scene;
 
 Client::Client(const IGamePtr& _game)
 	: IClient(_game)

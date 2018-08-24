@@ -1,9 +1,9 @@
-#ifndef GOGTRON_NETWORKING_LOBBY_H
-#define GOGTRON_NETWORKING_LOBBY_H
+#ifndef GALAXY_DEMO_NETWORKING_LOBBY_H
+#define GALAXY_DEMO_NETWORKING_LOBBY_H
 
 #include "ILobby.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace networking
 	{

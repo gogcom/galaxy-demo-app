@@ -1,8 +1,8 @@
 #include "OGLRenderer.h"
 #include <engine/core/SDLResourceManager.h>
 
-using namespace gogtron;
-using namespace gogtron::renderer;
+using namespace galaxy::demo;
+using namespace galaxy::demo::renderer;
 
 OGLRenderer::OGLRenderer(const system::SDLWindowPtr& _window)
 	: AbstractRenderer(_window)

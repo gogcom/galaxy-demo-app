@@ -1,5 +1,5 @@
-#ifndef GOGTRON_SYSTEM_GUI_ELEMENT_H
-#define GOGTRON_SYSTEM_GUI_ELEMENT_H
+#ifndef GALAXY_DEMO_SYSTEM_GUI_ELEMENT_H
+#define GALAXY_DEMO_SYSTEM_GUI_ELEMENT_H
 
 #include <engine/renderer/Renderer.h>
 #include <engine/renderer/Sprite.h>
@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <memory>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace system
 	{

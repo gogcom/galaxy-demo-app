@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project (gogtron)
+project (galaxy-demo)
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -129,29 +129,29 @@ add_subdirectory (src)
 	else()
 		install(
 			DIRECTORY "${GALAXY_SDK_ROOT}/Libraries/"
-			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Frameworks"
+			DESTINATION "${INSTALL_DIR}/galaxy-demo.app/Contents/Frameworks"
 			FILES_MATCHING PATTERN "libGalaxy.dylib"
 		)
 		install(
 			DIRECTORY "${GLEW_DIR}/lib/"
-			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Frameworks"
+			DESTINATION "${INSTALL_DIR}/galaxy-demo.app/Contents/Frameworks"
 			FILES_MATCHING PATTERN "libGLEW.1.13.0.dylib"
 		)
 		install(
 			DIRECTORY "${SDL2DIR}/SDL2.framework"
-			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Frameworks"
+			DESTINATION "${INSTALL_DIR}/galaxy-demo.app/Contents/Frameworks"
 		)
 		install(
 			DIRECTORY "${SDL2IMAGEDIR}/SDL2_image.framework"
-			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Frameworks"
+			DESTINATION "${INSTALL_DIR}/galaxy-demo.app/Contents/Frameworks"
 		)
 		install(
 			DIRECTORY "${SDL2TTFDIR}/SDL2_ttf.framework"
-			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Frameworks"
+			DESTINATION "${INSTALL_DIR}/galaxy-demo.app/Contents/Frameworks"
 		)
 		install(
 			DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res"
-			DESTINATION "${INSTALL_DIR}/gogtron.app/Contents/Resources"
+			DESTINATION "${INSTALL_DIR}/galaxy-demo.app/Contents/Resources"
 		)
 	endif ()
 

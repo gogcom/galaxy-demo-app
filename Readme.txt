@@ -8,6 +8,6 @@ Step by step configuration:
 3. Copy Local.cmake.template file and save it as Local.cmake
 4. Open Local.cmake and set path to development kit package
 3. Configure and generate CMake build
-4. You might want to change CLIENT_ID and CLIENT_SECRET in Gogtron.cc to your own (you need to get it from GOG)
+4. You might want to change CLIENT_ID and CLIENT_SECRET in GalaxyDemo.cc to your own (you need to get it from GOG)
 5. Compile
-6. Run the Gogtron executable
+6. Run the GalaxyDemo executable

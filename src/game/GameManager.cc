@@ -2,7 +2,7 @@
 #include <cassert>
 #include <algorithm>
 
-using namespace gogtron;
+using namespace galaxy::demo;
 
 bool GameManager::Init()
 {

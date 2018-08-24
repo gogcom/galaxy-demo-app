@@ -1,5 +1,5 @@
-#ifndef GOGTRON_PLAYER_H
-#define GOGTRON_PLAYER_H
+#ifndef GALAXY_DEMO_PLAYER_H
+#define GALAXY_DEMO_PLAYER_H
 
 #include "TailPart.h"
 #include <galaxy/GalaxyApi.h>
@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class Player

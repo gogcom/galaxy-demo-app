@@ -1,11 +1,11 @@
-#ifndef GOGTRON_MESSAGE_READY_H
-#define GOGTRON_MESSAGE_READY_H
+#ifndef GALAXY_DEMO_MESSAGE_READY_H
+#define GALAXY_DEMO_MESSAGE_READY_H
 
 #include <engine/serialize/JsonSerializable.h>
 #include <galaxy/GalaxyApi.h>
 #include <string>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

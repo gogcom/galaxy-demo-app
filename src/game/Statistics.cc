@@ -1,6 +1,6 @@
 #include "Statistics.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	Statistic::Statistic(const std::string& _name)
 		: value(0)

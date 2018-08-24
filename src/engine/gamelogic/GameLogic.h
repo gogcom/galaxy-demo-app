@@ -2,7 +2,7 @@
 
 #include <game/Player.h>
 
-namespace gogtron::gamelogic
+namespace galaxy::demo::gamelogic
 {
 
 	class GameLogic final

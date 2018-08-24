@@ -1,10 +1,10 @@
-#ifndef GOGTRON_MESSAGE_GAME_TICK_H
-#define GOGTRON_MESSAGE_GAME_TICK_H
+#ifndef GALAXY_DEMO_MESSAGE_GAME_TICK_H
+#define GALAXY_DEMO_MESSAGE_GAME_TICK_H
 
 #include <engine/serialize/JsonSerializable.h>
 #include <game/Player.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

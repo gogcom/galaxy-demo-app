@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-namespace gogtron::scene
+namespace galaxy::demo::scene
 {
 
 	namespace
@@ -22,7 +22,7 @@ namespace gogtron::scene
 
 	}
 
-	CloudStorageView::CloudStorageView(const gogtron::IGamePtr& _game)
+	CloudStorageView::CloudStorageView(const galaxy::demo::IGamePtr& _game)
 		: GameState(_game)
 	{
 	}

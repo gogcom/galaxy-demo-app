@@ -1,5 +1,5 @@
-#ifndef GOGTRON_RENDERER_RENDERER_H
-#define GOGTRON_RENDERER_RENDERER_H
+#ifndef GALAXY_DEMO_RENDERER_RENDERER_H
+#define GALAXY_DEMO_RENDERER_RENDERER_H
 
 #include "Color.h"
 #include "Sprite.h"
@@ -9,7 +9,7 @@
 #include <string>
 #include <cstdint>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace renderer
 	{

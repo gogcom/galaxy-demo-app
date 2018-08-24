@@ -1,12 +1,12 @@
-#ifndef GOGTRON_ENGINE_SYSTEM_SDLWINDOW_H
-#define GOGTRON_ENGINE_SYSTEM_SDLWINDOW_H
+#ifndef GALAXY_DEMO_ENGINE_SYSTEM_SDLWINDOW_H
+#define GALAXY_DEMO_ENGINE_SYSTEM_SDLWINDOW_H
 
 #include "Window.h"
 #include <SDL.h>
 #include <GL/glew.h>
 #include <SDL_opengl.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace system
 	{

@@ -1,8 +1,8 @@
 #include "Player.h"
 
-using namespace gogtron;
+using namespace galaxy::demo;
 
-gogtron::Player::Player(const galaxy::api::GalaxyID& _galaxyID)
+galaxy::demo::Player::Player(const galaxy::api::GalaxyID& _galaxyID)
 	: Player{_galaxyID, {}, {}, {}, {}, {}, false, 0}
 {
 }

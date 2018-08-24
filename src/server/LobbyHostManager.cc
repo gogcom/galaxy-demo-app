@@ -17,7 +17,7 @@ namespace
 	constexpr uint32_t MAX_LOBBIES = 1;
 }
 
-namespace gogtron::server
+namespace galaxy::demo::server
 {
 
 	LobbyHostManager::LobbyHostManager()

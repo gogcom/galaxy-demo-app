@@ -9,7 +9,7 @@
 #include <map>
 #include <vector>
 
-namespace gogtron::server
+namespace galaxy::demo::server
 {
 
 	class LobbyHost

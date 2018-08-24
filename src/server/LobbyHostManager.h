@@ -22,7 +22,7 @@ namespace std
 
 }
 
-namespace gogtron::server
+namespace galaxy::demo::server
 {
 
 	class LobbyHostManager

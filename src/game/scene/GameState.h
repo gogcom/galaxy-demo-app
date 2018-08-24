@@ -1,12 +1,12 @@
-#ifndef GOGTRON_SCENE_GAME_STATE_H
-#define GOGTRON_SCENE_GAME_STATE_H
+#ifndef GALAXY_DEMO_SCENE_GAME_STATE_H
+#define GALAXY_DEMO_SCENE_GAME_STATE_H
 
 #include <game/networking/LobbyEvent.h>
 #include <engine/renderer/OGLRenderer.h>
 
 #include <utility>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class IGame;

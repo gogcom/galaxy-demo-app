@@ -1,9 +1,9 @@
-#ifndef GOGTRON_RENDERER_SPRITE_H
-#define GOGTRON_RENDERER_SPRITE_H
+#ifndef GALAXY_DEMO_RENDERER_SPRITE_H
+#define GALAXY_DEMO_RENDERER_SPRITE_H
 
 #include <cstdint>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace renderer
 	{

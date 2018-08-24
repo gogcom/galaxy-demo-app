@@ -6,7 +6,7 @@
 
 #include <memory>
 
-namespace gogtron::server
+namespace galaxy::demo::server
 {
 
 	class DedicatedServer

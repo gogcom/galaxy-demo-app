@@ -1,6 +1,6 @@
 #include "Ready.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

@@ -1,10 +1,10 @@
-#ifndef GOGTRON_TAIL_PART_H
-#define GOGTRON_TAIL_PART_H
+#ifndef GALAXY_DEMO_TAIL_PART_H
+#define GALAXY_DEMO_TAIL_PART_H
 
 #include "GameObject.h"
 #include <memory>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class TailPart : public GameObject

@@ -1,10 +1,10 @@
-#ifndef GOGTRON_RENDERER_COLOR_H
-#define GOGTRON_RENDERER_COLOR_H
+#ifndef GALAXY_DEMO_RENDERER_COLOR_H
+#define GALAXY_DEMO_RENDERER_COLOR_H
 
 #include <SDL.h>
 #include <cstdint>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace renderer
 	{

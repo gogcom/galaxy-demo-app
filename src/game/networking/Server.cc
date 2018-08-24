@@ -9,8 +9,8 @@
 #include <cstdint>
 #include <algorithm>
 
-using namespace gogtron;
-using namespace gogtron::networking;
+using namespace galaxy::demo;
+using namespace galaxy::demo::networking;
 
 Server::Server(const IGamePtr& game)
 	: IServer(game)

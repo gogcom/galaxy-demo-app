@@ -1,10 +1,10 @@
-#ifndef GOGTRON_RENDERER_ABSTRACT_RENDERER_H
-#define GOGTRON_RENDERER_ABSTRACT_RENDERER_H
+#ifndef GALAXY_DEMO_RENDERER_ABSTRACT_RENDERER_H
+#define GALAXY_DEMO_RENDERER_ABSTRACT_RENDERER_H
 
 #include "Renderer.h"
 #include <engine/system/Window.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace renderer
 	{

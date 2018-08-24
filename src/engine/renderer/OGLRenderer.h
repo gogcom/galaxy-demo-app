@@ -1,10 +1,10 @@
-#ifndef GOGTRON_RENDERER_OGLRENDERER_H
-#define GOGTRON_RENDERER_OGLRENDERER_H
+#ifndef GALAXY_DEMO_RENDERER_OGLRENDERER_H
+#define GALAXY_DEMO_RENDERER_OGLRENDERER_H
 
 #include "AbstractRenderer.h"
 #include <engine/system/SDLWindow.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace renderer
 	{

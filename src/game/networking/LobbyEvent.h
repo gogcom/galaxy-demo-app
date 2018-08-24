@@ -1,7 +1,7 @@
-#ifndef GOGTRON_NETWORKING_LOBBY_EVENT_H
-#define GOGTRON_NETWORKING_LOBBY_EVENT_H
+#ifndef GALAXY_DEMO_NETWORKING_LOBBY_EVENT_H
+#define GALAXY_DEMO_NETWORKING_LOBBY_EVENT_H
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace networking
 	{

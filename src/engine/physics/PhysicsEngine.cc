@@ -1,7 +1,7 @@
 #include "PhysicsEngine.h"
 
-using namespace gogtron;
-using namespace gogtron::physics;
+using namespace galaxy::demo;
+using namespace galaxy::demo::physics;
 
 bool PhysicsEngine::IsPointInsideRect(std::uint32_t x, std::uint32_t y, const renderer::Sprite& sprite)
 {

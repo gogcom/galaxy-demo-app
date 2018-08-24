@@ -1,10 +1,10 @@
-#ifndef GOGTRON_GAME_OBJECT_H
-#define GOGTRON_GAME_OBJECT_H
+#ifndef GALAXY_DEMO_GAME_OBJECT_H
+#define GALAXY_DEMO_GAME_OBJECT_H
 
 #include <glm/glm.hpp>
 #include <cstdint>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class GameObject

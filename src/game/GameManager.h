@@ -1,11 +1,11 @@
-#ifndef GOGTRON_GAME_MANAGER_H
-#define GOGTRON_GAME_MANAGER_H
+#ifndef GALAXY_DEMO_GAME_MANAGER_H
+#define GALAXY_DEMO_GAME_MANAGER_H
 
 #include "Player.h"
 #include <memory>
 #include <vector>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class GameManager

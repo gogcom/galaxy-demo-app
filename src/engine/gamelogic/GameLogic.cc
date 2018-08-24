@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace gogtron::gamelogic
+namespace galaxy::demo::gamelogic
 {
 
 	namespace

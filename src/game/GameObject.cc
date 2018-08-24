@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-using namespace gogtron;
+using namespace galaxy::demo;
 
 std::uint32_t GameObject::GameObjectId = 0;
 

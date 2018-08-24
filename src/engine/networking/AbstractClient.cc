@@ -2,7 +2,7 @@
 #include "NetworkingEngine.h"
 #include <cassert>
 
-using namespace gogtron::networking;
+using namespace galaxy::demo::networking;
 
 AbstractClient::~AbstractClient() = default;
 

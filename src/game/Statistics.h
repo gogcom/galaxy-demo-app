@@ -1,5 +1,5 @@
-#ifndef GOGTRON_STATISTICS_H
-#define GOGTRON_STATISTICS_H
+#ifndef GALAXY_DEMO_STATISTICS_H
+#define GALAXY_DEMO_STATISTICS_H
 
 #include <map>
 #include <string>
@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <galaxy/GalaxyID.h>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class Statistic

@@ -1,9 +1,9 @@
-#ifndef GOGTRON_RENDERER_CAMERA_H
-#define GOGTRON_RENDERER_CAMERA_H
+#ifndef GALAXY_DEMO_RENDERER_CAMERA_H
+#define GALAXY_DEMO_RENDERER_CAMERA_H
 
 #include <glm/vec3.hpp>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace renderer
 	{

@@ -1,7 +1,7 @@
 #include "SDLWindow.h"
 #include <SDL_ttf.h>
 
-using namespace gogtron::system;
+using namespace galaxy::demo::system;
 
 SDLWindow::SDLWindow(const std::string& _title, std::uint32_t _width, std::uint32_t _height)
 	: Window(_title, _width, _height)

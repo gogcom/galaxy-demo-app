@@ -2,7 +2,7 @@
 #include "NetworkingEngine.h"
 #include <algorithm>
 
-using namespace gogtron::networking;
+using namespace galaxy::demo::networking;
 
 AbstractServer::~AbstractServer() = default;
 

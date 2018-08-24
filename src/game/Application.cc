@@ -1,12 +1,12 @@
 #include "Application.h"
 #include <engine/renderer/OGLRenderer.h>
-#include "Gogtron.h"
+#include "GalaxyDemo.h"
 
 #if defined(_WIN32)
 #include <shellapi.h>
 #endif
 
-using namespace gogtron;
+using namespace galaxy::demo;
 
 #if defined(_WIN32)
 PCHAR* Application::Helper::CommandLineToArgvA(PCHAR CmdLine, int* _argc)
@@ -104,9 +104,9 @@ PCHAR* Application::Helper::CommandLineToArgvA(PCHAR CmdLine, int* _argc)
 Application::Application(int _argc, char** _argv)
 	: argc(_argc)
 	, argv(_argv)
-	, window(std::make_shared<system::SDLWindow>("gogtron", 1280, 720))
+	, window(std::make_shared<system::SDLWindow>("Galaxy Demo Game", 1280, 720))
 	, renderEngine(std::make_shared<renderer::OGLRenderer>(window))
-	, game(std::make_shared<GogTron>(renderEngine))
+	, game(std::make_shared<GalaxyDemo>(renderEngine))
 {
 }
 

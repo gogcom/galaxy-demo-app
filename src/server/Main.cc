@@ -6,7 +6,7 @@ int main(int /*argc*/, char** /*argv*/)
 {
 	std::cout << "Starting a dedicated server..." << std::endl;
 
-	gogtron::server::DedicatedServer server;
+	galaxy::demo::server::DedicatedServer server;
 
 	std::cout << "Ready to accept players" << std::endl;
 	server.ServerLoop();

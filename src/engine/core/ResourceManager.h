@@ -1,5 +1,5 @@
-#ifndef GOGTRON_CORE_RESOURCE_MANAGER_H
-#define GOGTRON_CORE_RESOURCE_MANAGER_H
+#ifndef GALAXY_DEMO_CORE_RESOURCE_MANAGER_H
+#define GALAXY_DEMO_CORE_RESOURCE_MANAGER_H
 
 #include <engine/renderer/Color.h>
 #include <string>
@@ -7,7 +7,7 @@
 #include <memory>
 #include <cassert>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace core
 	{

@@ -1,9 +1,9 @@
-#ifndef GOGTRON_SERVER_H
-#define GOGTRON_SERVER_H
+#ifndef GALAXY_DEMO_SERVER_H
+#define GALAXY_DEMO_SERVER_H
 
 #include "IServer.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace networking
 	{

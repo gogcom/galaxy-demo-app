@@ -1,5 +1,5 @@
-#ifndef GOGTRON_APPLICATION_H
-#define GOGTRON_APPLICATION_H
+#ifndef GALAXY_DEMO_APPLICATION_H
+#define GALAXY_DEMO_APPLICATION_H
 
 #include "IGame.h"
 #include <engine/renderer/OGLRenderer.h>
@@ -11,7 +11,7 @@
 #endif
 
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class Application

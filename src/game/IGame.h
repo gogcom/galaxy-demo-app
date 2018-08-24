@@ -1,5 +1,5 @@
-#ifndef GOGTRON_I_GAME_H
-#define GOGTRON_I_GAME_H
+#ifndef GALAXY_DEMO_I_GAME_H
+#define GALAXY_DEMO_I_GAME_H
 
 #include "GameManager.h"
 #include "GameplayData.h"
@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <unordered_map>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class IGame

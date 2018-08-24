@@ -1,12 +1,12 @@
-#ifndef GOGTRON_SCENE_JOIN_LOBBY_MENU_H
-#define GOGTRON_SCENE_JOIN_LOBBY_MENU_H
+#ifndef GALAXY_DEMO_SCENE_JOIN_LOBBY_MENU_H
+#define GALAXY_DEMO_SCENE_JOIN_LOBBY_MENU_H
 
 #include "GameState.h"
 #include <engine/system/GUIElement.h>
 #include <galaxy/GalaxyApi.h>
 #include <vector>
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace scene
 	{

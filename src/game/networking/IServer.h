@@ -1,5 +1,5 @@
-#ifndef GOGTRON_I_SERVER_H
-#define GOGTRON_I_SERVER_H
+#ifndef GALAXY_DEMO_I_SERVER_H
+#define GALAXY_DEMO_I_SERVER_H
 
 #include <game/Player.h>
 #include <engine/networking/AbstractServer.h>
@@ -11,7 +11,7 @@
 #include <map>
 #include <utility>
 
-namespace gogtron
+namespace galaxy::demo
 {
 
 	class IGame;

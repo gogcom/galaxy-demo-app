@@ -1,6 +1,6 @@
 #include "InitGame.h"
 
-namespace gogtron
+namespace galaxy::demo
 {
 	namespace message
 	{

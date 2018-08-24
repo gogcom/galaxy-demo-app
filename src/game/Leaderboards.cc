@@ -1,6 +1,6 @@
 #include "Leaderboards.h"
 
-using namespace gogtron;
+using namespace galaxy::demo;
 
 Leaderboard::Entry::Entry()
 	: score(0)

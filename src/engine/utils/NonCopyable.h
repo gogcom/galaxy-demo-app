@@ -1,6 +1,6 @@
 #pragma once
 
-namespace gogtron::utils
+namespace galaxy::demo::utils
 {
 
 	template<class Derived>
