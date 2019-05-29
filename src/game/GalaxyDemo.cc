@@ -71,7 +71,7 @@ bool GalaxyDemo::Init(int argc, char** argv)
 
 	InitGalaxy();
 
-	galaxy::api::User()->SignIn();
+	galaxy::api::User()->SignInGalaxy();
 
 	SetGameState(GameState::State::START_MENU);
 	return true;

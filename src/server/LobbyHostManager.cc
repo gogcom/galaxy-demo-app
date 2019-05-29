@@ -107,7 +107,7 @@ namespace galaxy::demo::server
 			std::forward_as_tuple(lobbyID));
 	}
 
-	void LobbyHostManager::OnLobbyLeft(const galaxy::api::GalaxyID& lobbyID, bool /*ioFailure*/)
+	void LobbyHostManager::OnLobbyLeft(const galaxy::api::GalaxyID& lobbyID, galaxy::api::ILobbyLeftListener::LobbyLeaveReason /*leaveReason*/)
 	{
 		assert(lobbyID.IsValid());
 		assert(lobbyList.find(lobbyID) != std::end(lobbyList));

@@ -1,5 +1,7 @@
 This is a demonstration project for Galaxy SDK.
 
+Supported Galaxy SDK: 1.133.6
+
 To compile this project you need the CMake utility.
 
 Step by step configuration:

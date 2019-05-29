@@ -8,6 +8,7 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 namespace galaxy::demo::server
 {

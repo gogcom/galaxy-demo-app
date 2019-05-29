@@ -4,6 +4,7 @@
 #include <galaxy/GalaxyApi.h>
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace galaxy::demo
 {

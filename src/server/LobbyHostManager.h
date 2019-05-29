@@ -42,11 +42,11 @@ namespace galaxy::demo::server
 
 		void SpawnLobby();
 
-		virtual void OnLobbyCreated(const galaxy::api::GalaxyID& lobbyID, galaxy::api::LobbyCreateResult result) override;
+		void OnLobbyCreated(const galaxy::api::GalaxyID& lobbyID, galaxy::api::LobbyCreateResult result) override;
 
-		virtual void OnLobbyEntered(const galaxy::api::GalaxyID& lobbyID, galaxy::api::LobbyEnterResult result) override;
+		void OnLobbyEntered(const galaxy::api::GalaxyID& lobbyID, galaxy::api::LobbyEnterResult result) override;
 
-		virtual void OnLobbyLeft(const galaxy::api::GalaxyID& lobbyID, bool ioFailure) override;
+		void OnLobbyLeft(const galaxy::api::GalaxyID& lobbyID, galaxy::api::ILobbyLeftListener::LobbyLeaveReason leaveReason) override;
 
 		void LobbyCreationFailed();
 

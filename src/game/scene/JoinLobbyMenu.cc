@@ -98,9 +98,9 @@ bool JoinLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 
 }
 
-void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, bool ioFailure)
+void JoinLobbyMenu::OnLobbyList(uint32_t lobbyCount, galaxy::api::LobbyListResult result)
 {
-	if (!lobbyCount || ioFailure)
+	if (!lobbyCount || result != galaxy::api::LOBBY_LIST_RESULT_SUCCESS)
 	{
 		anyLobbies = false;
 		return;
