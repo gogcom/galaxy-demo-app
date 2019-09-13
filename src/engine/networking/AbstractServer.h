@@ -10,7 +10,7 @@ namespace galaxy::demo
 	namespace networking
 	{
 
-		class AbstractServer : public galaxy::api::GlobalServerNetworkingListener
+		class AbstractServer : public galaxy::api::GlobalNetworkingListener
 		{
 		public:
 

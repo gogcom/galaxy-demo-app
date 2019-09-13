@@ -6,6 +6,7 @@
 #include <game/scene/StatsView.h>
 #include <game/scene/LeaderboardsView.h>
 #include <game/scene/CloudStorageView.h>
+#include <game/scene/ChatView.h>
 #include <game/scene/LobbyMenu.h>
 #include <game/scene/JoinLobbyMenu.h>
 #include <game/scene/InsideLobbyMenu.h>
@@ -133,6 +134,10 @@ bool GalaxyDemo::Update()
 
 			case GameState::State::CLOUD_STORAGE_VIEW:
 				gameState = std::make_shared<CloudStorageView>(shared_from_this());
+				break;
+
+			case GameState::State::CHAT_VIEW:
+				gameState = std::make_shared<ChatView>(shared_from_this());
 				break;
 
 			case GameState::State::LOBBY_MENU:

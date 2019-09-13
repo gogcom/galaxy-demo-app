@@ -9,7 +9,6 @@ namespace galaxy::demo
 	{
 
 		class Lobby : public ILobby
-
 		{
 		public:
 

@@ -180,7 +180,7 @@ bool InsideLobbyMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 	const auto& lobbyMembers = game->GetLobby()->GetLobbyMembers();
 	for (const auto& lobbyMember : lobbyMembers)
 	{
-		const char* lobbyMemberNickname = NULL;
+		const char* lobbyMemberNickname = nullptr;
 		try
 		{
 			lobbyMemberNickname = galaxy::api::Friends()->GetFriendPersonaName(lobbyMember);

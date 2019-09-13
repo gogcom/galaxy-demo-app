@@ -14,7 +14,7 @@ namespace galaxy::demo::server
 {
 
 	class LobbyHost
-		: public galaxy::api::GameServerGlobalServerNetworkingListener
+		: public galaxy::api::GameServerGlobalNetworkingListener
 		, public galaxy::api::GameServerGlobalLobbyMemberStateListener
 		, public utils::NonCopyable<LobbyHost>
 	{
@@ -35,7 +35,7 @@ namespace galaxy::demo::server
 
 	private:
 
-		virtual void OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel) override;
+		virtual void OnP2PPacketAvailable(uint32_t msgSize, uint8_t channel) override;
 		virtual void OnLobbyMemberStateChanged(const galaxy::api::GalaxyID& _lobbyID, const galaxy::api::GalaxyID& memberID, galaxy::api::LobbyMemberStateChange memberStateChange) override;
 		void OnMemberReady(const galaxy::api::GalaxyID& memberID);
 

@@ -57,11 +57,11 @@ namespace galaxy::demo
 			renderEngine->DisplayText(
 				caption,
 				renderer::Sprite{
-				static_cast<uint32_t>(x + (width - caption.length() * CAPTION_GLYPH_WIDTH) / 2),
-				static_cast<uint32_t>(y + (height - CAPTION_GLYPH_HIEGHT) / 2),
-				static_cast<uint32_t>(caption.length() * CAPTION_GLYPH_WIDTH),
-				CAPTION_GLYPH_HIEGHT
-			},
+					static_cast<uint32_t>(x + (width - caption.length() * CAPTION_GLYPH_WIDTH) / 2),
+					static_cast<uint32_t>(y + (height - CAPTION_GLYPH_HIEGHT) / 2),
+					static_cast<uint32_t>(caption.length() * CAPTION_GLYPH_WIDTH),
+					CAPTION_GLYPH_HIEGHT
+				},
 				"FreeSans_" + caption,
 				SDL_Color{255, 0, 0, 255});
 		}

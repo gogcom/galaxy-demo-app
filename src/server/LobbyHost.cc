@@ -100,7 +100,7 @@ namespace galaxy::demo::server
 		}
 	}
 
-	void LobbyHost::OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel)
+	void LobbyHost::OnP2PPacketAvailable(uint32_t msgSize, uint8_t channel)
 	{
 		assert(msgSize);
 
@@ -108,7 +108,7 @@ namespace galaxy::demo::server
 
 		std::uint32_t messageSize;
 		galaxy::api::GalaxyID userID;
-		if (!galaxy::api::GameServerNetworking()->PeekP2PPacket(message, sizeof(message), &messageSize, userID, channel))
+		if (!galaxy::api::Networking()->PeekP2PPacket(message, sizeof(message), &messageSize, userID, channel))
 			return;
 
 		if (membersMap.find(userID) == std::end(membersMap))

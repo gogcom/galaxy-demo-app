@@ -19,7 +19,10 @@ using namespace galaxy::demo::networking;
 
 namespace
 {
-	static inline GalaxyStatus GetCurrentStatus()
+	constexpr auto BUTTON_HEIGHT = 80;
+	constexpr galaxy::api::ProductID DLCProductID = 1109610972U;
+
+	inline GalaxyStatus GetCurrentStatus()
 	{
 		if (!galaxy::api::IsFullyInitialized)
 			return GalaxyStatus::NotInitialized;
@@ -32,6 +35,11 @@ namespace
 
 		return GalaxyStatus::SignedOff;
 	}
+
+	inline std::shared_ptr<Button> MakeButton(std::string label, int offsetY, system::GUINotification action)
+	{
+		return std::make_shared<Button>(std::move(label), 1280 / 2 - 150, offsetY, 300, BUTTON_HEIGHT, std::move(action));
+	}
 }
 
 StartMenu::StartMenu(const IGamePtr& _game)
@@ -41,37 +49,34 @@ StartMenu::StartMenu(const IGamePtr& _game)
 
 bool StartMenu::Init()
 {
-	guiElements.push_back({
-		std::make_shared<Button>("PLAY", 1280 / 2 - 150, 25, 300, 100, [&]() { game->SetGameState(GameState::State::SINGLE_PLAYER_VIEW); }),
-		GalaxyStatus::Any
-	});
+	int offsetY = 25;
+	guiElements.emplace_back(MakeButton("PLAY", offsetY, [&]() { game->SetGameState(GameState::State::SINGLE_PLAYER_VIEW); }), GalaxyStatus::Any);
 
-	guiElements.push_back({std::make_shared<Button>("Logging in...", 1280 / 2 - 150, 125, 300, 100, [&]() {}),
-		GalaxyStatus::NotInitialized | GalaxyStatus::SignedOff
-	});
+	offsetY += BUTTON_HEIGHT;
+	guiElements.emplace_back(MakeButton("Logging in...", offsetY, [&]() {}), GalaxyStatus::NotInitialized | GalaxyStatus::SignedOff);
 
-	guiElements.push_back({std::make_shared<Button>("LOBBY", 1280 / 2 - 150, 125, 300, 100, [&]() { game->SetGameState(GameState::State::LOBBY_MENU); }),
-		GalaxyStatus::SignedInOnline
-	});
+	guiElements.emplace_back(MakeButton("LOBBY", offsetY, [&]() { game->SetGameState(GameState::State::LOBBY_MENU); }), GalaxyStatus::SignedInOnline);
 
 	// TODO: add feature from IApps
 	// TODO: add filesystem features
 
-	guiElements.push_back({std::make_shared<Button>("STATS", 1280 / 2 - 150, 225, 300, 100, [&]() { game->SetGameState(GameState::State::STATS_VIEW); }),
-		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
-	});
+	offsetY += BUTTON_HEIGHT;
+	guiElements.emplace_back(MakeButton("STATS", offsetY, [&]() { game->SetGameState(GameState::State::STATS_VIEW); }), GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline);
 
-	guiElements.push_back({std::make_shared<Button>("LEADERBOARDS", 1280 / 2 - 150, 325, 300, 100, [&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }),
-		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
-	});
+	offsetY += BUTTON_HEIGHT;
+	guiElements.emplace_back(MakeButton("LEADERBOARDS", offsetY, [&]() { game->SetGameState(GameState::State::LEADERBOARDS_VIEW); }), GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline);
 
-	guiElements.push_back({std::make_shared<Button>("STORAGE", 1280 / 2 - 150, 425, 300, 100, [&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }),
-		GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline
-	});
+	offsetY += BUTTON_HEIGHT;
+	guiElements.emplace_back(MakeButton("STORAGE", offsetY, [&]() { game->SetGameState(GameState::State::CLOUD_STORAGE_VIEW); }), GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline);
 
-	guiElements.push_back({std::make_shared<Button>("QUIT", 1280 / 2 - 150, 550, 300, 100, [&]() { game->Close(); }),
-		GalaxyStatus::Any
-	});
+	offsetY += BUTTON_HEIGHT;
+	guiElements.emplace_back(MakeButton("CHAT", offsetY, [&]() { game->SetGameState(GameState::State::CHAT_VIEW); }), GalaxyStatus::SignedInOffline | GalaxyStatus::SignedInOnline);
+
+	offsetY += BUTTON_HEIGHT * 2;
+	guiElements.emplace_back(MakeButton("QUIT", offsetY, [&]() { game->Close(); }), GalaxyStatus::Any);
+
+	if(galaxy::api::Apps()->IsDlcInstalled(DLCProductID))
+		dlcStatus = "DLC 1 installed.";
 
 	return true;
 }
@@ -135,6 +140,8 @@ bool StartMenu::Display(const renderer::OGLRendererPtr& renderEngine)
 		if (element.second & GetCurrentStatus())
 			element.first->Display(renderEngine);
 	}
+
+	renderEngine->DisplayText(dlcStatus, renderer::Sprite(100, 600, dlcStatus.length() * 10, 50), "FreeSans_" + dlcStatus, SDL_Color{ 255, 0, 0, 255 });
 
 	return true;
 }

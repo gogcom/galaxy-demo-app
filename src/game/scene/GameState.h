@@ -27,6 +27,7 @@ namespace galaxy::demo
 				SINGLE_PLAYER_VIEW,
 				LEADERBOARDS_VIEW,
 				CLOUD_STORAGE_VIEW,
+				CHAT_VIEW,
 				LOBBY_MENU,
 				JOIN_LOBBY_MENU,
 				IN_LOBBY_MENU,

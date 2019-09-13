@@ -23,7 +23,7 @@ namespace galaxy::demo
 
 		private:
 
-			virtual void OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel) override;
+			virtual void OnP2PPacketAvailable(uint32_t msgSize, uint8_t channel) override;
 
 			bool CreateInitGame(std::string& message);
 		};

@@ -43,6 +43,7 @@ namespace galaxy::demo
 			{
 				return lobbyID;
 			}
+
 			const std::vector<galaxy::api::GalaxyID>& GetLobbyMembers() const
 			{
 				return lobbyMembers;

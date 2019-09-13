@@ -49,6 +49,7 @@ namespace galaxy::demo
 		private:
 
 			std::vector<std::pair<system::GUIElementPtr, GalaxyStatus>> guiElements;
+			std::string dlcStatus{"DLC not installed."};
 		};
 
 	}

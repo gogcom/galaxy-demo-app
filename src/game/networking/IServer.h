@@ -66,7 +66,7 @@ namespace galaxy::demo
 
 		protected:
 
-			virtual void OnServerP2PPacketAvailable(uint32_t msgSize, uint8_t channel) = 0;
+			virtual void OnP2PPacketAvailable(uint32_t msgSize, uint8_t channel) = 0;
 
 			IGamePtr game;
 			std::unique_ptr<gamelogic::GameLogic> gameLogic;
